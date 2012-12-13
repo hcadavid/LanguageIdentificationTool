@@ -75,7 +75,7 @@ public class NGramExtractor {
 		
 		while ((line=br.readLine())!=null)
 		{
-			StringTokenizer st=new StringTokenizer(line," ,.:?*#");
+			StringTokenizer st=new StringTokenizer(line," (),.:?*#");
 			lcount++;
 			if (lcount%100000==0){
 				System.out.println("Line:"+lcount);
@@ -165,7 +165,7 @@ class ProgressThread extends Thread{
 		boolean done=false;
 		int lastSize=-1;
 		while (!done){
-			System.out.println(table.size());
+			System.out.println("N-Gram map size:"+ table.size());
 			if (table.size()==lastSize){
 				done=true;
 			}

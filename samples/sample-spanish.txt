@@ -1,0 +1,5790 @@
+----------------------- Page 1-----------------------
+
+  Sistema de aprendizaje no supervisado de 
+
+lenguajes naturales con soporte morfol√≥gico 
+
+
+
+                   Héctor Fabio Cadavid Rengifo 
+
+                Maestría en Ingeniería de Sistemas 
+
+                 Universidad Nacional de Colombia 
+
+
+
+                        1 de septiembre de 2009 
+
+
+----------------------- Page 2-----------------------
+
+Índice general 
+
+
+
+1.   Introducción                                                                                          3 
+
+      1.1.  Objetivo  .     .  . .  . .  . .  .  .  .  .  .  .  . .  .  .  . .  .  .  . .  .  . .  . .  . .  . 5 
+
+      1.2.  Contribuciones importantes              .  .  . .  .  .  . .  .  .  . .  .  .  . .  . .  . .  . 6 
+
+             1.2.1.   Evaluación de las técnicas de aprendizaje no supervisado 
+
+                      de morfología y sintaxis con el Espa√±ol.                 .  .  . .  .  .  . .  .  .  6 
+
+             1.2.2.   Enriquecimiento         de  las   categorías     gramaticales  identi- 
+
+                      cadas  con  la  técnica  de  aprendizaje  de  sintaxis  con  ele- 
+
+                      mentos inferidos de la morfología. .  .  .  .            .  .  .  .  .  .  .  . .  . 7 
+
+             1.2.3.   Ambiente de experimentación e investigación para el apren- 
+
+                      dizaje  no  supervisado  de  lenguajes  naturales,  donde  se 
+
+                      parte de Internet como corpus.              .  . .  .  .  . .  .  .  . .  .  .  . .  8 
+
+             1.2.4.   Herramientas de software adicionales  .  .  .              .  .  .  . .  .  .  .  .  8 
+
+      1.3.  Contenido resumido            .  .  .  .  . .  .  .  .  .  .  .  . .  .  .  . . .  . .  . .  . . 9 
+
+
+
+2.   Marco  teórico  y  estado  del  arte                                                                 12 
+
+      2.1.  Introducción .  .      .  . .  .  .  . .  .  .  . .  .  .  . .  .  .  . .  .  .  . .  . .  . .  . 12 
+
+      2.2.  Conceptos fundamentales de los lenguajes naturales                        .  . .  . .  . .    12 
+
+      2.3.  La Web como corpus  .  .  .  .  .         .  .  .  . .  .  .  . .  .  .  .  . .  . .  . .  . . 14 
+
+      2.4.  Enfoques generales para el aprendizaje de lenguajes naturales                         . .     16 
+
+             2.4.1.   Aprendizaje  basado  en  el  principio  MDL  (Minimum  De- 
+
+                      scription Lenght)  .  .  .      .  .  .  . .  .  .  . .  .  .  . .  .  .  . .  .  .  . 16 
+
+             2.4.2.   LSV Letter succesor variety             .  .  . .  .  .  . .  .  .  . .  .  .  .  .  . 16 
+
+             2.4.3.   Aprendizaje basado en evolución                .  .  . .  .  .  . .  .  .  .  .  .  . 17 
+
+             2.4.4.   Aprendizaje basado en alineamiento                  .  .  . .  .  .  .  .  .  .  .  . 17 
+
+
+
+3.   Sistema  de  extracción  de  corpus  de  Internet                                                    18 
+
+      3.1.  Introducción .      .  . .  . .  .  .  .  .  .  .  . .  .  .  . .  .  .  . .  .  .  .  .  .  .  .  . 18 
+
+      3.2.  Motivaciones para la Web como corpus .  .  .  .                 .  .  .  . .  .  .  .  .  .  . 19 
+
+      3.3.  Descripción general del sistema              .  .  .  . .  .  .  . .  .  .  . .  .  .  .  .  .  . 19 
+
+      3.4.  Patrón de ejecución concurrente de tareas independientes                       .  .  .  .     21 
+
+      3.5.  Extracción de enlaces hijo y de tipos de contenido                 .  .  .  .  .  .  .  .     23 
+
+      3.6.  Construcción de componentes expertos en extracción                    .  .  .  .  .  .  .     26 
+
+      3.7.  Extracción y construcción concurrente / distribuida de corpus y 
+
+            persistencia      . .  . .  .  .  . .  .  . .  .  .  . .  .  .  . .  .  .  . .  .  .  . .  .  .  . 27 
+
+
+
+                                                     1 
+
+
+----------------------- Page 3-----------------------
+
+ÍNDICE GENERAL                                                                                                   2 
+
+
+
+      3.8.   Resultados .  .      .  .  . .  .  .  . .  .  .  . .  .  .  . .  .  .  . .  .  .  . .  . .  . .  . 27 
+
+      3.9.   Resumen .  .       .  . .  . .  .  .  . .  .  .  . .  .  .  . .  .  .  . .  .  .  .  . .  . .  . . 32 
+
+
+
+4.   Inducción  de  información  morfológica  del  lenguaje                                                     34 
+
+      4.1.   Introducción .       .  . .  . .  .  .  .  .  .  .  . .  .  .  . .  .  .  . .  .  .  .  .  .  .  .  . 34 
+
+      4.2.   Aprendizaje no supervisado de morfologías                        .  .  .  . .  .  .  .  .  .  .  . 34 
+
+              4.2.1.   Principio de la variedad de letras sucesoras                     .  .  . . .  . .  .     35 
+
+              4.2.2.   Árboles de frecuencias de letras sucesoras                    .  .  . .  .  . .  . .     36 
+
+              4.2.3.   Construcción de árboles de frecuencia de letras sucesoras                                37 
+
+              4.2.4.   Algoritmo de generación de hipótesis de segmentación ini- 
+
+                       ciales     .  .  . .  .  . .  .  .  . .  .  . .  .  .  . .  .  .  . .  .  .  . .  .  .  . 37 
+
+              4.2.5.   Algoritmo de poda y unicación de hipótesis                         . .  .  . .  . .     39 
+
+      4.3.   Agrupamiento de ajos .              .  .  .  . .  .  .  . .  .  .  . .  .  .  . .  .  .  .  .  .  . 41 
+
+      4.4.   Experimentación           .  .  .  .  . .  .  .  . .  .  .  . .  .  .  . .  .  .  .  .  .  .  .  .  . 47 
+
+              4.4.1.   Medida de evaluación              .  . .  .  .  . .  .  .  . .  .  .  . .  .  . .  . .   47 
+
+              4.4.2.   Construcción del corpus de aprendizaje                      .  .  .  . .  .  . .  . .    48 
+
+              4.4.3.   Construcción del conjunto de datos de prueba .                       .  .  . .  .  .     48 
+
+              4.4.4.   Resultados         .  . .  .  .  . .  .  .  .  .  .  .  . .  .  .  . .  .  .  . .  . .  . 49 
+
+                       4.4.4.1.      Evaluación de parámetros  .              .  .  .  . .  .  .  . .  .  .  .  49 
+
+                       4.4.4.2.      Análisis de los errores          .  .  . .  .  .  . .  .  .  . .  .  .  .  50 
+
+                       4.4.4.3.      Revisión analítica.         .  . .  .  .  . .  .  .  . .  .  .  . .  .  .  52 
+
+                       4.4.4.4.      Resultados de la técnica de agrupamiento jerárquico                        54 
+
+      4.5.   Resumen .       .  . .  . .  . .  .  .  . .  .  .  . .  .  .  . .  .  .  . .  .  .  .  .  .  .  .  . 55 
+
+
+
+5.   Aprendizaje  de  la  sintaxis  con  refuerzo  morfológico                                                  59 
+
+      5.1.   Introducción .       .  . .  .  .  . .  .  .  . .  .  .  . .  .  .  . .  .  .  . .  .  .  .  .  .  . 59 
+
+      5.2.   Algoritmo ADIOS              .  .  .  .  . .  .  .  . .  .  .  . .  .  .  . .  .  .  .  .  .  .  .  . 59 
+
+              5.2.1.   Descripción        .  .  . .  .  .  . .  .  .  .  .  .  .  . .  .  .  . .  .  .  . .  . . 59 
+
+              5.2.2.   Elementos del algoritmo ADIOS                     .  . .  .  .  . .  .  .  . .  . .  .   60 
+
+                       5.2.2.1.      Grafo de palabras y caminos                .  .  .  . .  .  .  . .  .  .   60 
+
+                       5.2.2.2.      Clases de equivalencia y patrones                  .  .  . .  .  .  . .    60 
+
+                       5.2.2.3.      Gramáticas generadas por el algoritmo ADIOS  .                             61 
+
+      5.3.   Sujación y su relación con las categorías léxicas                       . .  .  .  .  .  .  .  .  63 
+
+      5.4.   Estrategia de enriquecimiento de clases de equivalencia y patrones                                 65 
+
+      5.5.   Integración de la estrategia de enriquecimiento                       . .  .  .  .  .  .  .  .  .  66 
+
+      5.6.   Experimentación           .  .  . .  .  .  . .  .  .  . .  .  .  . .  .  .  . .  .  .  .  .  .  .  . 69 
+
+              5.6.1.   Construcción de las sentencias de entrenamiento                          . .  . .  .     69 
+
+              5.6.2.   Generación de sentencias novel                 .  .  .  .  . .  .  .  . .  .  . .  .  .  70 
+
+              5.6.3.   Evaluación de sentencias novel                 .  .  .  .  . .  .  .  . .  .  . .  . .   70 
+
+              5.6.4.   Evaluación humana colectiva                  .  . .  .  .  . .  .  .  . .  .  . .  . .   71 
+
+              5.6.5.   Resultados obtenidos .  .  .  .           .  .  .  . .  .  .  . .  .  .  . . .  . .  .   73 
+
+      5.7.   Resumen .       .  . .  . .  .  .  .  .  .  .  . .  .  .  . .  .  .  . .  .  .  .  .  .  .  .  .  .  . 77 
+
+
+
+6.   Conclusiones  y  trabajo  futuro                                                                           78 
+
+
+----------------------- Page 4-----------------------
+
+Capítulo 1 
+
+
+
+Introducción 
+
+
+
+    La  linguística  de  corpus  (corpus  linguistics)  es  una  nueva  vertiente  de  la 
+
+línea de investigación de la linguística computacional, que está enfocada hacia 
+
+el  procesamiento,  de  manera  automática  o  interactiva,  de  grandes  cuerpos  de 
+
+texto para la identicación de características de los lenguajes naturales a través 
+
+de  procesos  intensivos  de  cómputo,  [10,  70,  63,  51,  69].  Dado  que  el  principal 
+
+elemento distintivo de las técnicas de linguística de corpus, respecto a las demás 
+
+técnicas de análisis del lenguaje (además del volumen de sus datos de entrada), 
+
+es  el  estar  basado  en  el  uso  de  muestras  del  lenguaje  de  la  vida  real,  dichas 
+
+técnicas resultan muy prometedoras para afrontar los retos que ofrece la actual 
+
+sociedad de la información, cada vez más inundada de contenidos en línea, que 
+
+por no tener ning√∫n tipo de estructura o meta-información semántica, no pueden 
+
+aprovecharse de manera eciente [50, 65]. 
+
+    Un  nuevo  modelo  de  b√∫squedas  de  contenidos  en  la  red,  propuesto  por  el 
+
+mismo  inventor  de  Internet  Tim  Berners-Lee,  se  basa  en  la  inclusión  de  infor- 
+
+mación semántica dentro de los contenidos disponibles en línea, de manera que 
+
+se  puedan  realizar  consultas  en  contexto  [66].  Este  modelo,  nombrado  por  su 
+
+autor como 'Web semántica' tiene como principal fundamento la posibilidad de 
+
+construir una representación de las relaciones entre los conceptos de un texto, 
+
+a través de formalismos como los mapas conceptuales o las ontologías [66, 49], 
+
+de manera que puedan ser procesados por una máquina. Sin embargo, a pesar 
+
+de los adelantos encaminados a soportar este modelo (como el OWL u Ontolo- 
+
+gy Web Language [32], el cual es una especicación completa para construir y 
+
+compartir ontologías en Web), la posibilidad de que dicho modelo sea difundido 
+
+masivamente depende de los resultados de las propuestas emergentes en el área 
+
+de  la  linguística  computacional  que  permitan,  entre  otras  cosas,  la  generación 
+
+automática o asistida de ontologías a partir los cuerpos de texto de los sitios Web 
+
+[49][66]. Esta dependencia es debida al gran n√∫mero de contenidos disponibles 
+
+en la red y al enorme costo que implicaría la construcción manual de ontologías 
+
+para todos estos [19]. 
+
+    En propuestas como la de la Web semántica se hace más evidente la impor- 
+
+tancia que tienen las estrategias, de aprendizaje del lenguaje natural, basadas en 
+
+
+
+                                              3 
+
+
+----------------------- Page 5-----------------------
+
+CAPÍTULO 1.          INTRODUCCI√ìN                                                                 4 
+
+
+
+la linguística de corpus, ya que las propuestas relacionadas con la construcción 
+
+automática de ontologías (que son su componente fundamental) se basan, en su 
+
+mayoría, en el conocimiento previo de las características del lenguaje (términos, 
+
+sinónimos, taxonomías, o relaciones no jerárquicas entre los diferentes elementos 
+
+del contenido textual) [12, 75]. 
+
+    En particular, las técnicas de aprendizaje no supervisado son las que resultan 
+
+más relevantes para los problemas que requieren el análisis de cuerpos de texto, 
+
+dado que en la práctica, éstos nunca están previamente etiquetados ni cuentan 
+
+con ejemplos negativos. 
+
+    Dentro de los trabajos desarrollados en el área del aprendizaje no supervisado 
+
+de  la  gramática  de  un  lenguaje  (una  buena  revisión  se  encuentra  en  [55,  19]), 
+
+muchos se enfocan principalmente a dos elementos gramaticales: la morfología 
+
+[54, 27, 26, 11, 20, 58] y la sintaxis [61, 41, 73, 42]. Mientras con el aprendizaje 
+
+de  la  morfología  del  lenguaje  se  busca  identicar  las  reglas  de  construcción  y 
+
+transformación  de  las  palabras  a  través  de  procesos  como  la  prejación  y  la 
+
+sujación,  con  el  aprendizaje  de  la  sintaxis  se  busca  identicar  las  reglas  de 
+
+construcción de frases, a partir de la identicación de categorías gramaticales. 
+
+Sin embargo, son escasos los trabajos de aprendizaje no supervisado de lenguajes 
+
+donde se integran estos dos elementos, bien sea para consolidar los resultados a 
+
+nivel morfológico y sintáctico de un mismo corpus, o como proponen Hu et al [33] 
+
+y Clark [19], para que el aprendizaje realizado con uno refuerce al aprendizaje 
+
+del  otro.  Vale  la  pena  resaltar  que  en  la  literatura  de  la  linguística  se  sugiere 
+
+una estrecha relación entre la sintaxis y la morfología de los lenguajes naturales 
+
+[2]. 
+
+    Adicionalmente es importante rese√±ar que los trabajos de aprendizaje no su- 
+
+pervisado de lenguajes han sido probados, en general, con corpus creados cuida- 
+
+dosamente para contener una muestra balanceada, signicativamente grande, y 
+
+libre de errores de un lenguaje: corpus Brown [22], corpus LOB [35], corpus de 
+
+                                                      1 
+
+Reuters  [45],  y  corpus  de  Morphochallenge  .  Esto  implica  que  no  se  está  con- 
+
+templando  la  presencia  de  ruido  y  errores  linguísticos  dentro  de  los  corpus  de 
+
+entrada, lo que resulta poco conveniente si a estas estrategias se las quiere dar 
+
+una  perspectiva  de  aplicación  para  la  enorme,  y  más  rica  muestra  de  uso  del 
+
+lenguaje disponible en la actualidad: Internet (o más especícamente, la Web). 
+
+    En este trabajo se revisan, implementan e integran dos técnicas para el apren- 
+
+dizaje no supervisado de morfología y sintaxis, para ser probadas con cuerpos de 
+
+texto construidos automáticamente a partir de contenidos disponibles en la red 
+
+(sobre la base de la idea de ver la Web como un corpus, propuesto por diferentes 
+
+autores [50, 40, 37, 38, 46]), y realizando experimentos simultáneos con el inglés 
+
+y  el  espa√±ol.  La  infraestructura  y  conjunto  de  estrategias  propuestas  buscan 
+
+aportar a aquellos modelos (como el caso de la Web semántica) que dependen 
+
+de la extracción de características linguísticas de textos en lenguaje natural, con 
+
+el  refuerzo  que  se  le  puede  dar  a  una  técnica  de  aprendizaje  de  sintaxis  si  se 
+
+usa conjuntamente con una de aprendizaje morfológico. Adicionalmente, con el 
+
+manejo simultáneo del inglés y el espa√±ol, se eval√∫a directamente la posibilidad 
+
+
+
+   1http://www.cis.hut./morphochallenge2007/datasets.shtml 
+
+
+----------------------- Page 6-----------------------
+
+CAPÍTULO 1.        INTRODUCCI√ìN                                                           5 
+
+
+
+de aplicar esta propuesta en nuestro medio hispano americano, donde estos dos 
+
+idiomas son predominantes. 
+
+
+
+1.1.       Objetivo 
+
+
+
+    El objetivo del presente trabajo es denir y desarrollar un modelo de apren- 
+
+dizaje no supervisado de la sintaxis de un lenguaje natural a partir de grandes 
+
+cuerpos de texto, cuyos elementos básicos, cuando aplique, tengan el detalle de 
+
+sus  raíces  y  variaciones  morfológicas.  Para  lograrlo,  esta  investigación  se  con- 
+
+centra en: 
+
+
+
+   1.  Dise√±ar  un  modelo  de  infraestructura  de  extracción  de  grandes 
+
+       cuerpos de texto de medios digitales. Sobre la base de la perspectiva 
+
+       que se le ha dado a los contenidos de Internet como un 'corpus de texto 
+
+       ideal', dado su enorme volumen y constante actualización [46, 50, 38], en 
+
+       este  trabajo  se  plantea  y  se  experimenta  con  un  modelo  para  la  extrac- 
+
+       ción eciente de contenidos de la red. El modelo que se plantea contempla 
+
+       la  optimización  de  los  recursos  tanto  de ancho  de  banda  como de proce- 
+
+       samiento, y la facilidad de extensión para el soporte a nuevos formatos. 
+
+
+
+   2.  Adaptar     una    técnica   de   aprendizaje      no   supervisado      de   mor- 
+
+       fologías   de  lenguajes     naturales,    y  extraer    de   ésta  información 
+
+       √∫til  para  el  aprendizaje  de  la  sintaxis. En este trabajo se desarrolla 
+
+       un modelo de aprendizaje no supervisado de morfología basado en la de- 
+
+       scripción  del  trabajo  de  Keshava  y  Pitler  [58],  ajustando  algunas  de  sus 
+
+       características  para  poder  manipular  lenguajes  exivos  como  el  espa√±ol, 
+
+       dado que éste originalmente se enfoca a lenguajes aglutinativos. También 
+
+       se integra la técnica de agrupamiento de morfemas planteado por Gaussier 
+
+       [24] para identicar conjuntos de raíces que permitan, por un lado, descar- 
+
+       tar sujos incorrectos, y por el otro, inferir nuevas categorías gramaticales 
+
+       que permitan enriquecer aquellas obtenidas con la técnica de aprendizaje 
+
+       no  supervisado  de  sintaxis.  La  experimentación  para  el  espa√±ol  es  real- 
+
+       izada con un corpus extraído directamente de Internet, y un estándar de 
+
+       prueba  generado,  entre  otros  recursos,  a  partir  de  teoría  morfológica  del 
+
+       castellano disponible en la literatura [34, 23]. 
+
+
+
+   3.  Adaptar una técnica de aprendizaje no supervisado de la sintaxis 
+
+       de  lenguajes  naturales. En este trabajo se aplica el modelo de apren- 
+
+       dizaje no supervisado de sintaxis planteado por Zolan et al [61], basado en 
+
+       el algoritmo MEX (Motif EXtraction), a sentencias extraídas de corpus en 
+
+       inglés y espa√±ol.  Los  resultados obtenidos con esta técnica, fundamenta- 
+
+       da en el principio de Harris [30] -que postula la posibilidad de identicar 
+
+       clusters de palabras correspondientes a categorías sintácticas a través del 
+
+       alineamiento de sentencias-, son enriquecidos con elementos gramaticales 
+
+       inferidos  con  la  técnica  de  agrupamiento  de  morfemas  descrita  anterior- 
+
+       mente. 
+
+
+----------------------- Page 7-----------------------
+
+CAPÍTULO 1.        INTRODUCCI√ìN                                                          6 
+
+
+
+   4.  Adaptar  un  mecanismo  de  evaluación  de  desempe√±o  de  apren- 
+
+       dizaje  de  un  lenguaje.  En este trabajo se adapta la técnica de evalu- 
+
+       ación denida por los organizadores de la competencia Morphochallenge2 , 
+
+
+
+       denida para medir el desempe√±o de las técnicas de aprendizaje no super- 
+
+       visado de morfologías. Debido a la inexistencia de un 'estándar de oro' para 
+
+       el espa√±ol (que es el elemento base para la técnica de evaluación en men- 
+
+       ción), se plantea una estrategia para su construcción a partir del análisis 
+
+       morfológico generado por otros sistemas especícos para el espa√±ol [25] y 
+
+       de una serie de referencias de teoría linguística del espa√±ol [8, 13, 15]. Estas 
+
+       referencias, junto con otras propias de la linguística del inglés [6, 36], son 
+
+       utilizadas para realizar una revisión analítica de los resultados obtenidos. 
+
+
+
+1.2.       Contribuciones importantes 
+
+
+
+    La  contribución  más  importante  de  este  trabajo  es  una  nueva  propuesta 
+
+para  la  integración  de  estrategias  de  aprendizaje  no  supervisado  de  sintaxis 
+
+y  morfología,  en  particular,  para  las  técnicas  de  aprendizaje  de  morfologías 
+
+basadas  en  la  segmentación  de  palabras, junto  con  las  técnicas  de  aprendizaje 
+
+de  sintaxis  basadas en la identicación  de categorías sintácticas (o basadas en 
+
+el principio de Harris). Adicionalmente, la experimentación de estas técnicas se 
+
+hace  con  contenidos  extraídos  automáticamente  de  la  red  (lo  que  implica  que 
+
+contienen ruido e imperfecciones), con lo que se eval√∫a su desempe√±o dentro del 
+
+contexto de la Web como corpus, una de las nuevas tendencias de la linguística 
+
+de corpus[50]. 
+
+    Los  siguientes  son  algunas  contribuciones  especícas  que  se  dan  con  este 
+
+trabajo, y que son soporte de lo descrito anteriormente: 
+
+
+
+1.2.1.      Evaluación de las técnicas de aprendizaje no super- 
+
+            visado de morfología y  sintaxis  con  el  Espa√±ol. 
+
+
+
+    Las  técnicas  de  aprendizaje  no  supervisado  para  morfología  y  sintaxis  re- 
+
+tomadas en éste trabajo se caracterizan, entre otras cosas, por no estar denidas 
+
+para un √∫nico idioma, por lo que presentan resultados experimentales con cuer- 
+
+pos de texto construidos en dos o más idiomas. Sin embargo, en estas técnicas, 
+
+y otras relacionadas [61, 33, 73, 27, 3, 11], es evidente la poca experimentación 
+
+y  análisis  de  resultados  sobre  el  espa√±ol  (salvo  algunas  excepciones,  como  los 
+
+trabajos de Alexander Gelbukh y Grigori Sidorov [25, 1], aunque éstos no tienen 
+
+independencia del idioma, al ser especícos para el espa√±ol). 
+
+    En particular, los trabajos basados en el principio de letras sucesoras (LSV) 
+
+retomados en este trabajo para la identicación de elementos morfológicos [20, 
+
+11, 28], no presentan resultados experimentales con cuerpos de texto construidos 
+
+en  espa√±ol,  de  la  misma  manera  que  los  corpus  y  datos  de  prueba  provistos 
+
+por Morphochallenge (que son referidos por varios de los trabajos relacionados 
+
+
+
+   2http://www.cis.hut./morphochallenge2008/ 
+
+
+----------------------- Page 8-----------------------
+
+CAPÍTULO 1.         INTRODUCCI√ìN                                                               7 
+
+
+
+con  el  aprendizaje  de  la  morfología  de  un  lenguaje),  no  tienen  una  versión  en 
+
+espa√±ol (sólo se proveen datos para el inglés, nlandés, alemán, turco y árabe). 
+
+Por otro lado, la técnica de aprendizaje no supervisado de sintaxis usada para 
+
+este  trabajo,  basada  en  el  algoritmo  MEX  [61],  maneja  el  idioma  espa√±ol  en 
+
+experimentos  con  cuerpos  de  texto  paralelos,  es  decir,  con  textos  idénticos  en 
+
+diferentes idiomas (para calcular la proximidad sintáctica entre dichos idiomas), 
+
+pero no presenta reportes de desempe√±o ni características concretas identicadas 
+
+a partir de cuerpos de texto en espa√±ol. 
+
+    Por lo anterior, en este trabajo se realizan experimentos con dos idiomas de 
+
+orígenes y características diferentes: el inglés, de origen germánico, y el espa√±ol, 
+
+de origen latino; por ser estos los más relevantes en nuestro medio hispano amer- 
+
+icano. Para el caso concreto del espa√±ol, además de la propia experimentación 
+
+con este idioma, se aportó con: 
+
+
+
+       La creación de un corpus a partir de contenidos de sitios Web en espa√±ol, 
+
+       con un volumen acorde con el mínimo sugerido por la literatura[18], y una 
+
+       base  de  datos  de  aproximadamente  360000  palabras  (incluyendo  ruido) 
+
+       junto con sus frecuencias. 
+
+
+
+       La construcción de un 'estándar de oro'3           para las pruebas de desempe√±o 
+
+
+
+       del algoritmo de aprendizaje de morfologías aplicado al espa√±ol, a partir 
+
+       de segmentaciones identicadas con sistemas especícos para este idioma 
+
+       [25] y posteriormente ajustadas con la información disponible en la liter- 
+
+       atura de la linguística que describe el origen de los diferentes procesos de 
+
+       sujación del espa√±ol. 
+
+
+
+       La evaluación analítica de los elementos morfológicos identicados a través 
+
+       de  la  revisión  de  literatura  mencionada  anteriormente,  y  sus  elementos 
+
+       heredados de lenguas como el latín y el griego, o inducidos por inuencia 
+
+       de otras como el francés. 
+
+
+
+1.2.2.       Enriquecimiento de las categorías gramaticales iden- 
+
+             ticadas  con  la  técnica  de  aprendizaje  de  sintaxis 
+
+             con elementos  inferidos de la morfología. 
+
+
+
+    En  este  trabajo,  para  el  aprendizaje  no  supervisado  de  la  morfología,  se 
+
+toman elementos de los trabajos de Bordag y Demberg [11, 20], ambos basados 
+
+en el principio de variedad de letras sucesoras propuesto por Harris [30, 29]. Para 
+
+identicar  relaciones  morfosintácticas  entre  palabras  que  permitan  la  identi- 
+
+cación de categorías gramaticales (en particular, categorías léxicas), se propone 
+
+un modelo de agrupamiento de palabras, basado en la idea de Gaussier [24], par- 
+
+tiendo de un grafo de interrelaciones de morfemas construido durante el proceso 
+
+de segmentación morfológica de las palabras. 
+
+
+
+   3 Golden  standard:  término  usado  en  la  competencia  Morphochallage  para  referirse  a  un 
+
+
+
+conjunto  de  palabras,  en  un  determinado  idioma,  donde  para  cada  una  de  éstas  se  presenta 
+
+su segmentación ideal. 
+
+
+----------------------- Page 9-----------------------
+
+CAPÍTULO 1.        INTRODUCCI√ìN                                                            8 
+
+
+
+    A partir de las categorías léxicas identicadas con este mecanismo de agru- 
+
+pamiento, se propone una estrategia para extender las gramáticas obtenidas con 
+
+el algoritmo ADIOS [62], de manera que el poder generativo de dichas gramáti- 
+
+cas se incremente considerablemente, y su representación sea más compacta. 
+
+
+
+1.2.3.      Ambiente  de  experimentación  e  investigación  para 
+
+            el  aprendizaje         no    supervisado         de   lenguajes        natu- 
+
+            rales, donde  se parte de Internet  como  corpus. 
+
+
+
+    Autores como Kehoe [37] y Gelbukh [1], proponen estrategias para materi- 
+
+alizar la idea de tratar a la Web como un corpus. √âstas se basan en la idea de 
+
+construir  'corpus  en  contextos',  donde  a  partir  de  ciertas  palabras  clave  (para 
+
+un  determinado  contexto  o  tema),  a  través  de  buscadores  de  Internet  se  iden- 
+
+tican oraciones que contengan dichas palabras o sus variaciones morfológicas, 
+
+para con estas oraciones construir el corpus. 
+
+    A  partir  de  dichas  ideas,  y  teniendo  como  motivación  la  perspectiva  de  la 
+
+Web semántica, en este trabajo se propone una herramienta que se concentra en 
+
+extraer, ecientemente, la mayor cantidad de muestras del lenguaje de los difer- 
+
+entes recursos (en diferentes formatos) disponibles en un dominio de Internet, a 
+
+la vez que registra información estadística que permita, a partir de propiedades 
+
+como  la  frecuencia  de  las  palabras,  discriminar  las  palabras  correctamente  es- 
+
+critas de aquellos elementos que son simplemente ruido. 
+
+    La herramienta propuesta, a diferencia de los trabajos mencionados anteri- 
+
+ormente, no requiere datos de entrada para indicar un contexto, ya que ésta, al 
+
+estar pensada para el problema de extraer conocimiento para la Web semántica, 
+
+genera  un  corpus  a  partir  de  un  solo  dominio  (explorándolo  recursivamente), 
+
+asumiendo, tal como lo propone Wong et al [74], que en dicho dominio ya hay 
+
+implícito un contexto. Adicionalmente, si se quiere enfocar el proceso de apren- 
+
+dizaje  a  una  variante  regional  de  un  idioma  (y  no  solo  a  un  contexto)  resulta 
+
+provechoso  construir  el  corpus  a  partir  de  un  mismo  dominio,  ya  que  cuando 
+
+los contenidos de éste han sido construidos por personas de una misma región, 
+
+dichos contenidos permiten, a través de las técnicas de aprendizaje del lenguaje, 
+
+identicar  particularidades  linguísticas  de  la  región,  las  cuales,  probablemente 
+
+no son encontradas analizando un corpus creado con una mezcla multiregional 
+
+de  documentos  (que  es  el  caso  de  los  corpus  creado  a  partir  de  resultados  de 
+
+consultas en buscadores mencionado anteriormente). 
+
+    Pensando en una futura aplicación para la extracción masiva de contenidos, 
+
+la  herramienta  propuesta  busca  minimizar  los  tiempos  de  latencia  que  se  dan 
+
+típicamente en las tareas de extracción de contenido de la red, con una estrategia 
+
+de ejecución y sincronización concurrente de tareas. 
+
+
+
+1.2.4.      Herramientas  de software adicionales 
+
+
+
+    Además del sistema de extracción de corpus a partir de Internet, este trabajo 
+
+aporta las siguientes herramientas de software: 
+
+
+----------------------- Page 10-----------------------
+
+CAPÍTULO 1.         INTRODUCCI√ìN                                                            9 
+
+
+
+       Herramienta para el aprendizaje de la morfología de un lenguaje a partir 
+
+       de un conjunto de palabras, basado en el principio LSV y en la descripción 
+
+       del algoritmo RePortS. 
+
+
+
+       Herramienta para el agrupamiento morfológico de palabras a partir de la 
+
+       información de sujación disponible de las mismas. 
+
+
+
+       Herramienta  para  la  evaluación  de  la  información  morfológica  obtenida. 
+
+       Esta herramienta, a partir del conjunto de palabras y sus respectivas seg- 
+
+       mentaciones, calcula una medida de precisión y exhaustividad. 
+
+
+
+       Herramienta para la manipulación de las gramáticas generadas por el al- 
+
+       goritmo  ADIOS.  Esta  herramienta  permite  enriquecer  las  gramáticas  a 
+
+       partir de grupos, previamente identicados, de palabras relacionadas mor- 
+
+       fológicamente  entre  sí,  y  adicionalmente,  generar  de  manera  automática 
+
+       el  conjunto  de  todas  las  posibles  sentencias  que  dicha  gramática  puede 
+
+       generar. 
+
+
+
+       Herramienta para la vericación de sentencias usando como criterio resul- 
+
+       tados de consultas a buscadores de Internet. 
+
+
+
+       Herramienta para la vericación de sentencias usando el principio de com- 
+
+       putación humana. Esta herramienta Web permite evaluar la validez de un 
+
+       conjunto  de  sentencias,  solicitando  su  evaluación  a  un  conjunto  de  per- 
+
+       sonas, y posteriormente consolidando y analizando los resultados. 
+
+
+
+1.3.       Contenido resumido 
+
+
+
+    Este  documento  está  dividido  en  6  capítulos.  La  gura  1.1  presenta  una 
+
+descripción esquemática del contenido de los capítulos 3 al 5, respecto al sistema 
+
+desarrollado. 
+
+
+
+Capítulo 2 
+
+
+
+    En el capítulo 2 se presentan, como marco teórico, los conceptos principales 
+
+manejados  en  la  linguística  para  referirse  a  los  componentes  de  las  gramáti- 
+
+cas  de  los  lenguajes  naturales,  y  que  son  utilizados  a  lo  largo  de  este  trabajo. 
+
+Adicionalmente, se presentan las principales estrategias, junto con sus trabajos 
+
+más representativos, para el aprendizaje no supervisado de la gramática de los 
+
+lenguajes  naturales,  en  particular,  aquellas  que  contemplan  la  morfología  y  la 
+
+sintaxis. 
+
+
+
+Capítulo 3 
+
+
+
+    En el capítulo 3 se describe un sistema para la construcción automática de 
+
+corpus, a partir de contenidos disponibles en Internet. Este sistema contempla 
+
+diferentes estrategias para el manejo eciente de los recursos de procesamiento y 
+
+
+----------------------- Page 11-----------------------
+
+CAPÍTULO 1.     INTRODUCCI√ìN                                                10 
+
+
+
+       Figura 1.1: Elementos de la propuesta tratados en cada capítulo. 
+
+
+----------------------- Page 12-----------------------
+
+CAPÍTULO 1.        INTRODUCCI√ìN                                                           11 
+
+
+
+ancho de banda para minimizar los tiempos de construcción, y la posibilidad de 
+
+integrar mecanismos de extracción para nuevos tipos de contenidos disponibles 
+
+en la red. Adicionalmente se muestran resultados experimentales de tiempos de 
+
+construcción del corpus, y un análisis del conjunto de palabras extraído de dicho 
+
+corpus para su uso en tareas de aprendizaje de morfología. 
+
+
+
+Capítulo 4 
+
+
+
+    En el capítulo 4 se describe la implementación de un algoritmo para el apren- 
+
+dizaje no supervisado de la morfología de lenguajes naturales basado en el prin- 
+
+cipio  de  variedad  de  letras  sucesoras,  y  una  estrategia  para  identicar  grupos 
+
+de palabras relacionadas morfológicamente entre si. Adicionalmente, se describe 
+
+una  estrategia  de  evaluación  de  la  información  morfológica  obtenida,  para  la 
+
+cual se hizo uso, por un lado, de un conjunto de datos de prueba previamente 
+
+existentes para el inglés (de la competencia Morphochallenge), y de un conjunto 
+
+de  datos  de  prueba  construido  -usando  diferentes  estrategias-  para  el  espa√±ol. 
+
+Finalmente,  las  pruebas  contemplan  una  revisión  analítica  de  los  procesos  de 
+
+sujación  identicados  para  el  lenguaje,  para  la  cual  se  hace  uso  de  literatura 
+
+de la linguística, tanto para el inglés como para el espa√±ol. 
+
+    Como  se  muestra  en  la  gura  1.1,  los  componentes  descritos  en  este  capí- 
+
+tulo  parten  del  conjunto  de  palabras  extraído  del  corpus  generado  a  partir  de 
+
+Internet, para identicar la segmentación morfológica de dichas palabras y los 
+
+grupos de palabras relacionadas morfológicamente entre sí. 
+
+
+
+Capítulo 5 
+
+
+
+    En  el  capítulo  5  se  describen  los  resultados  de  la  aplicación  del  algoritmo 
+
+ADIOS a las sentencias extraídas de los corpus, en inglés y espa√±ol, generados 
+
+a  partir  de  contenidos  de  Internet.  También  se  da  la  justicación  teórica  de 
+
+una  estrategia  de  integración,  entre  el  conocimiento  morfológico  extraído  con 
+
+la  técnica  descrita  en  el  capítulo  4,  y  la  gramática  extraída  con  el  algoritmo 
+
+ADIOS, con la cual se incrementa, de manera signicativa, el poder generativo 
+
+de  dicha  gramática.  Adicionalmente,  se  describen  los  experimentos  realizados, 
+
+de manera automática y con intervención humana, que permiten la vericar las 
+
+sentencias generadas por la versión modicada de la gramática. 
+
+
+----------------------- Page 13-----------------------
+
+Capítulo 2 
+
+
+
+Marco teórico y estado del 
+
+arte 
+
+
+
+2.1.      Introducción 
+
+
+
+    En  este  capítulo  se  presenta  una  revisión  de  los  conceptos  básicos,  propios 
+
+de la linguística, utilizados en el desarrollo de este trabajo, junto con la revisión 
+
+de los trabajos más representativos relacionados con el problema del aprendiza- 
+
+je  no  supervisado  de  los  lenguajes  naturales.  En  la  sección  2.2  se  presenta  el 
+
+mapa conceptual de los principales componentes de la gramática de un lengua- 
+
+je  natural,  junto  con  la  descripción  de  cada  uno  de  éstos.  En  la  sección  2.3  se 
+
+describe el uso de los contenidos de la Web como un tipo particular de corpus, 
+
+junto con las referencias a algunos de los autores que han utilizado este enfoque. 
+
+Finalmente, en la sección 2.4 se presenta una clasicación de los trabajos más 
+
+representativos del aprendizaje no supervisado de lenguajes naturales. 
+
+
+
+2.2.      Conceptos           fundamentales              de    los    lenguajes 
+
+          naturales 
+
+
+
+Lenguajes naturales 
+
+
+
+    Los  lenguajes  naturales  pueden  denirse  como  aquellos  que  son  adquiridos 
+
+por  sus  usuarios,  sin  requerir el soporte  de ense√±anza  especial alguna (para la 
+
+primera lengua), como parte de su proceso de maduración y socialización [47]. 
+
+El  lenguaje  natural  humano  en  particular,  está  estructuralmente  adaptado  a 
+
+la  psicología  del  hombre,  de  manera  que  éste  es  desarrollado  paulatinamente 
+
+por cada individuo, como consecuencia de las diferentes necesidades biológicas, 
+
+sociales y afectivas a las que éste se enfrenta desde su nacimiento. 
+
+    El lenguaje natural humano, en términos más formales, puede verse como un 
+
+enorme conjunto de sentencias, generadas a partir de la combinación secuencial 
+
+
+
+                                          12 
+
+
+----------------------- Page 14-----------------------
+
+CAPÍTULO 2.         MARCO TE√ìRICO Y ESTADO DEL ARTE                                        13 
+
+
+
+de un conjunto de símbolos terminales [30], donde los símbolos terminales son 
+
+llamados morfemas, la mínima unidad linguística con sentido propio. 
+
+    Los lenguajes naturales se pueden describir a partir de dos componentes prin- 
+
+cipales: sus elementos de construcción, y sus reglas de construcción. Los elemen- 
+
+tos de construcción, llamados lexicón, son las unidades mínimas del lenguaje, las 
+
+cuales,  organizadas  con  determinadas  reglas  -en  adelante  llamado  gramática-, 
+
+construyen los elementos a ser usados en las sentencias (palabras), y las senten- 
+
+cias como tal (sintaxis). Es decir, la gramática de un lenguaje natural cuenta con 
+
+las reglas para la construcción de palabras (morfología) y para la construcción 
+
+de sentencias (sintaxis), entre otras, como la fonética y la semántica. 
+
+    La morfología dene cómo se pueden combinar los morfemas, de tal manera 
+
+que con éstos se construyan palabras que tengan un sentido semántico dentro de 
+
+la  oración.  Los  morfemas  pueden  clasicarse  de  acuerdo  con  las  funciones  que 
+
+pueden desempe√±ar: los morfemas básicos o 'libres' -que tienen un sentido por 
+
+sí solos-, los morfemas de inexión, que cambian la función de las palabras (por 
+
+ejemplo, para el espa√±ol, el morfema 's' que genera el plural, o el morfema 'o' 
+
+para conjugar verbos en primera persona, etc.), y los morfemas derivacionales, 
+
+que cambian el sentido de las palabras, o su categoría sintáctica (por ejemplo, 
+
+el morfema 'ar', que puede convertir algunos sustantivos en verbos). 
+
+    De  acuerdo  con  la  manera  como  se  realizan  las  operaciones  de  inexión  y 
+
+derivación,  los  lenguajes  son  clasicados  como  aglutinativos  y  exivos.  En  los 
+
+lenguajes aglutinativos los morfemas se pueden concatenarse sin sufrir cambio 
+
+alguno,  por  lo  que  las  raíces  de  las  palabras  siempre  son  morfemas  básicos,  es 
+
+decir, con un signicado válido como palabra simple (por ejemplo, los adjetivos 
+
+del inglés terminados con  ed e  ing). 
+
+    Por  otro  lado,  en  las  palabras  compuestas  por  dos  o  más  morfemas,  de  un 
+
+lenguaje  exivo,  no  siempre  se  conserva  la  forma  original  de  su  morfema  raíz, 
+
+es  decir,  al  separarla  de  sus  ajos  deja  de  tener  sentido  (por  ejemplo,  en  el 
+
+espa√±ol,   imprim-ir  o   escrib-iste)  [25].  Sin  embargo,  en  general,  los  lenguajes 
+
+no son completamente aglutinativos o exivos, sino una combinación de ambos 
+
+(pero con una marcada tendencia hacia alguno)[1]. 
+
+
+
+Gramática 
+
+
+
+    La gramática es una descripción de un lenguaje, que siendo nita, permite la 
+
+construcción de -potencialmente- un n√∫mero innito de sentencias. De acuerdo 
+
+con  Chomsky  [17],  una  gramática  puede  verse  como  una  teoría  que  describe 
+
+las  competencias  intrínsicas  de  un  hablante  'ideal'  de  un  lenguaje,  es  decir,  lo 
+
+describe a través de unas competencias linguísticas imaginarias, pero perfectas, 
+
+de un hablante imaginario de dicho lenguaje. 
+
+    El  aprendizaje  automático  de  las  gramáticas  de  los  lenguajes  naturales  ha 
+
+sido, por largo tiempo, tema de investigación, pero con la llegada de nuevas téc- 
+
+nicas de aprendizaje de máquina [57], y el incremento del poder de cómputo de 
+
+las máquinas actuales, dichas investigaciones han tenido un notable resurgimien- 
+
+to, con el trabajo mancomunado de ling√ºistas, psicoling√ºistas, neurolinguístas, 
+
+expertos en cognición, y cientícos de la computación. 
+
+
+----------------------- Page 15-----------------------
+
+CAPÍTULO 2.        MARCO TE√ìRICO Y ESTADO DEL ARTE                                       14 
+
+
+
+Otros conceptos básicos 
+
+
+
+    Partiendo  del  concepto  principal,  el  lenguaje,  las  siguientes  son  las  deni- 
+
+ciones  y  relaciones  entre  conceptos  usados  en  el  marco  del  aprendizaje  no  su- 
+
+pervisado de lenguajes (ver gura 2.1): 
+
+
+
+       La descripción de un lenguaje natural se da con dos elementos fundamen- 
+
+       tales:  el  conjunto  de  reglas  de  construcción,  y  el  conjunto  de  unidades 
+
+       básicas  de  construcción,  denidos  como  gramática  y  lexicón  respectiva- 
+
+       mente. 
+
+
+
+       El lexicón contiene el vocabulario del lenguaje. Dicho vocabulario, se de- 
+
+       scribe a partir de unidades mínimas de construcción de palabras denom- 
+
+       inadas  morfemas,  las  cuales,  al  estar  relacionadas  con  un  fonema  del 
+
+       lenguaje, pueden ser expresados de forma sonora. Dentro de los morfemas 
+
+       del  lexicón  se  distinguen  varias  clases:  los  lexemas,  que  son  las  unidades 
+
+       mínimas  con  sentido  semántico,  los  morfemas  de  derivación  e  inexión 
+
+       que  permiten,  bien  sea  crear  nuevas  palabras  o  cambiar  la  función  de 
+
+       las  mismas  (al  asociarse  a  un  lexema),  y  los  morfemas  libres,  que  no  re- 
+
+       quieren de un lexema (como las preposiciones, conjunciones, y artículos). 
+
+       Los  alomorfos  son  variaciones  fonéticas  de  un  mismo  morfema,  es  decir, 
+
+       son elementos morfológicos, que siendo diferentes, desempe√±an una misma 
+
+       función o tienen un mismo signicado. 
+
+
+
+       Las  categorías  léxicas  hacen  referencia  al  papel  que  toma  una  secuencia 
+
+       de palabras dentro de una oración, como por ejemplo, frase verbo o frase 
+
+       sustantivo.  Un  tipo  particular  de  categoría  sintáctica  son  las  categorías 
+
+       léxicas,  correspondientes  al  rol  que  desempe√±an  las  palabras  del  lexicón 
+
+       dentro de una oración, como por ejemplo, los sustantivos, verbos, adverbios 
+
+       y adjetivos. 
+
+
+
+Inducción gramatical 
+
+
+
+    El  problema  de  la  inducción  gramatical  de  un  lenguaje  natural,  también 
+
+conocido como inferencia gramatical, es un problema no trivial en la linguística 
+
+y  la  teoría  de  lenguajes  formales.  Este  problema,  en  general,  se  dene  como: 
+
+dado  un  conjunto  de  sentencias  que  representen,  bien  sea,  ejemplos  positivos 
+
+o negativos de un lenguaje, construir una gramática describa su formación, de 
+
+tal  manera  que  dicha  descripción  permita  la  producción  de  nuevas  sentencias 
+
+válidas para el lenguaje. 
+
+
+
+2.3.       La Web como corpus 
+
+
+
+    Las técnicas soportadas por la linguística de corpus, permiten el análisis y la 
+
+comparación de patrones identicados en cuerpos de texto a diferentes niveles, 
+
+como el fonológico, morfológico, léxico, etc. La linguística de corpus logra una 
+
+
+----------------------- Page 16-----------------------
+
+CAPÍTULO 2.     MARCO TE√ìRICO Y ESTADO DEL ARTE                             15 
+
+
+
+                         Figura 2.1: Mapa conceptual 
+
+
+----------------------- Page 17-----------------------
+
+CAPÍTULO 2.        MARCO TE√ìRICO Y ESTADO DEL ARTE                                      16 
+
+
+
+visión más objetiva de un lenguaje que la introspección en peque√±os textos o la 
+
+misma intuición, ya que las personas, normalmente, no tienen acceso a algunos 
+
+patrones subliminales de dicho lenguaje [59]. 
+
+    Una de las características más importantes de un corpus es su tama√±o [70], 
+
+ya que las técnicas basadas en dichos corpus asumen, para su adecuado desem- 
+
+pe√±o, que pueden obtener de él un gran n√∫mero de sentencias y palabras. En la 
+
+actualidad, esta característica es propia de la WWW, un corpus con un tama√±o 
+
+sin  precedentes  (aproximadamente  25  billones  de  páginas  indexadas1         para  el 
+
+
+
+2009), fácil de usar y accesible por cualquier persona con tan solo una conexión 
+
+a Internet. 
+
+    En  los  trabajos  relacionados  con  la  linguística  de  corpus  que  han  utilizado 
+
+los  contenidos  de  la  Web  como  fuente  de  información  principal,  se  identican 
+
+dos enfoques diferentes para el uso de dichos contenidos. Autores como Terra y 
+
+Clarke [67] hacen uso de crawlers (los cuales exploran los dominios de Internet 
+
+de  forma  recursiva)  para  recolectar  y  posteriormente  unicar  contenidos  de  la 
+
+WWW. Por otro lado, autores como Kehoe [37] y Gelbukh [1] hacen uso de los 
+
+buscadores  de  Internet  para  construir  corpus  de  contextos  especícos,  usando 
+
+sólo  aquellas  páginas  que  contengan  ciertos  términos  relacionados  con  dichos 
+
+contextos. 
+
+
+
+2.4.       Enfoques          generales          para      el   aprendizaje            de 
+
+           lenguajes naturales 
+
+
+
+2.4.1.      Aprendizaje basado en el principio MDL (Minimum 
+
+            Description Lenght) 
+
+
+
+    El  principio  de  longitud  de  descripción  mínima  se  basa  en  la  idea  de  que 
+
+entre más peque√±a sea la descripción de un fenómeno dentro de la información, 
+
+ésta resulta más precisa, ya que, entre mayor es el nivel de compresión de cierta 
+
+representación,  mayor  es  el  n√∫mero  de  generalidades  o  patrones  identicados. 
+
+En trabajos como los presentados por Goldsmith[27], y Argamon [3], enfocados 
+
+a la morfología, se aplica éste principio a través de la construcción de hipótesis 
+
+de relaciones morfológicas entre morfemas raíz y sujos, donde la evaluación de 
+
+MDL corresponde al tama√±o de la estructura que representa tales relaciones. 
+
+
+
+2.4.2.      LSV Letter succesor  variety 
+
+
+
+    El principio de variedad de letras sucesoras, fue planteado inicialmente por 
+
+[29], y se basa en la idea de identicar las posiciones de partición de los compo- 
+
+nentes -morfemas- de las palabras, analizando las probabilidades transicionales 
+
+entre caracteres de una palabra, donde las probabilidades transicionales tienden 
+
+a ser muy altas en raíces o sujos muy comunes en el conjunto de palabras (es 
+
+decir, se buscan probabilidades transicionales muy bajas). 
+
+
+
+   1Seg√∫n datos del sitio Web http://www.worldwidewebsize.com, avalados por la Universidad 
+
+
+
+de Tilburg 
+
+
+----------------------- Page 18-----------------------
+
+CAPÍTULO 2.        MARCO TE√ìRICO Y ESTADO DEL ARTE                                        17 
+
+
+
+    Este trabajo inicial fue retomado por Keshava [58], identicando parámetros 
+
+óptimos  para  el  algoritmo  y  estrategias  de  poda.  Bordag  [11]  posteriormente 
+
+integró  esta  técnica  con  una  estructura  de  datos  tipo     trie  y  una  medida  de 
+
+análisis contextual, que permite, a posteriori, identicar morfemas relacionados 
+
+entre sí. 
+
+
+
+2.4.3.      Aprendizaje  basado en  evolución 
+
+
+
+    Trabajos como los descritos en [60, 48, 43] se sustentan en la idea de que la 
+
+gramática de un lenguaje natural puede representarse como una gramática libre 
+
+de contexto, con la forma normal de Chomsky. Sobre esta base, el problema de 
+
+aprender la sintaxis de un lenguaje natural, se enfoca en encontrar una gramática 
+
+libre de contexto, identicada a partir de la evolución de poblaciones de miles de 
+
+gramáticas creadas al azar. Estos trabajos presentan, principalmente, propuestas 
+
+de representación (genotipo), operadores genéticos y funciones de evaluación de 
+
+desempe√±o (tness ) que permitan que, a través de la evolución, se converja hacia 
+
+gramáticas más apropiadas para describir lenguajes naturales. 
+
+
+
+2.4.4.      Aprendizaje  basado en  alineamiento 
+
+
+
+    El aprendizaje basado en alineamiento, enfocado al aprendizaje de la sintaxis 
+
+de los lenguajes naturales, se fundamenta en el principio de sustitución de Harris 
+
+[30],  el  cual  propone  extrapolar  la  idea  de  las  categorías  de  sonidos,  propias 
+
+de  la  fonética  para  la  formación  de  palabras,  a  las  categorías  de  palabras  que 
+
+permitan, a través de su combinación, la formación de sentencias. 
+
+    El  algoritmo  ABL  [71]  (Alignment  Based  Learning),  y  sus  trabajos  rela- 
+
+cionados  [5,  42]  toma  un  corpus  con  sentencias  como  entrada,  y  retorna  otro 
+
+con  los  componentes  de  cada  sentencia  etiquetados  con  las  categorías  léxicas 
+
+identicadas  durante  el  proceso.  Para  la  identicación  de  dichas  categorías,  el 
+
+algoritmo,  secuencialmente,  busca  las  parejas  de  sentencias  que  tienen  una  o 
+
+más  palabras  en  com√∫n,  para  así,  sobre  la  base  de  qué  es  com√∫n  y  qué  es 
+
+diferente entre dichas sentencias, determinar cuales de estos elementos pueden 
+
+intercambiarse  entre  sí.  De  los  conjuntos  de  palabras  intercambiables  entre  sí, 
+
+se seleccionan aquellos con mejor soporte para ser usados a manera de categoría 
+
+léxica para el etiquetamiento de las sentencias. 
+
+
+----------------------- Page 19-----------------------
+
+Capítulo 3 
+
+
+
+Sistema de extracción de 
+
+corpus de Internet 
+
+
+
+3.1.       Introducción 
+
+
+
+    En este capítulo se presenta un sistema para la construcción automática de 
+
+corpus de texto y el muestreo de palabras y frases a partir de contenidos de la 
+
+Web, para tareas de análisis o aprendizaje no supervisado de la morfología y la 
+
+sintaxis  de  lenguajes  naturales.  El  sistema  descrito,  entre  otras  características 
+
+cuenta con: 
+
+
+
+       Un  mecanismo  genérico  de  paralelización  y  sincronización  de  tareas  uti- 
+
+       lizado en diferentes puntos del sistema. 
+
+
+
+       Extracción recursiva de contenidos de un dominio. A partir de la URL de 
+
+       un dominio, el sistema identica todos los recursos relacionados directa o 
+
+       indirectamente a través de hipervínculos. 
+
+
+
+       Soporte  extensible  para  m√∫ltiples  formatos.  Puede  extraer  muestras  de 
+
+       lenguaje  natural  de  contenidos  disponibles  en  la  red  con  formatos  difer- 
+
+       entes al tradicional HTML, y permite la inclusión transparente de nuevos 
+
+       extractores dentro del sistema. 
+
+
+
+       Manejo estadístico de los elementos linguísticos encontrados, para tareas 
+
+       de detección de ruido. 
+
+
+
+En la sección 3.3 se describe la solución propuesta, la cual es especicada más 
+
+en detalle en los capítulos subsecuentes: sección 3.4, estrategia general para la 
+
+paralelización  de  tareas;  sección  3.5,  extracción  de  URLs  del  dominio  y  tipos 
+
+de contenido; sección 3.6, construcción de componentes expertos en extracción; 
+
+sección 3.7, extracción y persistencia de los cuerpos de texto. En la sección 3.8 
+
+se  muestran  los  experimentos  y  resultados  obtenidos  con  dominios  de  acceso 
+
+p√∫blico,  y  las  variaciones  en  los  resultados  de  acuerdo  con  los  cambios  en  los 
+
+parámetros del sistema. 
+
+
+
+                                            18 
+
+
+----------------------- Page 20-----------------------
+
+CAPÍTULO 3.  SISTEMA DE EXTRACCI√ìN DE CORPUS DE INTERNET19 
+
+
+
+3.2.       Motivaciones para la Web como corpus 
+
+
+
+    Para  las  estrategias de  aprendizaje  no  supervisado  de  lenguaje  natural,  un 
+
+elemento fundamental es la muestra del lenguaje sobre la cual se va a generalizar, 
+
+de  forma  aproximada,  sus  características  [18].  Se  ha  mostrado  que  la  Web  es 
+
+una  fuente  de  datos  para  el  análisis  del  lenguaje  natural  de  una  riqueza  sin 
+
+precedentes [50], y que algoritmos simples, basados en esta fuente de ejemplos 
+
+de  lenguaje,  muchas  veces  superan  el  desempe√±o  de  aquellos  más  complejos 
+
+basados  en  fuentes  de  datos  más  peque√±as  -a  pesar  de  que  estas  √∫ltimas  son 
+
+más  depuradas-  [39].  Otros  motivantes  para  el  uso  de  la  Web  a  manera  de 
+
+corpus de texto, para tareas de aprendizaje de lenguajes son: 
+
+
+
+       Elementos como la innovaciones léxicas, emergentes a través del tiempo en 
+
+       las  diferentes  culturas,  o  las  características  de  las  variantes  'exóticas'  de 
+
+       los lenguajes (el inglés australiano, o el espa√±ol paname√±o, por dar alg√∫n 
+
+       ejemplo)  no  se  hacen  evidentes  en  las  fuentes  de  ejemplos  de  lenguaje 
+
+       natural tradicionales [40]. En este sentido, las evidencias de comunicación 
+
+       dejadas  en  recursos  típicos  de  Internet  como  los  foros  de  discusión  o  los 
+
+       blogs,  representan  un  material  sumamente  valioso  para  la  investigación 
+
+       del uso contemporáneo del lenguaje. 
+
+
+
+       El costo y tiempo que representa la construcción, de forma tradicional, de 
+
+       un corpus de texto sucientemente representativo de un lenguaje resulta 
+
+       sumamente  alto  [50],  lo  que  por  un  lado  restringe  las  posibilidades  de 
+
+       experimentar  con  modelos  de  aprendizaje  usando  nuevos  corpus  en  un 
+
+       tiempo razonable (por ejemplo, con nuevos lenguajes, variantes culturales 
+
+       o  nuevos  dominios  temáticos),  y  por  el  otro  da  pie  a  la  reutilización  de 
+
+       corpus cada vez más antiguos. 
+
+
+
+       A pesar de que los contenidos de la Web en su mayoría no tienen control 
+
+       sobre su calidad en cuanto al correcto uso del lenguaje, y pueden contener 
+
+       toda  una  variedad  de  errores,  su  enorme  volumen  permitiría  detectarlos 
+
+       tomando una muestra sucientemente grande, y descartando aquellos el- 
+
+       ementos menos frecuentes. Adicionalmente, se cuenta con repositorios de 
+
+       contenidos digitales que en cierta medida sí garantizan un uso apropiado 
+
+       del  lenguaje,  a  través  de  la  colaboración  masiva  de  sus  mismos  usuar- 
+
+       ios, de manera que dichos repositorios pueden considerarse como fuentes 
+
+       conables de construcción rápida de corpus. 
+
+
+
+3.3.       Descripción general del sistema 
+
+
+
+    El  sistema  de  extracción  propuesto,  cuyo  propósito  es  la  construcción  au- 
+
+tomática  de  corpus  de  texto  a  partir  de  contenidos  digitales  en  línea,  cuenta 
+
+con dos características fundamentales: desempe√±o y extensibilidad. En cuanto a 
+
+desempe√±o, se busca que el proceso de extracción pueda aprovechar al máximo 
+
+los recursos de ancho de banda disponibles y de esta manera reducir los tiempos 
+
+
+----------------------- Page 21-----------------------
+
+CAPÍTULO 3.  SISTEMA DE EXTRACCI√ìN DE CORPUS DE INTERNET20 
+
+
+
+                  Figura 3.1: Funcionamiento general del sistema. 
+
+
+
+de construcción del corpus. En cuanto a extensibilidad, se busca que el sistema 
+
+pueda adaptarse para extraer muestras de lenguaje natural de nuevos tipos de 
+
+formatos digitales, a través de un esquema de componentes. 
+
+    En la gura 3.1 se presenta el funcionamiento general del sistema. Se parte 
+
+de  la  raíz  de  un  dominio  para  extraer,  con  un  nivel  de  profundidad  dado,  los 
+
+enlaces  relacionados  con  dicho  dominio  (los  contenidos  de  éste  deben  ser  uni- 
+
+formes en su lenguaje, si se quieren obtener buenos resultados en las tareas de 
+
+aprendizaje  no  supervisado).  Posteriormente,  el  sistema  identica  los  tipos  de 
+
+contenido  de  cada  enlace  encontrado,  y  localiza  al  componente  más  adecuado 
+
+para  su  manipulación.  Finalmente,  y  de  forma  concurrente,  cada  uno  de  estos 
+
+componentes extrae, ltra, y hace persistente las muestras del lenguaje natural 
+
+extraídas. Durante el proceso de persistencia, se realizan cálculos de frecuencias, 
+
+con el n de poder realizar labores posteriores de eliminación de ruido. 
+
+
+----------------------- Page 22-----------------------
+
+CAPÍTULO 3.  SISTEMA DE EXTRACCI√ìN DE CORPUS DE INTERNET21 
+
+
+
+3.4.       Patrón         de     ejecución          concurrente              de    tareas 
+
+           independientes 
+
+
+
+    En el dise√±o del proceso de extracción de muestras de lenguaje natural de un 
+
+dominio, se identica una problemática com√∫n para varias de las etapas de dicho 
+
+proceso: las tareas de alta latencia, independientes entre sí, que requieren la sin- 
+
+cronización de su terminación para pasar a una siguiente etapa del proceso. Por 
+
+ejemplo, la etapa de identicación de tipo de contenido MIME1  requiere , para 
+
+
+
+cada URL a explorar, conectarse al respectivo servidor, realizar una petición de 
+
+encabezado, y procesar la respuesta para identicar dicho tipo. Como el tiempo 
+
+de ejecución de esta tarea depende del tiempo de respuesta de los servidores -el 
+
+cual  en  ocasiones  puede  ser  relativamente  alto-,  realizarla  de  forma  secuencial 
+
+desaprovecharía las capacidades de cómputo y de ancho de banda de la máquina 
+
+y de la red donde se corra dicho proceso. 
+
+    Otro  ejemplo,  es  la  tarea  de  extracción  de  muestras  de  lenguaje  como  tal. 
+
+Esta  tarea,  dado  que  requiere  extraer  la  totalidad  de  los  contenidos  de  cada 
+
+dirección,  tiene  una  latencia  a√∫n  más  alta,  lo  que  crea  un  cuello  de  botella 
+
+para  las  tareas  de  procesamiento  intensivo  que  le  siguen,  donde  se  incluyen  el 
+
+procesamiento del contenido y la actualización de la información estadística del 
+
+lenguaje. 
+
+    Para tener una solución genérica de ejecución concurrente y sincronización 
+
+de para los diferentes puntos funcionales que requieren la ejecución de m√∫ltiples 
+
+tareas de alta latencia, se dene e integra al sistema un patrón de dise√±o para 
+
+el  modelo  de  ejecución  descrito  en  la  gura  3.2,  donde  se  ejecuta  una  tarea 
+
+global compuesta de una serie de tareas independientes entre sí (es decir, donde 
+
+la  tarea  global  naliza  sólo  hasta  que  la  √∫ltima  tarea  atómica  se  ejecute),  y 
+
+donde  el  n√∫mero  máximo  de  procesos  a  ejecutarse  simultáneamente  se  puede 
+
+ajustar,  independientemente  al  n√∫mero  de  tareas  a  realizarse,  y  sin  afectar  el 
+
+cumplimiento de la totalidad de dichas tareas. 
+
+    La  idea  general  del  patrón  se  puede  revisar  en  la  gura  3.3:  una  vez  se  da 
+
+el  control  al  proceso  global  (proceso  concurrente),  se  crea  un  conjunto  de  N 
+
+hilos, los cuales toman, en la medida que se encuentren disponibles, cada una de 
+
+las tareas a realizar. A continuación, el proceso global entra en suspensión. Las 
+
+tareas notican cuando han terminado su ejecución al monitor de ejecución, el 
+
+cual a su vez, lleva el control de cuantas tareas han sido culminadas. Finalmente, 
+
+cuando  el  monitor  identica  que  la  totalidad  de  tareas  han  sido  culminadas, 
+
+notica al proceso global para que se reanude y retorne el control de la ejecución 
+
+a quien lo invocó (ver gura 3.4). 
+
+    El patrón planteado, tal como se ve en el diagrama de la gura 3.5, se dene 
+
+de tal manera que pueda aplicarse a cualquier tarea que se desee. En este caso, 
+
+para  habilitar  las  tareas  de  identicación  de  tipos  de  contenido  (MIME)  y  su 
+
+extracción  para  ejecutarse  en  paralelo  -y  sincronizar  la  terminación  de  dichas 
+
+tareas-,  bastó  con  denir  la  lógica  de  dichas  tareas,  a  través  de  la  creación  de 
+
+subclases  de  la  clase  Task  (en  el  diagrama  MIMETypeExtractionTask  y  Con- 
+
+
+
+   1Multipurpose Internet Mail Extensions 
+
+
+----------------------- Page 23-----------------------
+
+CAPÍTULO 3.  SISTEMA DE EXTRACCI√ìN DE CORPUS DE INTERNET22 
+
+
+
+Figure  3.2:  Escenario  de  aplicación  del  patrón  de  ejecución  concurrente  prop- 
+
+uesto:  se  tiene  un  n√∫mero  arbitrario  de  tareas,  y  se  requiere  componer  una 
+
+operación global, que ejecute dichas tareas con un n√∫mero de procesos concur- 
+
+rentes parametrizable, y que nalice sólo hasta que la √∫ltima tarea atómica sea 
+
+terminada. 
+
+
+
+Figure  3.3:  Ejecución  concurrente  y  sincronizada  de  tareas  independientes:  el 
+
+proceso global se detiene mientras el conjunto de N hilos ejecuta el conjunto de 
+
+tareas.  El  monitor  es  noticado  por  las  tareas  cuando  éstas  han  terminado,  y 
+
+lleva el control de cual es el n√∫mero de tareas restantes. 
+
+
+----------------------- Page 24-----------------------
+
+CAPÍTULO 3.  SISTEMA DE EXTRACCI√ìN DE CORPUS DE INTERNET23 
+
+
+
+Figure 3.4:  Ejecución concurrente y sincronizada de tareas independientes: una 
+
+vez  se  ha  ejecutado  la  √∫ltima  tarea,  el  monitor  notica  a  la  tarea  global  para 
+
+que reanude el control, y contin√∫e la ejecución del programa. 
+
+
+
+tentExtractionTask). 
+
+
+
+3.5.       Extracción de enlaces hijo y de tipos de con- 
+
+           tenido 
+
+
+
+    Para la extracción recursiva de los enlaces relacionados con una determinada 
+
+URL raíz, con una profundidad  h  dada (ver gura 3.6), se hizo uso del n√∫cleo 
+
+del  crawler  desarrollado  en  el  proyecto  Sphinxs  [53].  Cabe  resaltar  que,  como 
+
+herramienta tipo crawler, la √∫nica funcionalidad que se puede reutilizar de ésta 
+
+es  la  extracción  de  URLs,  pues  por  lo  demás  esta  herramienta  está  enfocada, 
+
+al  igual  que  los crawlers  tradicionales,  en  descargar  localmente  copias  de  los 
+
+documentos disponibles en la red, y a lo sumo indexar a partir de las palabras 
+
+clave denidas exclusivamente para los documentos HTML. 
+
+    Una vez se construye la secuencia de objetos que representan todas las tar- 
+
+eas  de  extracción,  y  siguiendo  el  mecanismo  de  ejecución  concurrente  descrito 
+
+anteriormente, a cada uno de éstos se les delega la responsabilidad de identicar 
+
+                                                            2 
+
+su tipo de contenido (usando la convención MIME  ), para proveer la informa- 
+
+ción  necesaria  que permita  la  construcción de un  componente experto a quien 
+
+delegarle la tarea de extracción y construcción de la muestra de lenguaje natural 
+
+de dicha dirección. 
+
+
+
+   2Multipurpose Internet Mail Extensions 
+
+
+----------------------- Page 25-----------------------
+
+CAPÍTULO 3.  SISTEMA DE EXTRACCI√ìN DE CORPUS DE INTERNET24 
+
+
+
+Figure  3.5: Diagrama   de clases del patrón  de ejecución concurrente  y sin- 
+
+cronizada de tareas independientes. 
+
+
+----------------------- Page 26-----------------------
+
+CAPÍTULO 3.  SISTEMA DE EXTRACCI√ìN DE CORPUS DE INTERNET25 
+
+
+
+Figure  3.6:  Construcción  de  la  lista  de  tareas  de  extracción  a  partir  de  la  in- 
+
+spección recursiva de los hipervínculos del dominio. 
+
+
+----------------------- Page 27-----------------------
+
+CAPÍTULO 3.  SISTEMA DE EXTRACCI√ìN DE CORPUS DE INTERNET26 
+
+
+
+          Figura 3.7: Modelo de fábrica de componentes de extracción 
+
+
+
+3.6.      Construcción              de    componentes              expertos         en 
+
+          extracción 
+
+
+
+    Una de las características del sistema descrito es la extensibilidad en cuanto 
+
+a capacidad de manejo de tipos de contenido. Es decir, en el futuro, a medida 
+
+que se identiquen nuevos tipos de contenidos a los cuales se les pueda extraer 
+
+muestras  de  lenguaje  natural  (por  ejemplo,  medios  audiovisuales),  basta  con 
+
+desarrollar  un  componente  con  los  nuevos  mecanismos  de  extracción  para  que 
+
+el sistema lo integre de manera transparente. 
+
+    Para tal propósito, se plantea un modelo de componentes de extracción de 
+
+contenidos de medios digitales extensible, a partir de una metáfora de fábrica de 
+
+extractores (patrón fábrica abstracta). Este modelo de fábrica al iniciarse realiza 
+
+un proceso de introspección sobre todo el conjunto de clases p√∫blicas en tiempo 
+
+de  ejecución,  identica  cuales  son  capaces  de  manipular  contenidos  digitales 
+
+(clases que cumplan con la interfaz DigitalMediaTextExtractor, ver gura 3.7), y 
+
+deja registrado dicho componente con el tipo de contenido que puede manejar, de 
+
+manera que durante el proceso de extracción concurrente descrito anteriormente, 
+
+se tenga acceso inmediato a los componentes expertos en extracción, a medida 
+
+que se identiquen los tipos de contenido a extraer. 
+
+    Como  se  aprecia  en  el  diagrama,  se  da  un  soporte  inicial  para  contenidos 
+
+HTML, PDF y MSWORD. 
+
+
+----------------------- Page 28-----------------------
+
+CAPÍTULO 3.  SISTEMA DE EXTRACCI√ìN DE CORPUS DE INTERNET27 
+
+
+
+3.7.       Extracción y construcción concurrente / dis- 
+
+           tribuida de corpus y persistencia 
+
+
+
+    Como  se  ve  en  la  gura  3.8,  a  partir  del  conjunto  de  objetos  'expertos'  en 
+
+extracción,  y  el  modelo  de  ejecución  concurrente  descrito  en  la  sección  3.4  se 
+
+inicia nalmente el proceso de extracción de muestras del lenguaje natural. 
+
+    El  principal  inconveniente  en  este  proceso  es  que  los  medios  digitales  a  los 
+
+cuales  se  les  extrae  su  contenido,  tales  como  las  páginas  HTML  o  documen- 
+
+tos  de  procesadores    de  texto  en  línea,  llevan  incrustados   muchas    veces  una 
+
+enorme  cantidad  de  elementos  adicionales  al  texto,  como  imágenes,  hipervín- 
+
+culos  o  metadatos,  lo  cual  genera  una  cantidad  signicativa  de  ruido  para  las 
+
+muestras extraídas. 
+
+    Dado  que  el  contar  con  ejemplos  válidos  de  sentencias  del  lenguaje  es  fun- 
+
+damental para tareas tales como el análisis sintáctico, se integra al modelo un 
+
+esquema  de  ltros  encadenados,  los  cuales  se  encargan  de  depurar  el  cuerpo 
+
+de texto hasta lograr que éste se componga sólo de sentencias y signos de pun- 
+
+tuación válidos. El modelo de componentes descrito anteriormente es igualmente 
+
+aplicado, de tal forma que la incorporación de procesos de ltrado adicionales, y 
+
+su encadenamiento, sólo requiera la denición de la lógica de ltrado (ver gura 
+
+3.9). 
+
+    En esta etapa la herramienta incorpora un ltro de eliminación de símbolos 
+
+inválidos (en el contexto de las sentencias de lenguaje natural tradicionales), y 
+
+otro de unicación de signos de puntuación contiguos. 
+
+    Como  un  soporte  adicional  a  las  técnicas  que  utilicen  los  cuerpos  de  texto 
+
+generados a través de esta herramienta, la persistencia se realiza en un modelo 
+
+relacional, haciendo persistente de forma independiente las palabras, las frases 
+
+(identicadas a través de los signos de puntuación), y en un archivo de texto el 
+
+corpus consolidado. La persistencia de las palabras, apoyado en el motor de base 
+
+de datos, garantiza la no duplicidad de las palabras almacenadas, y adicional- 
+
+mente lleva un registro del n√∫mero de ocurrencias. Dado que el sistema no puede 
+
+garantizar  que  no  se  incluyan  palabras  que  no  correspondan  al  lenguaje  (sino 
+
+por ejemplo a metadatos HTML o de otros tipos de contenido dejados acciden- 
+
+talmente como parte del cuerpo de texto), el control de dicha frecuencia podría 
+
+servir  para hacer  un  descarte  de  palabras  (aquellas  que  tengan  una frecuencia 
+
+demasiado baja, en proporción al tama√±o del corpus de texto extraído). 
+
+
+
+3.8.       Resultados 
+
+
+
+    Hasta el momento la herramienta más cercana a la problemática planteada 
+
+es  WebCorp  [37,  38],  para  la  cual  el  autor  coincide  con  el  planteamiento  de 
+
+manipular la Web como un cuerpo de texto enorme. Este sistema, a diferencia 
+
+del  presentado  en  este  trabajo,  parte  de  palabras  clave  dadas  por  el  usuario, 
+
+y  a  partir  de  las  mismas  extrae  y  consolida  a  través  de  los  buscadores  tradi- 
+
+cionales cuerpos de texto que contengan dichas palabras. Dado que el propósito 
+
+de la herramienta aquí presentada es dar soporte a modelos de aprendizaje no 
+
+
+----------------------- Page 29-----------------------
+
+CAPÍTULO 3.  SISTEMA DE EXTRACCI√ìN DE CORPUS DE INTERNET28 
+
+
+
+Figure 3.8:  Extracción concurrente de contenidos y ltrado m√∫ltiple de los mis- 
+
+mos. 
+
+
+
+                   Figura 3.9: Modelo de ltros encadenados. 
+
+
+----------------------- Page 30-----------------------
+
+CAPÍTULO 3.  SISTEMA DE EXTRACCI√ìN DE CORPUS DE INTERNET29 
+
+
+
+supervisado, donde no hay conocimiento absoluto de ninguna palabra, y lo que 
+
+se busca son muestras grandes del lenguaje independientemente del contenido, 
+
+dichos sistemas no son comparables. 
+
+    De la misma manera, los sistemas relacionados disponibles en la literatura no 
+
+muestran análisis de desempe√±o, el cual es uno de los énfasis de esta propuesta, 
+
+de manera que a los resultados aquí presentados no se les puede hacer análisis 
+
+comparativos. 
+
+    Para la pruebas se utilizó un canal dedicado (sin más aplicaciones consum- 
+
+iéndolo) de 600Mbs, y un computador Intel Core 2 Duo de 2GHz con 2GB de 
+
+memoria RAM, con 1GB dedicado al heap de la máquina virtual de Java. 
+
+
+
+Extracción de  hipervínculos para  el idioma espa√±ol 
+
+
+
+    Como fuente de ejemplos del lenguaje espa√±ol, se escogió el dominio en es- 
+
+pa√±ol de Wikipedia (http://es.Wikipedia.org), por su enorme volumen de datos 
+
+-difícil de encontrar para lenguajes diferentes al inglés-, de cerca de 120.000 pági- 
+
+nas. Partiendo de la dirección raíz del portal en mención, se lograron extraer, a 
+
+través  del  seguimiento  de  hipervínculos  (con  una  profundidad  máxima  de  10), 
+
+76000 enlaces. La totalidad de éstos enlaces fueron procesados, por una máquina 
+
+dedicada, en aproximadamente dos días, generando un corpus de 690MB y 44.5 
+
+millones de palabras, correspondientes a un conjunto 370000 palabras diferentes. 
+
+
+
+Observaciones 
+
+
+
+    Se  hizo  la  inspección  de  las  palabras  y  sus  frecuencias  del  corpus  extraído 
+
+cuando  apenas  se  habían  procesado  300  enlaces  (un  corpus  de  aproximada- 
+
+mente  2Mb  y  180.000  palabras),  obteniendo  como  las  palabras  más  frecuentes 
+
+las mostradas en el cuadro 3.1. Como se observa, algunas preposiciones resultan 
+
+predominantemente más frecuentes que el resto de palabras, al igual que ciertas 
+
+palabras recurrentes en Wikipedia (aunque vale resaltar que dichas palabras son 
+
+válidas dentro del lenguaje). 
+
+    A pesar de los resultados anteriores, lo más importante es lo identicado en 
+
+el cuadro 3.2, donde se observa que palabras inválidas para el lenguaje espa√±ol 
+
+como 'ttulosi' o 'internoregresa' tienen una mayor frecuencia que palabras vál- 
+
+idas  como  'gramática'  y  'almacenaje'.  Esto  hace  evidente  la  necesidad,  en  el 
+
+caso particular de cuerpos de texto obtenidos de Internet, de manejar corpus de 
+
+dimensiones muy altas, para lograr una tendencia donde el volumen de ejemplos 
+
+correctos del lenguaje supere signicativamente el ruido existente en los medios 
+
+digitales, y se pueda hacer una ltración de palabras válidas dada su frecuencia 
+
+(sin perder palabras importantes que sean poco frecuentes). 
+
+    En   el cuadro   3.3,  se muestran    de  nuevo   las  frecuencias   de  las palabras 
+
+obtenidas,  luego  del  procesamiento  de  2000  enlaces,  y  consultando  especíca- 
+
+mente las palabras relacionadas con 'gramática', la cual, en el experimento an- 
+
+terior, habría podido considerarse como ruido. En este punto se hace evidente, 
+
+que  entre  mayor  sea  la  muestra  del  corpus  extraído,  mayor  será  la  proporción 
+
+entre la frecuencia de las palabras correctas y las incorrectas del lenguaje. 
+
+
+----------------------- Page 31-----------------------
+
+CAPÍTULO 3.  SISTEMA DE EXTRACCI√ìN DE CORPUS DE INTERNET30 
+
+
+
+Cuadro  3.1:  Palabras  y  sus  frecuencias  obtenidas  al  procesar  300  enlaces  de 
+
+es.Wikipedia.org 
+
+
+
+Cuadro  3.2:  Palabras  y  sus  frecuencias  obtenidas  al  procesar  300  enlaces  de 
+
+es.Wikipedia.org. Posiciones de las palabras menos frecuentes. 
+
+
+----------------------- Page 32-----------------------
+
+CAPÍTULO 3.  SISTEMA DE EXTRACCI√ìN DE CORPUS DE INTERNET31 
+
+
+
+Cuadro  3.3:  Frecuencias  de  palabras  relacionadas  con  'gramática',  y  el  mejo- 
+
+ramiento de la evidencia de cuales son las palabras correctas. 
+
+
+----------------------- Page 33-----------------------
+
+CAPÍTULO 3.  SISTEMA DE EXTRACCI√ìN DE CORPUS DE INTERNET32 
+
+
+
+Figure 3.10:  Diferencias de desempe√±o alternando entre 10 y 200 como n√∫mero 
+
+máximo de procesos de extracción concurrente. 
+
+
+
+Desempe√±o 
+
+
+
+    La  tasa  promedio  de  extracción,  con  las  características  de  infraestructura 
+
+descritas anteriormente, 200 procesos concurrentes, y los tiempos de respuesta 
+
+propios del dominio es.Wikipedia.org es de 12Mb por hora, pero para hacer más 
+
+evidente las mejoras de desempe√±o de las estrategias de extracción concurrente 
+
+aplicadas, se monitoreó el tráco de la red mientras se realizaba el proceso de 
+
+extracción  (ver  gura  3.10).  En  el  monitoreo  1  hay  un  límite  de  10  procesos 
+
+de  extracción  concurrente,  mientras  que  en  el  2  hay  200.  Como  se  puede  ver 
+
+en  la  imagen,  la  tasa  promedio  de  ancho  de  banda  consumido  para  tareas  de 
+
+extracción aumenta en más de 13 veces. 
+
+
+
+3.9.       Resumen 
+
+
+
+    En  este  capítulo  se  presenta  un  sistema  para  la  construcción  automática 
+
+de  corpus  de  texto  a  partir  de  contenidos  disponibles  en  Internet,  como  una 
+
+alternativa para una de las problemáticas más signicativas de la linguística de 
+
+corpus:  la  construcción  de  corpus  actualizados  y  sucientemente  grandes  para 
+
+tareas  de  procesamiento  de  lenguaje  natural. Para  este sistema se contemplan 
+
+como requisitos fundamentales la eciencia en la extracción y la extensibilidad 
+
+para soportar nuevos tipos de contenido. Como resultado, se encuentra que por 
+
+un lado, el sistema permite aprovechar al máximo los recursos de ancho de banda 
+
+y  procesamiento  de  la  máquina  donde  se  ejecute,  y  por  el  otro,  que  haciendo 
+
+un manejo estadístico de las palabras extraídas de este medio, muy propenso al 
+
+
+----------------------- Page 34-----------------------
+
+CAPÍTULO 3.  SISTEMA DE EXTRACCI√ìN DE CORPUS DE INTERNET33 
+
+
+
+ruido, pero signicativamente grande, es posible extraer conjuntos de palabras 
+
+bastante grande y representativo para tareas relacionadas con el aprendizaje de 
+
+la morfología de un lenguaje. En este orden de ideas, en el capítulo 4 se aplica 
+
+una técnica para el aprendizaje no supervisado de la morfología de un lenguaje 
+
+usando las palabras, junto con su información estadística, del corpus obtenido 
+
+con  los  experimentos  desarrollados  para  este  capítulo.  Adicionalmente,  en  el 
+
+capítulo  5  se  hace  uso  de  este  mismo  corpus  para  la  extracción  de  muestras 
+
+de  sentencias  del  lenguaje,  para  ser  usadas  en  una  técnica  de  aprendizaje  no 
+
+supervisado de sintaxis. 
+
+
+----------------------- Page 35-----------------------
+
+Capítulo 4 
+
+
+
+Inducción de información 
+
+morfológica del lenguaje 
+
+
+
+4.1.      Introducción 
+
+
+
+    En este capítulo se presentan los resultados de una técnica de aprendizaje no 
+
+supervisado de morfología usando un corpus de texto extraído automáticamente 
+
+de Internet, y se propone una técnica de agrupamiento para lexemas. En la sec- 
+
+ción 4.2 se describe la implementación del algoritmo RePortS [58] hecha a partir 
+
+de  las  descripciones  dadas  en  las  publicaciones  de  sus  autores,  e  incorporando 
+
+elementos para un mejor soporte de idiomas como el espa√±ol. En la sección 4.3 
+
+se  propone  una  técnica  de  agrupamiento  jerárquico  de  lexemas  que  permite, 
+
+por un lado, la detección de sujaciones incorrectas, y por el otro, la detección 
+
+de  relaciones  léxicas  entre  lexemas  para  la  integración  de  la  morfología  con  el 
+
+proceso  de  aprendizaje  de  la  sintaxis.  En  la  sección  4.4  se  describe  la  manera 
+
+como  se  realizaron  los  experimentos  con  corpus  en  inglés  y  espa√±ol  extraídos 
+
+automáticamente de Internet, y se analizan los resultados obtenidos, de manera 
+
+estadística y analítica. 
+
+
+
+4.2.      Aprendizaje no supervisado de morfologías 
+
+
+
+    En este trabajo, la aproximación hacia el aprendizaje no supervisado de la 
+
+morfología se hace con la identicación de raíces y ajos dentro de un conjunto de 
+
+palabras de un determinado idioma, de la misma manera que lo hacen autores 
+
+como  Goldsmith  [27],  Bordag  [11],  y  Argamon  [3].  Como  estrategia  para  la 
+
+identicación  de  dichos  elementos,  se  desarrolla  una  herramienta  basada  en  la 
+
+metodología descrita para el algoritmo RePortS [58] -basada en el principio de 
+
+variedad de letras sucesoras- de la cual se retoman la estructura de datos para 
+
+los  cálculos estadísticos, la estrategia de puntuación de palabras, y se agregan 
+
+elementos para mejorar el soporte de lenguajes exivos como el espa√±ol. 
+
+
+
+                                           34 
+
+
+----------------------- Page 36-----------------------
+
+CAPÍTULO 4.  INDUCCI√ìN DE INFORMACI√ìN MORFOL√ìGICA DEL LENGUAJE35 
+
+
+
+    En esta estrategia, a partir de las características de distribución de las letras 
+
+en un conjunto de palabras, se genera un conjunto de hipótesis de segmentación 
+
+de cada palabra basado en el principio de variedad de letras sucesoras. Posterior- 
+
+mente, con un análisis adicional, se eliminan las hipótesis con poco soporte, y se 
+
+unican aquellas que sean redundantes, quedando un conjunto nal de hipótesis 
+
+con el que se identican las raíces y los ajos. 
+
+
+
+4.2.1.      Principio  de  la variedad  de letras sucesoras 
+
+
+
+    El  principio  de  la  variedad  de  letras  sucesoras  de  Harris  [29],  propone  que 
+
+con un conjunto de palabras, con uno o más letras terminales en com√∫n, alin- 
+
+eadas entre sí (de manera que se pueda identicar el cambio en la variedad de 
+
+caracteres en cada columna), se puede identicar, para cada palabra, cual es la 
+
+posición más probable de inicio de su morfema derivativo (prejo o sujo, seg√∫n 
+
+si la alineación es de izquierda a derecha o de derecha a izquierda), calculando 
+
+a  partir  de  qué  posición  de  la  palabra  resulta  menos  probable  que  se  den  las 
+
+letras que siguen a dicha posición. 
+
+    Por ejemplo, dado el siguiente conjunto de palabras: 
+
+
+
+    happens 
+
+    happening 
+
+    happened 
+
+
+
+    para  identicar  el  sujo  más  probable  de  happening     se  eval√∫a,  para  cada 
+
+letra,  su  probabilidad  transicional  respecto  a  sus  letra  predecesora  (teniendo 
+
+como conjunto de posibilidades las diferentes letras en la misma columna), y se 
+
+selecciona como inicio de dicho sujo aquella letra con menor probabilidad tran- 
+
+                                                
+
+sicional. En este caso,         , dado que no hay otra palabra 
+
+dentro del conjunto que tenga un sucesor para la subcadena 'happe' diferente a 
+
+                                                           
+
+'happen'. Por otro lado,          , dada la variedad de suce- 
+
+sores que tienen dicha raíz (en esta caso, 3). Con estos resultados, y basándose en 
+
+el principio Harris, se puede inferir que el lexema de las tres palabras alineadas 
+
+será 'happen', y los sujos 's', 'ing' y 'ed'. 
+
+    Si  la  alineación  se  hace  de  izquierda  a  derecha,  de  el  siguiente  conjunto  de 
+
+palabras: 
+
+
+
+    .happening 
+
+    ...working 
+
+    ..sleeping 
+
+
+
+    se  podría  determinar  la  existencia  del  sujo  'ing',  y  los  lexemas  'happen', 
+
+'work' y 'sleep'. 
+
+
+----------------------- Page 37-----------------------
+
+CAPÍTULO 4.  INDUCCI√ìN DE INFORMACI√ìN MORFOL√ìGICA DEL LENGUAJE36 
+
+
+
+                       Figura 4.1: Árbol hacia adelante: raíces 
+
+
+
+4.2.2.      Árboles de  frecuencias  de  letras  sucesoras 
+
+
+
+    Keshava    y  Pitler  [58], para   su algoritmo    RePortS,    proponen    una   repre- 
+
+sentación arbórica para el conteo de caracteres coincidentes e identicación de 
+
+derivaciones entre las palabras usadas para el aprendizaje de la morfología, de 
+
+manera el algoritmo para el cálculo de las probabilidades transicionales, descrito 
+
+anteriormente, se simplique al realizar los conteos a medida que se construye 
+
+la estructura con el conjunto de palabras. 
+
+    Al  agregar  una  nueva  palabra  a  un  árbol  (cuya  raíz  debe  corresponder  a 
+
+una letra terminal de la palabra), por cada letra de la palabra se baja un nivel 
+
+dentro del árbol. Si ya existe un nodo hijo correspondiente a la siguiente letra de 
+
+la palabra, se incrementa su frecuencia, de lo contrario, se crea un nuevo nodo 
+
+hijo (con lo que se creará una nueva rama para el árbol). 
+
+    De esta manera, si se construyera un árbol con la primera la del siguiente 
+
+conjunto de palabras: 
+
+
+
+                                         wordset 
+
+                              playing      played      plays 
+
+                              working      worked      works 
+
+                              drinking     drinked    drinks 
+
+
+
+    el  árbol  resultante  sería  el  de  la  gura  4.1  (que  por  alinear  palabras  no 
+
+invertidas  por  la  izquierda,  en  adelante  se  llamará  'árbol  hacia  adelante').  En 
+
+este caso, para la palabra 'playing' -distribuida en un camino del árbol-, se puede 
+
+determinar que su raíz es 'play' y su sujo es 'ing' dado que en la letra            ¬¥i ¬¥ se 
+
+                                                                            
+
+encuentra la menor probabilidad transicional:        )=  
+
+    De  la  misma  manera,  construyendo  árboles  de  cadenas  invertidas  (en  ade- 
+
+lante árboles hacia atrás), se obtendría el árbol de la gura 4.2, que corresponde 
+
+a  la  primera  columna  del  conjunto  de  palabras  de  entrada.  En  este  caso,  si  se 
+
+toman a las hojas con probabilidad transicional menor a 1 como determinantes 
+
+de  la  posición  de  la  separación  entre  raíces  y  sujos,  se  tendrían  dos  posibles 
+
+
+----------------------- Page 38-----------------------
+
+CAPÍTULO 4.  INDUCCI√ìN DE INFORMACI√ìN MORFOL√ìGICA DEL LENGUAJE37 
+
+
+
+                         Figura 4.2: Árbol hacia atrás: sujos 
+
+
+
+sujos: 'ing' y 'king' para las palabras 'working' y 'drinking' (la decisión de cual 
+
+sujo  es  más  apropiado  se  realizaría  a  posteriori,  con  el  uso  de  la  información 
+
+contenida en el árbol y de otros criterios adicionales). 
+
+
+
+4.2.3.      Construcción de árboles de frecuencia de letras suce- 
+
+            soras 
+
+
+
+    Para iniciar el proceso de aprendizaje, del conjunto de palabras a usar para el 
+
+aprendizaje se extraen los conjuntos de primeros y √∫ltimos caracteres existentes 
+
+en  dichas  palabras,  para  construir  las  raíces  de  los  árboles  hacia  adelante  y 
+
+hacia  atrás,  respectivamente.  Posteriormente,  los  caracteres  de  cada  palabra 
+
+son distribuidos, seg√∫n su primer y √∫ltimo caracter, en el árbol correspondiente 
+
+(tal como se muestra en las guras 4.1 y 4.2). 
+
+    Aunque  en  la  descripción  del  algoritmo  RePortS  no  se  menciona  el  uso  de 
+
+información  adicional  a  los  caracteres  y  las  frecuencias  dentro  del  árbol,  en  el 
+
+desarrollo  de  este  trabajo  se  identica  la  necesidad  de  incluir  marcas  de  ter- 
+
+minación  de  palabras  en  los  nodos  del  árbol  (ver  ejemplo  en  la  gura  4.3),  ya 
+
+que sin éstas, el algoritmo que extrae las hipótesis de segmentación del árbol se 
+
+limitaría  a  analizar  sólo  aquellas  palabras  identicadas  entre  la  raíz  y  las  ho- 
+
+jas (para el ejemplo de la gura 4.3 sólo se analizarían las palabras playschool, 
+
+playing y played), o consultar repetidamente la lista original de palabras para 
+
+saber si un segmento de camino del árbol corresponde o no a una palabra que 
+
+deba ser segmentada. 
+
+
+
+4.2.4.      Algoritmo de generación de hipótesis de segmentación 
+
+            iniciales 
+
+
+
+    El algoritmo implementado retoma del algoritmo RePortS, además del prin- 
+
+cipio  de  variedad  de  letras  sucesoras  y  la  estructura  arbórica  de  conteo,  dos 
+
+parámetros  con  los  que  se  determina,  a  partir  de  la  información  estadística 
+
+
+----------------------- Page 39-----------------------
+
+CAPÍTULO 4.  INDUCCI√ìN DE INFORMACI√ìN MORFOL√ìGICA DEL LENGUAJE38 
+
+
+
+Figura 4.3: Árbol LSV hacia adelante para las palabras: play, plays, playschool, 
+
+playing, played, con marcas en los nodos que corresponden a caracteres termi- 
+
+nales. 
+
+
+
+obtenida del árbol, si un determinado caracter de una palabra puede consider- 
+
+arse o no como el inicio de la segmentación de dicha palabra: la máxima proba- 
+
+bilidad transicional al sucesor (MPS) y la mínima probabilidad transicional del 
+
+antecesor (MPA). 
+
+    El  parámetro  MPS,  que  idealmente  debe  ser  muy  peque√±o,  corresponde  a 
+
+lo  descrito  anteriormente  para  el  principio  de  variedad  de  letras  sucesoras,  es 
+
+decir, a la probabilidad máxima que debe tener la transición de una letra a la 
+
+que le sigue en la palabra, para considerarse como el nal de un ajo (y la letra 
+
+que le sigue como el inicio del lexema). 
+
+    Por otro lado, el parámetro MPA corresponde a la mínima probabilidad de 
+
+transición que debe haber entre el caracter que se esté evaluando y su antecesor. 
+
+Al establecer este parámetro con un valor sucientemente alto, se busca identi- 
+
+car ajos que tengan pocas derivaciones dentro del árbol, sobre la base de que 
+
+dicha característica permite descartar ajos falsos. 
+
+    Una hipótesis de segmentación se representa como un ajo junto con todos 
+
+los posibles lexemas con que se puede combinar (el ajo se tratará de un sujo 
+
+si se trabaja con un árbol hacia atrás, y de un prejo si se trabaja con árboles 
+
+hacia adelante), y se construye a partir de todas las tuplas ajo-lexema, que de 
+
+acuerdo con la información brindada por el árbol, cumplen con los parámetros 
+
+MPA y MPS. 
+
+    Por ejemplo, en el caso del árbol de palabras invertidas de la gura 4.2, al 
+
+evaluar el nodo que corresponde al segmento 'ing' como posible sujo de 'play', el 
+
+                                                                                         
+
+valor de su probabilidad transicional al sucesor será igual a           , 
+
+                                                                               
+
+y  la  probabilidad  transicional  del  antecesor  será  igual  a            .  Al 
+
+revisar el mismo segmento 'ing' con sus otros sucesores 'work' y 'drink', se puede 
+
+
+----------------------- Page 40-----------------------
+
+CAPÍTULO 4.  INDUCCI√ìN DE INFORMACI√ìN MORFOL√ìGICA DEL LENGUAJE39 
+
+
+
+esperar la hipótesis de que existe un sujo 'ing', que se puede combinar con los 
+
+lexemas 'work', 'play', y 'drink'. 
+
+    En el algoritmo RePortS original, para descartar posibles hipótesis inválidas, 
+
+se parte de una de las características del lenguaje inglés: ser predominantemente 
+
+aglutinativo.  Con  esto,  una  hipótesis  de  ajación  será  válida  si  un  porcentaje 
+
+de  sus  lexemas  relacionados  tienen  signicado  propio  e  independiente,  o  visto 
+
+de otra manera, si existen como palabra dentro del conjunto de palabras usadas 
+
+para el aprendizaje. Sin embargo, dado que lenguajes como el espa√±ol presentan 
+
+características  exivas  y  aglutinativas  simultáneamente,  sin  predominancia  de 
+
+ninguna de las dos [1], el mecanismo de puntuación de hipótesis para este trabajo 
+
+se ajusta en los siguientes aspectos: 
+
+
+
+       El puntaje dado a los lexemas ya no es usado para descartar las hipótesis 
+
+       iniciales de segmentación, sino para descartarlas tras el proceso de uni- 
+
+       cación y ltrado, teniendo en cuenta que el puntaje de una hipótesis será 
+
+       recalculado a medida que se eliminen las relaciones de ésta con palabras 
+
+       cuya segmentación tiene mejor soporte en otra hipótesis. 
+
+
+
+       Los lexemas en los lenguajes exivos, a pesar de no corresponder siempre 
+
+       a  palabras  con  signicado  propio,  en  algunos  casos  están  cerca  a  una  de 
+
+       éstas.  Por  ejemplo,  los  lexemas  del  espa√±ol  clar  (clar/idad,clar/a,clar/o) 
+
+       y examin (examin/ador, examin/a, examin/o, examin/ó) no existen como 
+
+       palabras,  pero  tienen  varias  palabras  cercanas.  Por  esto,  en  el  algoritmo 
+
+       se  da  un  puntaje  adicional  (inferior  al  puntaje  dado  si  el  lexema  es  una 
+
+       palabra) si el lexema tiene una distancia-p[24], con p=1 ó p=2, respecto 
+
+       a alguna de las palabras usadas para el aprendizaje. 
+
+
+
+En el algoritmo 4.1 se muestra cómo a partir del árbol, y de forma recursiva, se 
+
+extraen  todas  las  posibles  tuplas  (lexema,ajo),  se  calcula  y  eval√∫an  las  prob- 
+
+abilidades  transicionales  respecto  a  los  parámetros  dados  (MPS,  MPA),  y  de 
+
+acuerdo  con  el  resultado  se  construyen  y  asignan  puntajes  a  las  hipótesis  de 
+
+segmentación.  Dicho  algoritmo  incluye  una  variante  necesaria  para  los  árboles 
+
+hacia atrás: la inversión de las palabras. 
+
+
+
+4.2.5.      Algoritmo de poda y unicación  de  hipótesis 
+
+
+
+    Una  vez  se  tiene  el  conjunto  de  hipótesis  que  cumplen  con  los  requisitos 
+
+dados por los parámetros del algoritmo, el problema más evidente en los resul- 
+
+tados es la redundancia entre dichas hipótesis cuando se encuentran diferentes 
+
+maneras de segmentar una misma palabra. Por ejemplo, para la palabra prac- 
+
+ticarse, dado el gran n√∫mero de palabras que terminan en 'rse' (por el a√∫n más 
+
+grande  n√∫mero  de  verbos  que  terminan  en  'r'),  y  el  gran  n√∫mero  de  palabras 
+
+terminadas en 'se' (que es el ajo correcto), se obtendrían dos hipótesis para la 
+
+misma palabra: practica/rse, practicar/se. Lo mismo ocurre con toda una serie 
+
+de hipótesis, como las de aquellas palabras terminadas en 'amente' (por el gran 
+
+n√∫mero  de  adjetivos  terminados  en  'a'  como  precavidamente,  tímidamente), 
+
+
+----------------------- Page 41-----------------------
+
+CAPÍTULO 4.  INDUCCI√ìN DE INFORMACI√ìN MORFOL√ìGICA DEL LENGUAJE40 
+
+
+
+Algorithm  4.1 Algoritmo de extracción de hipótesis iniciales 
+
+
+
+       evaluateAndExtractStemHypothesis(root) 
+
+
+
+            For each root.succesors succesor 
+
+
+
+                 transProb=succesor.frequency/root.frequency 
+
+                  suffixProb=root.frequency/root.parent.frequency 
+
+                  suffixes <- getPotentialSuffixes(succesor) 
+
+                  If (transProb <= MPS 
+
+                                 AND suffixProb >= MPA ) 
+
+
+
+                      For each suffixes suffix 
+
+
+
+                         suffix <- invert(suffix) //sólo para árboles hacia atrás 
+
+
+
+                         word <- concat(invert(root),suffix) 
+
+                         If (existSegmentationHypothesisSet(root)) 
+
+
+
+                           addSuffixToHypothesis(root,suffix) 
+
+
+
+                         Else 
+
+
+
+                           createSegmentationHypothesis(root) 
+
+                           addSuffixToHypothesis(root,suffix) 
+
+
+
+                         If (existsWord(word)) 
+
+
+
+                           addScoreToHypothesis(root,WORD_SCORE) 
+
+
+
+                         Else if (existsSimilarWord(word)) 
+
+
+
+                           addScoreToHypothesis(root,SIMILAR_WORD_SCORE) 
+
+
+
+            For each root.succesors succesor 
+
+
+
+                  evaluateAndExtractStems(child); 
+
+
+----------------------- Page 42-----------------------
+
+CAPÍTULO 4.  INDUCCI√ìN DE INFORMACI√ìN MORFOL√ìGICA DEL LENGUAJE41 
+
+
+
+Algorithm  4.2 Algoritmo de unicación de hipótesis 
+
+
+
+       HypothesisSet getUnifiedAndPrunedSegmentationHypothesis(hypothesisSet) 
+
+       For each hypothesisSet hypothesis 
+
+
+
+             hypothesisRoots <- hypothesis.roots 
+
+             For each hypothesisRoots root 
+
+
+
+                  For each root.suffixes suffix 
+
+
+
+                      If NOT wordsMap.contains(root+suffix) 
+
+
+
+                         wordsMap.put(root+suffix,root) 
+
+
+
+                      Else 
+
+
+
+                         previousRootHypothesis <- wordsMap.get(root+suffix) 
+
+                         ldTransProb <- previousRootHypothesis.getSuffix(suffix).transProb 
+
+                         transProb <- root.getSuffix(suffix).transProb 
+
+                         if isWord(root) OR oldTransProv < transProb 
+
+
+
+                           root.removeSuffix(suffix) 
+
+
+
+                         else 
+
+
+
+                           previousRootHypothesis.removeSuffix(suffix) 
+
+
+
+             For each rootsMap.keys word 
+
+
+
+                  root <- rootsMap.get(word) 
+
+                  If root.score > MINIMUM_SCORE 
+
+
+
+                      unifiedHypothesisSet.add(root) 
+
+
+
+                  end 
+
+
+
+             end 
+
+
+
+       return unifiedHypothesisSet 
+
+
+
+donde, de nuevo, se obtendrían hipótesis redundantes para dichas palabras, con 
+
+los sujos 'mente' y 'amente'. 
+
+    El  algoritmo  4.2  muestra  el  proceso  de  unicación  de  hipótesis.  En  éste  se 
+
+realiza  una  b√∫squeda  de  hipótesis que  tengan palabras  en com√∫n, a través del 
+
+uso de mapas (donde la llave es la palabra y el elemento es la hipótesis). En caso 
+
+de identicarse hipótesis redundantes, aquella hipótesis que incluya un lexema 
+
+que  sea  una  palabra  por  sí  sola  es  la  que  conserva  su  relación  con  la  palabra. 
+
+En caso de que en ninguna hipótesis se tenga un lexema que sea una palabra, 
+
+la  hipótesis  elegida  será  la  que  ofrezca  una  menor  probabilidad  de  transición 
+
+entre el lexema y el ajo (o viceversa, seg√∫n se trate de un árbol hacia adelante 
+
+o hacia atrás). 
+
+    Finalmente, son descartadas las hipótesis que tras la unicación hayan quedad 
+
+con un puntaje muy bajo, por haber quedado con muy pocas palabras asociadas. 
+
+
+
+4.3.       Agrupamiento de ajos 
+
+
+
+Problemática 
+
+
+
+    Uno de los inconvenientes que se encuentra en las estrategias de aprendizaje 
+
+morfológico basados en estadística, cuando se adaptan para soportar lenguajes 
+
+exivos (por ya no tener la característica de los lenguajes aglutinativos, donde 
+
+
+----------------------- Page 43-----------------------
+
+CAPÍTULO 4.  INDUCCI√ìN DE INFORMACI√ìN MORFOL√ìGICA DEL LENGUAJE42 
+
+
+
+las  segmentaciones  válidas  se  caracterizan  por  la  presencia  de  un  lexema  que 
+
+existe como palabra por sí sola), es que la identicación de ajos comunes (con 
+
+un soporte estadístico alto), puede llevar a que las hipótesis asociadas con dichos 
+
+ajos incluyan lexemas inválidos. 
+
+    Típicamente  este  problema  se  presenta  con  los  sustantivos  que  tienen  una 
+
+terminación  que  coincide  con  el  ajo  identicado.  Por  ejemplo,  la  hipótesis  de 
+
+segmentación del sujo 'ble', usado en el espa√±ol para convertir raíces verbales 
+
+a adjetivos (adapta/ble, modica/ble, congura/ble), podrían incluir, tras ter- 
+
+minar el proceso de extracción y unicación de hipótesis, palabras como cable, 
+
+sable o mueble. Además de los sustantivos, se presenta el caso de la inclusión de 
+
+palabras en idiomas diferentes dentro de las hipótesis (para el caso anterior, se 
+
+podrían incluir dentro de la hipótesis del sujo 'ble' palabras como writea/ble), 
+
+primero  por  los  extranjerismos,  y  segundo  por  el  uso  de  corpus  propensos  al 
+
+ruido para el proceso de aprendizaje, como aquellos construidos a partir de con- 
+
+tenidos de la red, donde es normal encontrar muestras signicativas de algunas 
+
+palabras de idiomas diferentes al denido para dichos contenidos (como el caso 
+
+de los portales construidos totalmente en castellano, pero a partir de frameworks 
+
+para portales que incluyen ciertos elementos estándar, como vínculos y créditos 
+
+en inglés). 
+
+    Dada  la  problemática  descrita  anteriormente,  en  este  trabajo  se  propone 
+
+un  mecanismo  para  la  identicación  de  segmentaciones  incorrectas,  que  a  la 
+
+vez  sirve  para  la  identicación  de  grupos  de  palabras  que  corresponden  a  una 
+
+misma  categoría  gramatical.  Este  mecanismo  se  basa  en  la  propiedad  de  la 
+
+morfología de los lenguajes naturales de ser productiva [7], es decir (seg√∫n una 
+
+denición que a√∫n está en discusión), la propiedad de formar palabras a través 
+
+del  uso  de  nuevas  combinaciones  entre  componentes  morfológicos.  Ejemplo  de 
+
+esto es la construcción de palabras a partir de nuevas combinaciones de lexemas 
+
+y  sujos,  como  por  ejemplo  el  sujo  '-dom'  del  inglés,  que  al  combinarse  con 
+
+un  lexema  cuya  categoría  base  sea  sustantivo  o  adjetivo,  deriva  palabras  de 
+
+categoría sustantivo [31] (freedom, stardom). 
+
+    Teniendo en cuenta la propiedad de productividad de la morfología, se pos- 
+
+tula  lo  siguiente:  si  un  conjunto  de  lexemas  tiene  un  conjunto  de  sujos  en 
+
+com√∫n, dichos lexemas pertenecen un conjunto de categorías gramaticales base 
+
+válidas para tales procesos de sujación (ver en la gura 4.4 las palabras adap- 
+
+ta, conmemora, prepara) . Si existe un lexema que comparte sólo un sujo con 
+
+otros lexemas, que a su vez comparten entre sí varios sujos, dicho lexema y su 
+
+sujo corresponden a una segmentación inválida (ver en la gura 4.4 la palabra 
+
+'ca/ble'). 
+
+
+
+Algoritmo 
+
+
+
+    El  mecanismo  propuesto,  busca  identicar  grupos  de  lexemas  que  tengan 
+
+cierto n√∫mero de sujos en com√∫n, de manera que por un lado, se puedan descar- 
+
+tar aquellos que queden aislados, y por el otro, identicar grupos de palabras con 
+
+categorías gramaticales base y derivadas comunes. Para hacer esto, tal como se 
+
+muestra en el algoritmo 4.3, se parte de las hipótesis de segmentación descritas 
+
+
+----------------------- Page 44-----------------------
+
+CAPÍTULO 4.  INDUCCI√ìN DE INFORMACI√ìN MORFOL√ìGICA DEL LENGUAJE43 
+
+
+
+                    Figura 4.4: Grafo de lexemas y sujos 
+
+
+----------------------- Page 45-----------------------
+
+CAPÍTULO 4.  INDUCCI√ìN DE INFORMACI√ìN MORFOL√ìGICA DEL LENGUAJE44 
+
+
+
+Algorithm  4.3  Algoritmo  de  creación  del  grafo  a  partir  de  hipótesis  de  seg- 
+
+mentación 
+
+       createLexemeGraph(hypothesisSet) 
+
+
+
+             For each hypothesisSet hyp 
+
+
+
+                  For each hyp.lexemes lexeme 
+
+
+
+                      If NOT exists(lexemeNodes,lexeme) 
+
+
+
+                         ln <- createLexemeNode(lexeme) 
+
+                         lexemeNodes.add(ln) 
+
+
+
+                      Else 
+
+
+
+                         ln <- getLexemeNode(lexemeNodes,lexeme) 
+
+
+
+                      If NOT exists(affixNodes,hyp.affix) 
+
+
+
+                         an <- createAffixNode(hyp.affix) 
+
+                         affixNodes.add(an) 
+
+
+
+                      Else 
+
+
+
+                         an <- getAffixNode(affixNodes,hyp.affix) 
+
+
+
+                      ln.add(an) 
+
+                      an.add(ln) 
+
+
+
+                  End 
+
+
+
+             End 
+
+
+
+       End 
+
+
+
+anteriormente,  para  construir  un  grafo  donde  cada  lexema  tienen  relación  con 
+
+todos  sus  sujos  compatibles,  y  a  la  vez,  cada  sujo  está  relacionado  con  sus 
+
+lexemas compatibles (ver gura 4.4). 
+
+    Para  el  agrupamiento,  se  hace  uso  del  agrupamiento  jerárquico,  donde  los 
+
+nodos iniciales son cada uno de los lexemas del grafo y la medida de distancia 
+
+entre dos lexemas   y       (o entre dos grupos de lexemas, usando enlace completo 
+
+                           
+
+
+
+o enlace simple) se dene como el inverso del porcentaje de sujos comunes de 
+
+los lexemas:                          , donde  es el porcentaje de sujos co- 
+
+                             
+
+
+
+munes del lexema con menos sujos respecto al lexema con más sujos (entre  
+
+y   ). Como parámetro, el algoritmo de agrupamiento recibe la distancia mínima 
+
+    
+
+
+
+requerida para agrupar dos lexemas (o grupos de lexemas), que se puede inter- 
+
+pretar  como  el  porcentaje  mínimo  de  coincidencias  de  sujos  que  deben  tener 
+
+dos lexemas para considerar que tienen una relación de construcción morfológi- 
+
+ca. En la gura 4.5 se muestran las dos primeras iteraciones del algoritmo, para 
+
+el grafo indicado en la gura 4.3, donde se crean dos grupos de lexemas: ('adap- 
+
+ta',  'conmemora')  y  ('alter','consult').  En  la  gura  4.6  se  muestra  el  resultado 
+
+de las dos siguientes iteraciones del algoritmo (junto con el dendograma corre- 
+
+spondiente), donde a los grupos indicados anteriormente se les une los lexemas 
+
+'prepara' y 'modic', respectivamente. 
+
+
+----------------------- Page 46-----------------------
+
+CAPÍTULO 4.  INDUCCI√ìN DE INFORMACI√ìN MORFOL√ìGICA DEL LENGUAJE45 
+
+
+
+Figura  4.5:  Dos  primeras  iteraciones  del  agrupamiento  jerárquico  de  lexemas, 
+
+usando como medida de distancia los ajos comunes. 
+
+
+----------------------- Page 47-----------------------
+
+CAPÍTULO 4.  INDUCCI√ìN DE INFORMACI√ìN MORFOL√ìGICA DEL LENGUAJE46 
+
+
+
+Figura 4.6: Izquierda: tercera y cuarta iteración del agrupamiento jerárquico de 
+
+lexemas, usando como medida de distancia los ajos comunes. Derecha: dendo- 
+
+grama resultante. 
+
+
+----------------------- Page 48-----------------------
+
+CAPÍTULO 4.  INDUCCI√ìN DE INFORMACI√ìN MORFOL√ìGICA DEL LENGUAJE47 
+
+
+
+4.4.       Experimentación 
+
+
+
+4.4.1.      Medida de evaluación 
+
+
+
+    El  algoritmo  de  evaluación  utilizado  para  medir  los  resultados  experimen- 
+
+tales, está basado en el propuesto por la competencia Morphochallenge1 . Esta 
+
+
+
+competencia  está  dedicada  a  la  comparación  de  técnicas  no  supervisadas  de 
+
+aprendizaje de la morfología de lenguajes naturales, para lo cual provee un con- 
+
+junto de corpus y datos de prueba -también conocidos como 'el estándar de oro'- 
+
+para el inglés, alemán, turco y nlandés (ambos se ofrecen libremente, pero los 
+
+archivos  con  datos  de  prueba  son  una  versión  recortada  de  los  originales).  El 
+
+estándar de oro para cada lenguaje es una archivo de texto donde en cada línea 
+
+se descomponen los morfemas de un conjunto de palabras, incluyendo detalles 
+
+como la acción del morfema. Por ejemplo, en la palabra 'blackmailed' del sigu- 
+
+iente ejemplo, en vez de mencionar la palabra de  como el morfema nal de la 
+
+palabra,  se  indica  que  al  nal  hay  un  morfema  exivo  que  cambia  el  verbo  a 
+
+tiempo pasado: 
+
+
+
+    blackmailed      black_A    mail_N    +PAST 
+
+
+
+    Dado que los algoritmos a probarse en la competencia son de naturaleza no 
+
+supervisada, se descartan las métricas basadas en el conteo de coincidencias entre 
+
+etiquetas,  y  como  alternativa  se  proponen  las  siguientes  medidas  de  precisión 
+
+(precission) y exhaustividad (recall): 
+
+
+
+       Precisión (precission): se realiza un muestreo aleatorio de parejas de pal- 
+
+       abras,  que  tengan  un  morfema  en  com√∫n,  sobre  el  conjunto  de  palabras 
+
+       analizadas por la técnica que quiere ser evaluada. Cada pareja extraída es 
+
+       comparada  con  la  segmentación  dada  en  el  estándar  de  oro,  y  si  en  este 
+
+       √∫ltimo también tienen un morfema en com√∫n, se suma un punto. El valor 
+
+       de la precisión será entonces el n√∫mero de puntos obtenidos sobre el total 
+
+       de parejas. 
+
+
+
+       Exhaustividad (recall): se realiza un muestreo aleatorio de parejas de pal- 
+
+       abras,  que  tengan  un  morfema  en  com√∫n,  sobre  el  conjunto  de  palabras 
+
+       analizadas en el estándar de oro. Cada pareja extraída es comparada con 
+
+       en  análisis  hecho  por  la  técnica,  y  si  en  este  √∫ltimo  también  tienen  un 
+
+       morfema en com√∫n, se suma un punto. El valor de la exhaustividad será 
+
+       entonces el n√∫mero de puntos obtenidos sobre el total de parejas. 
+
+
+
+Para  unicar  estas  dos  medidas,  se  utilizó  la  medida  de  media  armónica  (F- 
+
+Score), denida como:       . 
+
+                                           
+
+    Como  la  técnica  presentada  realiza  a  lo  sumo  dos  segmentaciones  (prejo, 
+
+raíz,  sujo),  a  diferencia  de  el  análisis  dado  en  el  estándar  de  oro  que  puede 
+
+describir incluso la segmentación de los sujos, el algoritmo usado para la eval- 
+
+uación  restringe  la  comparación  a  prejos,  sujos  (es  decir,  la  coincidencia  de 
+
+
+
+   1http://www.cis.hut./morphochallenge2007/evaluation.shtml 
+
+
+----------------------- Page 49-----------------------
+
+CAPÍTULO 4.  INDUCCI√ìN DE INFORMACI√ìN MORFOL√ìGICA DEL LENGUAJE48 
+
+
+
+Figura 4.7: Muestra de ruido del corpus generado para el espa√±ol, correspondi- 
+
+ente a las palabras de más baja frecuencia. 
+
+
+
+la primera o la √∫ltima etiqueta en la tuplas). Por esto, los resultados obtenidos 
+
+por las estrategias evaluadas en la competencia morphochallenge no pueden ser 
+
+comparadas  uno  a  uno  con  los  resultados  obtenidos  por  la  técnica  presentada 
+
+en este artículo (con la variante del algoritmo de evaluación), pero resulta √∫til 
+
+para darse una idea general de desempe√±o, y comparar contra sí mismo el efecto 
+
+de las variaciones en los parámetros y los elementos adicionales propuestos. 
+
+
+
+4.4.2.      Construcción  del corpus  de  aprendizaje 
+
+
+
+    Para la construcción del corpus en espa√±ol, se utilizó el sistema descrito en . 
+
+                                                                                         2 
+
+Con este sistema se procesaron 71000 enlaces del portal Wikipedia en espa√±ol  , 
+
+se construyó un documento de 600MB y 369405 palabras diferentes. Sin embar- 
+
+go, tal como se muestra en la gura 4.7, la muestra extraída, por provenir de un 
+
+medio manipulado libremente por miles de personas, está propensa a la inclusión 
+
+de palabras inexistentes, o escritas incorrectamente. A través de una inspección 
+
+visual,  se  identicó  que  restringiendo  el  conjunto  de  palabras  a  aquellas  que 
+
+ocurrieran  al  menos  cien  veces,  se  obtenía  una  proporción  más  razonable  de 
+
+ruido (5 % aproximadamente). Aplicando esta restricción, se redujo el conjunto 
+
+de palabras a 24754. 
+
+
+
+4.4.3.      Construcción  del conjunto  de  datos de  prueba 
+
+
+
+    Para  el  idioma  inglés  se  utilizó  la  versión  reducida  del  'estándar  de  oro' 
+
+disponible libremente en el sitio Web de morphochallenge 20073 , el cual cuenta 
+
+
+
+   2http://es.wikipedia.org/ 
+
+   3http://www.cis.hut./morphochallenge2007/datasets.shtml 
+
+
+----------------------- Page 50-----------------------
+
+CAPÍTULO 4.  INDUCCI√ìN DE INFORMACI√ìN MORFOL√ìGICA DEL LENGUAJE49 
+
+
+
+Figura  4.8:  Muestra  de  las  palabras  extraídas  con  una  frecuencia  de  al  menos 
+
+100. 
+
+
+
+con  483  palabras  analizadas.  En  la  competencia  Morphochallenge  (al  menos 
+
+hasta la edición del 2008) no se ha contemplado el procesamiento del espa√±ol, 
+
+por lo cual, y dado que uno de los objetivos de esta investigación es analizar el 
+
+desempe√±o de la estrategia propuesta con el espa√±ol, se construyó un 'estándar 
+
+de  oro'  a  partir  de  la  salida  generada  por  el  sistema  AGME,  un  sistema  de 
+
+segmentación de palabras especíco del espa√±ol[23], que provee el análisis de más 
+
+de un millón de palabras. A este √∫ltimo análisis se le integró el conocimiento de 
+
+sujación identicado en diferentes documentos de estudio del espa√±ol [8, 13, 15], 
+
+y que corresponden a algunos elementos del árabe, latín y griego adquiridos por 
+
+el espa√±ol a lo largo de su historia. Para tener un 'estándar de oro' similar en 
+
+dimensión al usado para el inglés, se construyó el conjunto de pruebas denitivo, 
+
+compuesto de 600 palabras, a partir de un muestreo aleatorio sobre el conjunto 
+
+de palabras. 
+
+
+
+4.4.4.      Resultados 
+
+
+
+4.4.4.1.    Evaluación  de  parámetros 
+
+
+
+    Se  aplicó  el  algoritmo  descrito  anteriormente,  sobre  los  corpus  y  datos  de 
+
+prueba   mencionados.    Los   parámetros    a variar  fueron:  máxima     probabilidad 
+
+transicional  de  sucesores  y  mínima  probabilidad  transicional  de  antecesores, 
+
+descritos en la sección 4.2. En la gura 4.9, se observa la variación del desem- 
+
+pe√±o en función de los parámetros mencionados anteriormente. A partir de este 
+
+experimento,  se  identicaron  los  siguientes  parámetros,  como  los  ideales  para 
+
+realizar las tareas de aprendizaje: 
+
+
+----------------------- Page 51-----------------------
+
+CAPÍTULO 4.  INDUCCI√ìN DE INFORMACI√ìN MORFOL√ìGICA DEL LENGUAJE50 
+
+
+
+       Lenguaje     MPTS       MPTA       Precisión     Exhaustividad       F-Score 
+
+        Inglés         1         0.6         0.59             0.86            0.70 
+
+       Espa√±ol         1         0.4         0.84             0.79            0.82 
+
+
+
+4.4.4.2.     Análisis  de  los  errores 
+
+
+
+    Dentro  de  los  resultados  obtenidos  por  la  técnica  presentada,  usando  los 
+
+parámetros del algoritmo identicados anteriormente, se encontraron dos tipos 
+
+de problemas: sobresujación y subsujación. 
+
+    En  el  primer   caso,  se trata  de  sujos  inexistentes,  que  tienen  un    origen 
+
+en  un  sujo  más  corto,  pero  que  se  extienden  hacia  las  √∫ltimas  letras  de  sus 
+
+raíces  más  comunes.  Por  ejemplo,  para  el  inglés,  se  identicó  el  sujo  'ically'. 
+
+En  este  caso,  a  pesar  de  haberse identicado  también  el  sujo 'ally',  que  es  el 
+
+correcto, en el proceso de unicación se dio como válido el sujo 'ically', dada la 
+
+gran cantidad de palabras, como magnet/ically, genet/ically, sympathet/ically, 
+
+energet/ically  o  theoret/ically  (cuyas  raíces  terminan  en  'ic')  que  causan  una 
+
+baja  probabilidad  transicional  entre  este  falso  sujo  y  sus  raíces.  Para  el  caso 
+
+de el espa√±ol, se identicaron sujos como 'ología', originado por el sujo 'logía' 
+
+(en  este  caso  este  √∫ltimo  no  fue  identicado  como  sujo).  De  manera  similar 
+
+al  problema  presentado  con  el  inglés,  la  alta  frecuencia  de  raíces  terminadas 
+
+en  o  en  el  espa√±ol  que  tienen  como  sujo  'logia'  (ant/ología,  antrop/ología, 
+
+ap/ología,  arque/ología,  astr/ología,  bacteri/ología,  entre  muchas  otras),  y  el 
+
+hecho de que casi ninguna de estas raíces sea una palabra por sí sola, hizo que 
+
+el algoritmo se inclinara hacia el sujo más largo. 
+
+    En el segundo caso, de subsujación, se encontraron sujos inexistentes que 
+
+sobrelapan  a  sujos  válidos  que  son  más  largos.  En  el  inglés,  se  encontró  el 
+
+sujo 'ng' para palabras como hourlo/ng, yearlo/ng, lifelo/ng o headlo/ng, cuyo 
+
+sujo  válido  es  'long'.  Esto  se  puede  explicar  por  la  alta  desproporción  de  las 
+
+palabras con sujo 'long' y las palabras terminadas en 'ng', que en su mayoría 
+
+corresponden a nombres propios y a palabras no segmentables, como armstrong, 
+
+boomerang, wolfgang, ping, etc. 
+
+    Fue sorpresivo ver que el valor ideal de mínima probabilidad transicional de 
+
+sujos fuera 1 en ambos lenguajes, ya que en teoría un valor muy bajo para este 
+
+parámetro es lo que permite identicar cuando de un sujo, de alta frecuencia, se 
+
+desprenden muchas raíces, de una menor frecuencia. Sin embargo, esto se puede 
+
+explicar como consecuencia de la aplicación del proceso de consolidación de los 
+
+candidatos a segmentación, descrito en la sección 4.2, ya que, así se genere un 
+
+candidato a sujo con una probabilidad transicional hacia sus sujos alta (que 
+
+por lo general será inválido), siempre será descartado por la existencia de otro 
+
+candidato con una probabilidad transicional hacia sus sucesores. 
+
+    Aunque de acuerdo con los resultados aparentemente el desempe√±o fue mejor 
+
+con el espa√±ol que con el inglés, como se describe en la subsección 4.4.3, los cor- 
+
+pus, y 'estándares de oro' tienen diferente origen, y estadísticamente hablando, 
+
+tienen  una  distribución  diferente  de  las  palabras  del  lenguaje,  por  lo  cual  los 
+
+resultados generados del mismo no son comparables entre sí. 
+
+
+----------------------- Page 52-----------------------
+
+CAPÍTULO 4.  INDUCCI√ìN DE INFORMACI√ìN MORFOL√ìGICA DEL LENGUAJE51 
+
+
+
+Figura 4.9: Evaluación de desempe√±o (F-Score) variando los parámetros: máx- 
+
+ima probabilidad transicional de  sucesores  y mínima probabilidad transicional 
+
+de antecesores. Arriba: espa√±ol. Abajo: inglés. 
+
+
+----------------------- Page 53-----------------------
+
+CAPÍTULO 4.  INDUCCI√ìN DE INFORMACI√ìN MORFOL√ìGICA DEL LENGUAJE52 
+
+
+
+Figura  4.10:  Sujos  más  frecuentes  identicados  para  el  espa√±ol,  junto  con  la 
+
+descripción de éstos dada por la literatura. 
+
+
+
+4.4.4.3.     Revisión  analítica. 
+
+
+
+    Dado  que  las  estrategia  de  evaluación  de  desempe√±o  revisada  hasta  aho- 
+
+ra  se  enfoca  en  medir  la  calidad  de  la  segmentación,  mas  no  en  la  revisión 
+
+de  los  elementos  identicados  de  la  morfología  del  lenguaje  (en  este  caso  los 
+
+sujos),  se  hizo  una  inspección  manual  de  los  sujos  identicados,  y  se  veri- 
+
+có si éstos tenían validez buscando su justicación en la literatura relacionada 
+
+con  la  linguística  de  cada  idioma,  en  este  caso  espa√±ol  [8,  13,  15,  34]  e  inglés 
+
+[6,  36]  (para  este  √∫ltimo  también  se  hizo  uso  del  proyecto  de  software  libre 
+
+              4 
+
+Wiktionary  ). Con este ejercicio se conoció la existencia por parte del autor de 
+
+algunos  sujos  aparentemente  inexistentes  (desde  sus  limitados  conocimientos 
+
+en  linguística),  tales  como  el  sujo  'ico'  en  espa√±ol,  o  'ic'  en  el  inglés.  En  la 
+
+gura 4.10 se muestran los sujos más frecuentes identicados, y su función de 
+
+transformación. Los sujos descritos, de acuerdo con la literatura, corresponden 
+
+a  orígenes  heterogéneos,  como  el  latín,  griego,  e  incluso  a  periodos  históricos 
+
+particulares, como el caso del sujo 'ano', que corresponde al latín del periodo 
+
+helénico[8]. 
+
+    Por  otro  lado,  la  descripción  dada  a  los  sujos  identicados  para  el  inglés, 
+
+en la gura 4.11, corresponden principalmente a elementos tanto griegos como 
+
+germánicos heredados [6, 36]. 
+
+
+
+   4http://en.wiktionary.org/wiki/Appendix:Suxes:English 
+
+
+----------------------- Page 54-----------------------
+
+CAPÍTULO 4.  INDUCCI√ìN DE INFORMACI√ìN MORFOL√ìGICA DEL LENGUAJE53 
+
+
+
+Figura 4.11: Sujos más frecuentes identicados por el sistema para el espa√±ol, 
+
+junto con la descripción de éstos dada por la literatura. 
+
+
+----------------------- Page 55-----------------------
+
+CAPÍTULO 4.  INDUCCI√ìN DE INFORMACI√ìN MORFOL√ìGICA DEL LENGUAJE54 
+
+
+
+Figura  4.12:  Histograma  del  n√∫mero  de  elementos  obtenido  para  cada  cluster 
+
+usando las palabras del corpus en espa√±ol. 
+
+
+
+4.4.4.4.    Resultados  de  la  técnica  de  agrupamiento  jerárquico 
+
+
+
+    Tras aplicar la técnica de agrupamiento jerárquico, y usando como distancia 
+
+mínima un 90 % de coincidencia entre elementos de los clusters, se obtuvieron 
+
+231  y  224  clusters  para  el  inglés  y  el  espa√±ol  respectivamente  (contando  sólo 
+
+los clusters que cuentan con al menos dos elementos). Como se puede observar 
+
+en las guras 4.12 y 4.13, la distribución de dichos clusters fue similar para el 
+
+inglés y para el espa√±ol. 
+
+    Al analizar los clusters obtenidos, se encontró que aquellos con más palabras 
+
+-que también son los menos frecuentes seg√∫n los histogramas-, corresponden a 
+
+grupos cuyos elementos en realidad no tienen relación léxica, y que se generaron 
+
+a  partir  de  ciertos  errores  generados  en  el  proceso  de  identicación  de  sujos. 
+
+Por  ejemplo,  para  el  caso  del  espa√±ol,  el  algoritmo  de  aprendizaje  de  la  mor- 
+
+fología asoció muchas palabras cuyo sujo verdadero era 'nte' al sujo 'e', lo cual 
+
+coincidió con la sujación del plural de dichas palabras con el sujo 'es', con lo 
+
+que se generó un cluster con un gran conjunto de palabras como: representant[e, 
+
+es], ausent[e, es], planici[e, es], dependient[e, es], impresionant[e, es], recipient[e, 
+
+es], diamant[e, es]. Para el caso del inglés, se da exactamente el mismo caso, con 
+
+palabras como: lak[e, es], machin[e, es], volum[e, es], expenditur[e, es], fortun[e, 
+
+es] kne[e, es], dierenc[e, es], favorit>[e, es]. 
+
+    A  parte  de  estos  casos  aislados  (aislados  por  su  muy  baja  frecuencia),  de 
+
+los  clusters  con  tama√±os  más  comunes  se  identican  conjuntos  de  raíces  que 
+
+admiten  las  mismas  operaciones  de  sujación.  Por  ejemplo,  en  el  cluster  de  la 
+
+gura  4.14,  se  identica  un  conjunto  de  raíces  que  a  través  de  la  sujación 
+
+pueden  generar  verbos  en  presente  continuo  (-ar),  sustantivos  (-ación),  verbos 
+
+en presente simple (-a), adjetivos (-ado), y verbos en pasado (ó). En el cluster 
+
+de la gura 4.15, se identica un conjunto de raíces que permite la construcción 
+
+de verbos en tiempo presente (-er), verbos en pasado (ió), y adjetivos (-imiento). 
+
+    Para el caso del inglés, en el cluster de la gura 4.16 se identica un grupo de 
+
+sustantivos que con el sujo 'al' generan adjetivos, y con el sujo 'ally' generan 
+
+
+----------------------- Page 56-----------------------
+
+CAPÍTULO 4.  INDUCCI√ìN DE INFORMACI√ìN MORFOL√ìGICA DEL LENGUAJE55 
+
+
+
+Figura  4.13:  Histograma  del  n√∫mero  de  elementos  obtenido  para  cada  cluster 
+
+usando las palabras del corpus en inglés. 
+
+
+
+adverbios.  En  el  cluster  de  la  gura  4.17,  se  identica  (exceptuando  las  raíces 
+
+'issu' y 'rul') un conjunto de raíces que pueden generar verbos en presente simple 
+
+(-e), verbos en presente simple en tercera persona (-es), verbos en pasado (-ed), 
+
+y sustantivos agente (-er). 
+
+    Para probar la potencialidad de la técnica de agrupamiento para el descarte 
+
+de ajaciones incorrectas, se recalculó la precisión de la morfología usando sólo 
+
+aquellas palabras que pertenecían al menos a un cluster. Para el caso del espa√±ol 
+
+se obtuvo una precisión del 90 %, mientras que para el inglés se obtuvo un 85 %. 
+
+
+
+4.5.       Resumen 
+
+
+
+    En  este  capítulo  se  presentó  una  implementación  de  un  algoritmo  para  el 
+
+aprendizaje  no  supervisado  de  la  morfología  de  un  lenguaje  natural  usando 
+
+palabras  extraídas  de  un  corpus  construido  automáticamente  a  partir  de  con- 
+
+tenidos disponibles en Internet, y contemplando su uso para el idioma espa√±ol. 
+
+Adicionalmente,  se  presentó  una  estrategia  para  el  agrupamiento  de  palabras 
+
+basada en sus ajos, la cual tiene como propósito, primero, identicar segmenta- 
+
+ciones inválidas, y segundo, identicar grupos de palabras con relaciones léxicas 
+
+entre sí. Como resultado, tanto para el inglés como para el espa√±ol, se obtuvo 
+
+un buen desempe√±o usando una adaptación de la métrica denida para la com- 
+
+petencia Morphochallenge, y se encontraron resultados coherentes vericando la 
+
+existencia de los sujos encontrados en la literatura histórica de la linguística. 
+
+Para  el  capítulo  5  de  este  trabajo,  enfocado  al  aprendizaje  no  supervisado  de 
+
+la  sintaxis,  se  hará  uso  de  la  información  morfológica  obtenida  con  los  experi- 
+
+mentos  de  este  capítulo,  en  particular,  de  los  grupos  de  palabras  relacionados 
+
+morfológicamente entre sí. 
+
+
+----------------------- Page 57-----------------------
+
+CAPÍTULO 4.  INDUCCI√ìN DE INFORMACI√ìN MORFOL√ìGICA DEL LENGUAJE56 
+
+
+
+      Figura 4.14: Ejemplo de cluster obtenido para el lenguaje espa√±ol 
+
+
+----------------------- Page 58-----------------------
+
+CAPÍTULO 4.  INDUCCI√ìN DE INFORMACI√ìN MORFOL√ìGICA DEL LENGUAJE57 
+
+
+
+      Figura 4.15: Ejemplo de cluster obtenido para el lenguaje espa√±ol 
+
+
+
+       Figura 4.16: Ejemplo de cluster obtenido para el lenguaje inglés 
+
+
+----------------------- Page 59-----------------------
+
+CAPÍTULO 4.  INDUCCI√ìN DE INFORMACI√ìN MORFOL√ìGICA DEL LENGUAJE58 
+
+
+
+       Figura 4.17: Ejemplo de cluster obtenido para el lenguaje inglés 
+
+
+----------------------- Page 60-----------------------
+
+Capítulo 5 
+
+
+
+Aprendizaje de la sintaxis con 
+
+refuerzo morfológico 
+
+
+
+5.1.      Introducción 
+
+
+
+    En este capítulo se presenta una adaptación del algoritmo ADIOS, un algo- 
+
+ritmo  para  el aprendizaje  no  supervisado  de  la  sintaxis de lenguajes  naturales 
+
+(entre  otras  aplicaciones),  a  través  de  la  cual  se  integra  el  conocimiento  mor- 
+
+fológico  adquirido  con  la  técnica  descrita  en  el  capítulo  4  para  obtener  una 
+
+gramática  más  compacta  y  con  mayor  capacidad  de  generación  de  sentencias 
+
+novel. En la sección 5.2 se describe el algoritmo ADIOS y sus componentes. En 
+
+la sección 5.3 se presentan los elementos teóricos que justican el mecanismo de 
+
+integración del conocimiento morfológico con el algoritmo ADIOS descrito en la 
+
+sección 5.4. En la sección 5.5 se describe la manera como se implementa la inte- 
+
+gración. Finalmente, en la sección 5.6 se describen las estrategias de evaluación 
+
+de desempe√±o y se presentan los resultados obtenidos. 
+
+
+
+5.2.      Algoritmo ADIOS 
+
+
+
+5.2.1.      Descripción 
+
+
+
+    El algoritmo ADIOS (Automatic Distillation of Structure / Destilación Au- 
+
+tomática de  Estructuras) es un método para  el aprendizaje no supervisado de 
+
+la sintaxis de los lenguajes naturales, basado en el análisis estadístico de la dis- 
+
+tribución de las palabras dentro de las sentencias de un corpus, y en el principio 
+
+de aprendizaje basado en alineamiento de Harris [29], que sugiere que un con- 
+
+junto de sentencias parcialmente alineadas (usando sus subsecuencias comunes), 
+
+permite identicar conjuntos de palabras pertenecientes a diferentes categorías 
+
+sintácticas [62, 21, 61]. 
+
+    Como  su  nombre  lo  indica,  el  algoritmo  ADIOS  'destila'  estructuras  au- 
+
+tomáticamente  de  un  corpus.  El  resultado  obtenido  es  una  gramática  libre  de 
+
+
+
+                                          59 
+
+
+----------------------- Page 61-----------------------
+
+CAPÍTULO 5.  APRENDIZAJE DE LA SINTAXIS CON REFUERZO MORFOL√ìGICO60 
+
+
+
+contexto  que  representa  la  estructura  de  las  sentencias  del  corpus  a  diferentes 
+
+niveles  jerárquicos.  ADIOS  es  un  algoritmo  no  supervisado,  guiado  exclusiva- 
+
+mente por los datos, de manera que no hay presunciones de ning√∫n tipo sobre 
+
+cómo debería quedar la gramática una vez se haya aplicado el algoritmo al cor- 
+
+pus.  Este  algoritmo  es  aplicable  a  cualquier  conjunto  de  datos  secuencial  con 
+
+un lexicón nito, como por ejemplo, gramáticas generadas articialmente [62], 
+
+o  secuencias  de  proteínas  de  enzimas  [44],  obteniendo  resultados  comparables, 
+
+e incluso mejores que métodos relacionados. 
+
+
+
+5.2.2.      Elementos del algoritmo  ADIOS 
+
+
+
+5.2.2.1.    Grafo  de  palabras  y  caminos 
+
+
+
+    El algoritmo ADIOS, en su etapa inicial, representa el corpus como un multi- 
+
+grafo dirigido, donde cada unidad básica de las secuencias de dicho corpus corre- 
+
+sponde a un √∫nico nodo (proteínas, palabras, etc, seg√∫n el problema). En dicho 
+
+multigrafo, se crea para cada secuencia (sentencias para problemas de lenguaje 
+
+natural) un nodo de inicio y un nodo terminal, conectando entre dichos nodos 
+
+los elementos correspondientes a dicha sentencia. De esta manera se obtiene un 
+
+grafo como el mostrado en la gura 5.1, correspondiente a un corpus con cuatro 
+
+sentencias (y que como se puede observar, comparten ciertos caminos entre sí). 
+
+Para el algoritmo ADIOS, un camino será cualquier ruta que de un nodo inicial, 
+
+conduzca a un nodo terminal. 
+
+    A medida que el algoritmo avanza, los nodos en el grafo, y por consiguiente 
+
+los nodos de los caminos, son reemplazados por patrones y clases de equivalencia, 
+
+comprimiendo los caminos hasta alcanzar un criterio de nalización. 
+
+
+
+5.2.2.2.    Clases  de  equivalencia  y  patrones 
+
+
+
+    El algoritmo ADIOS, de manera estadística, identica los conjuntos de no- 
+
+dos que ocurren en un mismo contexto, para posteriormente, como se muestra 
+
+en  la  gura  5.2  sustituirlas  por  un  nuevo  tipo  de  nodo,  denominado  clase  de 
+
+equivalencia. Dentro de la gramática adquirida por el algoritmo ADIOS, cuan- 
+
+do una sentencia tenga vinculada una clase de equivalencia, dicho nodo puede 
+
+tomar  cualquiera  de  sus  valores.  Por  ejemplo,  en  el  gráco  D  de  la  gura  5.2, 
+
+se sustituyen las palabras table, chair  y bed  por una clase de equivalencia, 
+
+para  que  en  adelante,  todos  los  caminos  que  pasen  por  la  ruta  de  la  clase  de 
+
+equivalencia, puedan sustituir ese elemento por cualquiera de las palabras de la 
+
+clase de equivalencia. 
+
+    Por  otro  lado,  el  algoritmo  ADIOS,  para  evitar  series  de  palabras  redun- 
+
+dantes dentro de los caminos, identica los segmentos de camino comunes para 
+
+ciertos conjuntos de caminos, y sustituye dicho segmento por un nuevo tipo de 
+
+nodo, denominado 'patrón' (ver gráco E de la gura 5.2). Para identicar los 
+
+segmentos de camino que corresponden a un patrón, el algoritmo usa la estrate- 
+
+gia mostrada en la gura 5.3, donde se buscan dos nodos, un nodo inicial A y 
+
+un nodo nal B, que cumplan con las siguientes condiciones: 
+
+
+----------------------- Page 62-----------------------
+
+CAPÍTULO 5.  APRENDIZAJE DE LA SINTAXIS CON REFUERZO MORFOL√ìGICO61 
+
+
+
+    Figura 5.1: Multigrafo dirigido que contiene las sentencias del corpus. 
+
+
+
+     El nodo A lleguen muchos caminos de diferentes nodos. 
+
+
+
+     El nodo B se desprendan muchos caminos. 
+
+
+
+     En los nodos intermedios del camino entre el nodo A y el nodo B se com- 
+
+     parta un n√∫mero signicativo de caminos (respecto al n√∫mero de caminos 
+
+     que  entran  a  A),  o  dicho  de  otra  manera,  que  en  los  nodos  entre  A  y  B 
+
+     haya pocos desprendimientos hacia otros caminos. 
+
+
+
+Estas condiciones se calculan, como se indica en el gráco, usando dos funciones 
+
+de probabilidad:    y     , que se denen como: 
+
+
+
+                                    
+
+                                           
+
+
+
+                                     
+
+                                          
+
+
+
+   donde AB es el n√∫mero de caminos que conducen de A a B, IA es el n√∫mero 
+
+total de caminos que entran a A, BA es el n√∫mero de caminos que conducen de 
+
+B a A, y OB es el n√∫mero de caminos que salen de B. 
+
+   Los detalles de este algoritmo pueden encontrarse en [44, 61, 21, 62]. 
+
+
+
+5.2.2.3.  Gramáticas  generadas  por  el  algoritmo  ADIOS 
+
+
+
+   Las  gramáticas  obtenidas  por  el  algoritmo  ADIOS  se  presentan  como  un 
+
+conjunto de caminos que incluyen en ciertas posiciones patrones. Los patrones 
+
+
+----------------------- Page 63-----------------------
+
+CAPÍTULO 5.  APRENDIZAJE DE LA SINTAXIS CON REFUERZO MORFOL√ìGICO62 
+
+
+
+Figura 5.2: Identicación de clases de equivalencia y patrones. Tomado de [62]. 
+
+
+
+            Figura 5.3: Identicación de patrones. Tomado de [62]. 
+
+
+----------------------- Page 64-----------------------
+
+CAPÍTULO 5.  APRENDIZAJE DE LA SINTAXIS CON REFUERZO MORFOL√ìGICO63 
+
+
+
+Figura  5.4:  Ejemplo  de  patrones  y  clases  de  equivalencia  identicados  con  el 
+
+algoritmo ADIOS. Tomado de [62]. 
+
+
+
+son los elementos generadores de este tipo de gramática, ya que pueden incluir 
+
+clases de equivalencia y patrones combinados, y de manera recursiva, las clases 
+
+de equivalencia pueden incluir patrones. Por ejemplo, en la gura 5.4 se muestra 
+
+cómo una gramática corresponde a una estructura jerárquica de elementos que 
+
+pueden sustituirse entre sí, y que dan la posibilidad de generar nuevas sentencias. 
+
+
+
+5.3.       Sujación          y    su    relación        con     las    categorías 
+
+           léxicas 
+
+
+
+    Se puede armar que el tipo de gramática obtenida con el algoritmo ADIOS, 
+
+corresponde al modelo de gramática generadora de Chomsky [72], ya que cumple 
+
+con las características principales de dichas gramáticas: (1) puede generar nuevas 
+
+sentencias a partir de reglas de reescritura, y (2) tiene como elementos terminales 
+
+para  dicha  generación,  categorías léxicas,  que  en el  caso  del  algoritmo  ADIOS 
+
+corresponden  a  palabras  agrupadas  bajo  el  concepto  de  clase  de  equivalencia, 
+
+tal  como  se  puede  ver  en  la  gura  5.5,  correspondiente al resultado de  uno de 
+
+los experimentos desarrollados por Solan [62]. 
+
+    El  experimento  de  la  gura  se  llevó  a  cabo  deniendo  una  gramática  bási- 
+
+ca  con  un  lexicón  peque√±o,  generando  un  conjunto  de  sentencias  a  partir  de 
+
+la gramática, usando dichas sentencias para el entrenamiento, y nalmente re- 
+
+visando, analíticamente, la correspondencia entre ambas gramáticas, la original 
+
+y la generada. 
+
+    En  este  trabajo,  donde  se  hace  uso  de  sentencias  extraídas  de  un  corpus 
+
+construido automáticamente con contenidos de Internet (usando el mecanismo 
+
+descrito  en  el  capítulo  3),  no  es  posible  realizar  una  evaluación  analítica  co- 
+
+mo  la  presentada  por  Solan,  ya  que  la  gramática  generadora  es  desconocida. 
+
+Sin embargo, al realizar un experimento con cerca de 260.000 palabras del cor- 
+
+pus  en  mención,  una  evaluación  analítica  sobre  la  gramática  obtenida  reveló 
+
+que  algunas  palabras  (existentes  en  el  corpus)  pertenecientes  a  ciertas  cate- 
+
+
+----------------------- Page 65-----------------------
+
+CAPÍTULO 5.  APRENDIZAJE DE LA SINTAXIS CON REFUERZO MORFOL√ìGICO64 
+
+
+
+Figura  5.5:  Algunas  clases  de  equivalencia  identicadas  con  los  experimentos 
+
+realizados en [62] (identicadas con la letra E y un n√∫mero de índice arbitrario), 
+
+comparadas  con  los  elementos  de  la  gramática  que  generaron  las  sentencias 
+
+de  entrenamiento  (identicados  con  [P],  [V]  y  [ADV]  de  preposición,  verbo  y 
+
+adverbio respectivamente). 
+
+
+
+gorías  léxicas,  no  fueron  agregadas  a  ninguna  clase  de  equivalencia,  a  pesar 
+
+de  que  otras  palabras  del  corpus,  pertenecientes  a  esa  misma  categoría  léxi- 
+
+ca,  sí  formaron  una  clase  de  equivalencia  com√∫n.  Por  ejemplo,  en  la  clase  de 
+
+equivalencia  del  espa√±ol  {E:70:atacar::  nalizar::tomar::},  no  se  contemplaron 
+
+muchos otros verbos en innitivo, también terminados en ar, existentes en sen- 
+
+tencias como {:*puede:realizar : labores:de :interpretación:de:modo:informal# } 
+
+o  {:*quería:crear:un:ambiente  :ajeno:y:misterioso#},  las  cuales  son  sintáctica- 
+
+mente  correctas  si  se  sustituye  su  verbo  por  cualquier  elemento  de  la  clase  de 
+
+equivalencia en mención. 
+
+    A  pesar  de  que  el  algoritmo  ADIOS  tiene  dentro  de  sus  características  el 
+
+generar gramáticas 'seguras', donde sólo existen patrones y clases de equivalen- 
+
+cia si hay contextos dentro de las sentencias de entrenamiento que demuestren 
+
+que  son  válidas,  problemas  como  el  descrito  anteriormente  muestran  que  esta 
+
+seguridad   sacrica,  en  cierta  medida,  el  poder  generativo  de  las  gramáticas 
+
+obtenidas.  La  √∫nica  alternativa  a  la  mano  para  mejorar  los  resultados  del  al- 
+
+goritmo  en  cuanto  a  su  capacidad  de  identicar  los  elementos  atómicos  de  la 
+
+gramática (es decir, que agrupe más palabras relacionadas léxicamente entre sí 
+
+en clases de equivalencia) -suponiendo que ya tiene los parámetros ideales-, y así 
+
+mejorar su capacidad generadora, es, en principio, aumentar signicativamente 
+
+el n√∫mero de sentencias usadas para el entrenamiento, buscando que haya más 
+
+probabilidades  de  que  los  elementos  de  las  clases  de  equivalencia  existan  en 
+
+caminos con patrones comunes 
+
+    En  este  trabajo,  como  alternativa  al  incremento  del  n√∫mero  de  sentencias 
+
+de muestra del lenguaje para mejorar la inferencia de las categorías léxicas de 
+
+la gramática, se propone la integración de los resultados del aprendizaje no su- 
+
+pervisado  de  la  morfología  de  las  palabras  del  corpus  (descrito  en  el  capítulo 
+
+4), estrategia que no implica los enormes costos en tiempo de computación del 
+
+procesamiento de corpus cada vez más grandes, ya que no depende de tener una 
+
+enorme variedad de muestras de construcciones sintácticas, sino del conocimien- 
+
+to extraído de la estructura interna de las palabras del corpus. 
+
+    La característica del conocimiento morfológico adquirido que se busca aprovechar 
+
+para mejorar la identicación de las categorías léxicas, es el cambio de categoría 
+
+
+----------------------- Page 66-----------------------
+
+CAPÍTULO 5.  APRENDIZAJE DE LA SINTAXIS CON REFUERZO MORFOL√ìGICO65 
+
+
+
+  Cuadro 5.1: Algunos ejemplos de tranformaciones de los sujos del Espa√±ol 
+
+
+
+léxica (y de signicado) que producen las operaciones derivacionales de la mor- 
+
+fología derivativa [64, 4]. Esta característica se ve reejada en que típicamente 
+
+los sujos convierten la categoría base de la raíz con la cual se unen, a una nue- 
+
+va categoría. Por ejemplo, en los cuadros 5.1 y 5.2, se muestran algunos sujos 
+
+del Espa√±ol y del Inglés y cómo con estos sujos se puede predecir la categoría 
+
+léxica  de  las  palabras  que  los  usan  (usando  como  notación  [N],  [A],  [V],  para 
+
+sustantivo, adjetivo y verbo, respectivamente). 
+
+    Un elemento adicional que soporta el uso de esta característica para el prob- 
+
+lema  acá  discutido,  es  el  hecho  de  que  ya  ha  sido  aplicada  al  problema  de 
+
+procesamiento de lenguaje natural conocido como etiquetamiento de partes del 
+
+discurso  o part  of  speech  tagging [52, 68, 56], el cual consiste en asignarle, de 
+
+forma  automática  y  sin  conocimiento  previo,  categorías  a  las  palabras  de  un 
+
+texto. 
+
+
+
+5.4.       Estrategia          de    enriquecimiento               de    clases      de 
+
+           equivalencia y patrones 
+
+
+
+    Teniendo en cuenta la propiedad de los ajos de transformar las categorías 
+
+léxicas de las palabras a las cuales se aplican, la estrategia de enriquecimiento de 
+
+la gramática se aplica, sobre las clases de equivalencia y patrones previamente 
+
+identicados, de la siguiente manera: 
+
+
+
+   1.  Se buscan las clases de equivalencia cuyos elementos correspondan a una 
+
+       misma  categoría  léxica.  Como  se  muestra  en  la  gura  5.6,  las  clases  de 
+
+       equivalencia  seleccionadas  para  ser  enriquecidas  son  aquellas  cuyos  ele- 
+
+       mentos,  en  cierta  proporción  (dada  por  el  parámetro  EP)  pertenezcan  a 
+
+
+----------------------- Page 67-----------------------
+
+CAPÍTULO 5.  APRENDIZAJE DE LA SINTAXIS CON REFUERZO MORFOL√ìGICO66 
+
+
+
+   Cuadro 5.2: Algunos ejemplos de tranformaciones de los sujos del Inglés 
+
+
+
+       un mismo cluster de palabras relacionadas morfológicamente. 
+
+
+
+   2.  Para cada clase de equivalencia que cumplan con la condición anterior, se 
+
+       busca dentro de los clusters de palabras relacionadas entre sí por sus carac- 
+
+       terísticas de sujación (descrito en la sección 4.3), clusters que contengan 
+
+       al menos un elemento de la clase de equivalencia, ver gura 5.7. 
+
+
+
+   3.  A  la  clase  de  equivalencia  se  le  agregan  las  raíces  contenidas  dentro  del 
+
+       cluster,  aplicándoles  las  mismas  operaciones  de  sujación  usadas  por  las 
+
+       palabras de la clase de equivalencia (ver gura 5.8). 
+
+
+
+   4.  Tal  como  se  muestra  en  la  gura  5.8,  una  vez  se  han  agregado  nuevas 
+
+       palabras a una clase de equivalencia, dichas palabras son sustituidas dentro 
+
+       de los patrones por la clase de equivalencia. 
+
+
+
+5.5.       Integración de la estrategia de enriquecimien- 
+
+           to 
+
+
+
+    La adaptación propuesta para el algoritmo ADIOS, se realiza sobre una im- 
+
+plementación  en  Java  de  dicho  algoritmo,  conocida  como  JADios,  la  cual  fue 
+
+suministrada  directamente  por  uno  de  los  coautores  de  las  primeras  publica- 
+
+                                                                        1 
+
+ciones relacionadas con este algoritmo [61, 21], Eytan Ruppin  , de la Universi- 
+
+dad de Tel Aviv (Israel). 
+
+    JADios genera, a partir de un conjunto de sentencias demarcadas con símbo- 
+
+los de inicio y n ('*' y '#' respectivamente), los caminos, patrones y clases de 
+
+
+
+   1http://www.cs.tau.ac.il/~ruppin/ 
+
+
+----------------------- Page 68-----------------------
+
+CAPÍTULO 5.  APRENDIZAJE DE LA SINTAXIS CON REFUERZO MORFOL√ìGICO67 
+
+
+
+       Figura 5.6: Selección de las clases de equivalencia a enriquecerse. 
+
+
+
+Figura 5.7: Identicación de clases de equivalencia que se pueden enriquecer a 
+
+través del conocimiento morfológico extraído. 
+
+
+
+Figura 5.8: Enriquecimiento de las clases de equivalencia y ajuste de los caminos. 
+
+
+----------------------- Page 69-----------------------
+
+CAPÍTULO 5.  APRENDIZAJE DE LA SINTAXIS CON REFUERZO MORFOL√ìGICO68 
+
+
+
+Figura  5.9:  Modelo  de  clases  recursivo  para  la  representación  de  gramáticas 
+
+generadas por el algoritmo ADIOS, usado para el enriquecimiento de las clases 
+
+de equivalencia y la generación de sentencias novel. 
+
+
+
+equivalencia descritos anteriormente, en archivos de texto plano, usando el for- 
+
+mato mostrado en las guras 5.7 y 5.8. Para integrar la estrategia de enriquec- 
+
+imiento  de  clases  de  equivalencia  propuesto,  a  partir  de  la  salida  de  JADios, 
+
+se  genera  un  modelo  de  objetos  que  representa  las  relaciones  entre  caminos, 
+
+patrones y clases de equivalencia obtenidos. Con este modelo de objetos se fa- 
+
+cilita, por un lado, la generación automática de todas las posibles sentencias de 
+
+la gramática que se está representando, y por el otro, la inspección y extensión 
+
+de las clases de equivalencia de dicha gramática. En la gura 5.9 se muestra el 
+
+modelo de clases recursivo denido para la manipulación de la salida del algo- 
+
+ritmo ADIOS, el cual permite representar cualquier conguración de gramática 
+
+de  dicho  algoritmo,  como  por  ejemplo,  patrones  que  contienen  otros  patrones, 
+
+patrones  que  contienen  simultáneamente  palabras,  otros  patrones  y  clases  de 
+
+equivalencia, etc. 
+
+    A partir del modelo de objetos generado con la gramática obtenida con JA- 
+
+Dios, y del conjunto de clusters de palabras relacionadas morfológicamente entre 
+
+sí (descrito en la sección 4.3), se aplica el algoritmo 5.1, el cual, primero iden- 
+
+tica las clases de equivalencia que pueden extenderse con los elementos de un 
+
+
+----------------------- Page 70-----------------------
+
+CAPÍTULO 5.  APRENDIZAJE DE LA SINTAXIS CON REFUERZO MORFOL√ìGICO69 
+
+
+
+Algorithm  5.1 Enriquecimiento de las clases de equivalencia obtenidas con el 
+
+algoritmo ADIOS a partir de los clusters de palabras relacionadas morfológica- 
+
+mente entre sí. 
+
+       updateEquivalenceClasses(Map<Integer,Pattern> patternsMap, 
+
+           Map<Integer,EquivalenceClass> equivalenceClassesMap, 
+
+           Set<Cluster> clusterSet) 
+
+
+
+             for each clusterSet cluster 
+
+
+
+                 for each cluster.words word 
+
+
+
+                      clustersMap.put(cluster,word) 
+
+
+
+             for each equivalenceClassesMap.elements equivalenceClass 
+
+
+
+                  ecRelatedCluster <- getClosestCluster(equivalenceClass, clustersMap) 
+
+                  suffix <- getCommonSuffix(equivalenceClass) 
+
+                  if (intersection(equivalenceClass,ecRelatedCluster)/equivalenceClass.size) > EP 
+
+
+
+                      for each ecRelatedCluster.roots root 
+
+
+
+                         if (!equivalenceClass.containsWord(root+suffix) 
+
+
+
+                           equivalenceClass.addWord(root+suffix) 
+
+                           substituteWordsOnPatternsWithEquivalenceClass(patternsMap, 
+
+                              root+suffix,equivalenceClass.id) 
+
+
+
+cluster de palabras, luego enriquece dichas clases de equivalencia, y nalmente 
+
+actualiza los patrones, sustituyendo en éstos las nuevas palabras incorporadas a 
+
+clases de equivalencia, por dichas clases de equivalencia. 
+
+
+
+5.6.       Experimentación 
+
+
+
+5.6.1.      Construcción de las sentencias  de  entrenamiento 
+
+
+
+    Las  sentencias  usadas  para  el  entrenamiento  del  algoritmo  ADIOS  fueron 
+
+extraídas de los corpus, en inglés y espa√±ol, generados automáticamente con la 
+
+herramienta  descrita  en  el  capítulo  3,  a  partir  de  contenidos  disponibles  libre- 
+
+mente en Internet. Se buscó que las sentencias extraídas del corpus no tuvieran 
+
+signos de puntuación dentro de su construcción (ya que el algoritmo no contem- 
+
+pla el manejo de dichos elementos), por esto, se usaron los signos de puntuación 
+
+básicos (. , ; :) como elementos separadores de sentencias. 
+
+    Para seleccionar una muestra de sentencias de buena calidad (es decir, cuya 
+
+secuencia de palabras tenga una probabilidad baja de ser ruido, o de no corre- 
+
+sponder a construcciones sintácticas), se denió como criterio de selección de una 
+
+secuencia (para ser tratada como sentencia), el cumplimiento de las siguientes 
+
+condiciones: 
+
+
+
+       Tener una proporción de palabras peque√±as (de 3 letras o menos) respecto 
+
+       al  total  de  palabras  de  la  secuencia  menor  a  un  valor  determinado.  Con 
+
+       esto,  se  busca  aceptar  sólo  aquellas  secuencias  que  tengan  una  composi- 
+
+       ción de elementos cortos (típicamente conectores) y demás elementos más 
+
+       largos (adverbios, adjetivos, artículos, etc). 
+
+
+----------------------- Page 71-----------------------
+
+CAPÍTULO 5.  APRENDIZAJE DE LA SINTAXIS CON REFUERZO MORFOL√ìGICO70 
+
+
+
+       Tener  un  n√∫mero  mínimo  y  máximo  de  palabras  determinados.  Con  es- 
+
+       to se busca evitar tener secuencias muy cortas de las cuales no se puedan 
+
+       extraer patrones signicativos, de la misma manera que se busca evitar se- 
+
+       cuencias muy largas, que probablemente, al no tener signos de puntuación, 
+
+       correspondan a ruido o a construcciones sintácticas incorrectas. 
+
+
+
+       Tener  al  menos  cierto  n√∫mero  de  palabras  dentro  de  la  secuencia,  que 
+
+       también existan dentro de clusters de palabras (descritos en la sección 4.3). 
+
+       Con esto, se busca aumentar la probabilidad de que se den las condiciones 
+
+       para enriquecer las clases de equivalencia obtenidas con el algoritmo. 
+
+
+
+Para  los  experimentos  realizados,  se  seleccionaron,  tanto  para  el  inglés  como 
+
+el espa√±ol, cerca de 250.000 sentencias, usando los siguientes parámetros: pro- 
+
+porción de palabras peque√±as: 0.4, n√∫mero mínimo y máximo de palabras: (3, 
+
+10), n√∫mero mínimo de palabras que debe tener la sentencia asociadas a alg√∫n 
+
+cluster: 1. 
+
+    A pesar de que con el corpus disponible se podía crear un conjunto de sen- 
+
+tencias  mucho  mayor,  250.000  fue  el  menor  tama√±o  de  muestra  con  el  que  se 
+
+logró identicar conjuntos de patrones y clases de equivalencia signicativos con 
+
+el  algoritmo.  Dado  el  tiempo  de  ejecución  del  algoritmo  (cerca  de  5  días  para 
+
+las  250.000  sentencias  en  un  servidor  linux  dedicado  a  esta  tarea),  aumentar 
+
+el  n√∫mero  de  sentencias  repercutía  en  tiempos  de  ejecución  demasiado  altos, 
+
+dicultando las tareas de experimentación. 
+
+
+
+5.6.2.      Generación de  sentencias novel 
+
+
+
+    Para  generar  las  sentencias  novel,  a  partir  de  la  gramática  obtenida  tras 
+
+entrenar al algoritmo ADIOS (para cada idioma), se construyó el modelo de ob- 
+
+jetos correspondiente al modelo de clases de la gura 5.9 y se aplicó la estrategia 
+
+de enriquecimiento de clases de equivalencia descrita anteriormente. Finalmente, 
+
+a partir de dicho modelo de objetos, y aplicando las reglas de reescritura dadas 
+
+por  los  patrones  y  clases  de  equivalencia  asociadas  a  los  caminos,  se  genera  el 
+
+conjunto de sentencias novel. 
+
+
+
+5.6.3.      Evaluación de  sentencias  novel 
+
+
+
+    Para  las  gramáticas  aprendidas  con  el  algoritmo  ADIOS,  no  es  factible  la 
+
+vericación  automática,  ya  que  la  gramática  completa  de  un  lenguaje  natural 
+
+resulta  inaccesible,  y  sólo  un  jurado  humano  podría  evaluar  la  validez  de  sus 
+
+elementos con certeza [62]. Dada esta restricción, para este trabajo se propone 
+
+un  mecanismo  de  evaluación  aproximada:  evaluación  basada  en  N-gramas  y 
+
+corpus, complementada con evaluación humana. 
+
+    Este  mecanismo  de  evaluación  está  soportado  por  la  estrategia  de  veri- 
+
+cación, basada en N-gramas, usada por algunas técnicas estadísticas de traduc- 
+
+ción automática de textos [14], siguiendo el principio de Markov (que arma que 
+
+una palabra sólo es afectada en el contexto local). La idea es, como se muestra 
+
+en  la  gura  5.10,  por  cada  sentencia  que  se  quiera  vericar,  generar  todos  los 
+
+
+----------------------- Page 72-----------------------
+
+CAPÍTULO 5.  APRENDIZAJE DE LA SINTAXIS CON REFUERZO MORFOL√ìGICO71 
+
+
+
+Figura  5.10:  Vericación  de  sentencias  basada  en  tri-gramas  evaluados  con  un 
+
+buscador de Internet. 
+
+
+
+posibles N-gramas (en este caso tri-gramas) usando una ventana deslizante de 
+
+tama√±o N, y vericar que exista evidencia de la validez de dicho N-grama con- 
+
+sultando el contenido de un corpus, o alternativamente, como lo propone Liang 
+
+[16], consultando en un buscador de Internet. 
+
+    Para implementar este mecanismo de evaluación, se usó el API de b√∫squeda 
+
+de  contenidos  de  Google2   y  el  modelo  de  ejecución  concurrente  descrito  en  la 
+
+
+
+sección 3.4. Al iniciar el proceso de evaluación, varios procesos en paralelo toman 
+
+cada  sentencia,  y  para  cada  N-grama  obtenido  con  la  ventana  deslizante  (ver 
+
+gura  5.10),  se  realiza  una  consulta  al  buscador  de  Internet  (usando  comillas 
+
+para que el buscador arroje resultados sólo si hay ocurrencias del N-grama con 
+
+sus palabras en el orden original). Si todos los N-gramas de la sentencia tienen 
+
+al menos una ocurrencia, se considera que dicha sentencia es válida sintáctica- 
+
+mente. 
+
+
+
+5.6.4.      Evaluación humana colectiva 
+
+
+
+    El mecanismo de evaluación descrito anteriormente tiene como ventaja, además 
+
+de  su  facilidad  para  de  procesar  miles  de  sentencias  en  minutos,  la  conabili- 
+
+dad  de  la  evaluación  de  las  sentencias  identicadas  como  correctas,  ya  que  se 
+
+tiene  como  soporte  las  evidencias  de  uso  de  las  construcciones  sintácticas  de 
+
+dichas sentencias, en los contenidos p√∫blicos de Internet. Sin embargo, para las 
+
+sentencias  rechazadas  por  este  mecanismo  de  evaluación  no  se  puede  armar 
+
+que todas sean sentencias sintácticamente incorrectas, ya que su inexistencia en 
+
+
+
+   2http://ajax.googleapis.com 
+
+
+----------------------- Page 73-----------------------
+
+CAPÍTULO 5.  APRENDIZAJE DE LA SINTAXIS CON REFUERZO MORFOL√ìGICO72 
+
+
+
+Figura 5.11: Interfaz de usuario de la herramienta desarrollada para la evaluación 
+
+humana colectiva. 
+
+
+
+corpus enormes o en buscadores de Internet puede indicar simplemente que las 
+
+construcciones de estas sentencias no son de uso frecuente, o que no hay a√∫n un 
+
+contexto en la realidad que haya motivado su uso en documentos escritos. Por es- 
+
+ta razón, en este trabajo la evaluación automática de sentencias se complementa 
+
+con  un  mecanismo  de  evaluación  humana,  que  permite  de  manera  estadística, 
+
+identicar la proporción de sentencias sintácticamente inválidas generadas por 
+
+la técnica de aprendizaje no supervisado de sintaxis descrita anteriormente. 
+
+    El  mecanismo  de  evaluación  humana  desarrollado  para  este  trabajo  es  en 
+
+sí,  en  un  ejercicio  de  evaluación  humana  colectiva,  inspirada  por  el  principio 
+
+de 'computación humana' [9], donde a partir del consenso de opinión de varias 
+
+personas, se clasican datos intratables por máquinas. Este ejercicio se llevó a 
+
+cabo creando una aplicación Web (ver gura 5.11) que muestra al usuario una 
+
+selección  aleatoria  del  conjunto  de  sentencias  no  aceptadas  por  el  mecanismo 
+
+de  evaluación  automático,  y  le  da  la  posibilidad  de  juzgar  si  considera  dichas 
+
+sentencias válidas o no. 
+
+    Cuando la aplicación ha sido utilizada por cierto tiempo por un conjunto de 
+
+personas previamente contactadas, la muestra sobre la cual se realizará el análi- 
+
+sis estadístico será el conjunto de sentencias evaluadas positiva o negativamente 
+
+al  menos  dos  veces  (para  que  cada  sentencia  haya  sido  revisada  al  menos  con 
+
+dos criterios diferentes). Por otro lado, la clasicación nal de cada sentencia la 
+
+dará la selección (sentencia correcta/incorrecta) que haya sido dada mayoritari- 
+
+amente por los usuarios (en caso de empate, dicha sentencia no es contemplada 
+
+dentro de la muestra). 
+
+
+----------------------- Page 74-----------------------
+
+CAPÍTULO 5.  APRENDIZAJE DE LA SINTAXIS CON REFUERZO MORFOL√ìGICO73 
+
+
+
+5.6.5.      Resultados obtenidos 
+
+
+
+Poder  generativo  de  las  gramáticas 
+
+
+
+    A partir de las cerca de las 250.000 sentencias usadas durante el entrenamien- 
+
+to, para la gramática del inglés se obtuvieron 139 clases de equivalencia y 308 
+
+patrones, mientras que para el espa√±ol se obtuvieron 85 clases de equivalencia 
+
+y  133  patrones,  con  los  cuales  dichas  gramáticas  pueden  generar  hasta  1375  y 
+
+11296  sentencias  respectivamente.  Al  aplicar  la  técnica  de  enriquecimiento  de 
+
+clases de equivalencia propuesta (ver gura 5.12), la gramática del espa√±ol au- 
+
+mentó su capacidad de generación a cerca de 200.000 sentencias, mientras que 
+
+la gramática del inglés aumentó esta misma capacidad a entre 2.5 y cerca de 6 
+
+millones de sentencias. En esta misma gura se puede observar que variando el 
+
+parámetro  EP,  para  el  espa√±ol  la  capacidad  de  generación  de  sentencias  varía 
+
+muy poco, mientras que para el inglés, ésta capacidad de generación se reduce 
+
+a menos de la mitad entre los parámetros EP=0 y EP=1. 
+
+    El  hecho  de  que  variar  el  parámetro  EP no  afecte  signicativamente  la ca- 
+
+pacidad  de  generación  de  la  gramática  encontrada  para  el  espa√±ol,  se  puede 
+
+interpretar  como  consecuencia  de  que  la  mayoría  de  clases  de  equivalencia  es- 
+
+tán contenidos, en su totalidad, en alg√∫n cluster de palabras. Lo anterior, y el 
+
+hecho  de  que  el  poder  generativo  de  la  gramática  del  inglés  se  reduzca  signi- 
+
+cativamente  variando  el  parámetro  EP,  se  puede  explicar  como  consecuencia 
+
+de  que  para  la  gramática  del  inglés  (al  revisarla  manualmente)  se  identican 
+
+muchas  más  clases  de  equivalencia  cuyos  elementos  no  tienen  relación  morfos- 
+
+intáctica sino semántica, como por ejemplo, los días de la semana, o variantes 
+
+de referentes a personas: 
+
+
+
+       E:56:policeman:1:inmate:1:laotian:1:soldier:1:man:1:student:2:person:3:arab:1: 
+
+
+
+       E:83:thursday:1:wednesday:1:monday:1:friday:1: 
+
+
+
+Precisión  de  las  gramáticas 
+
+
+
+    Para vericar la precisión de las gramáticas enriquecidas, se utilizó el mecan- 
+
+ismo  descrito  en  la  sección  5.6.3,  con  un  subconjunto  de  sentencias  novel,  se- 
+
+leccionando  aleatoriamente  para  cada  camino,  un  porcentaje  de  las  posibles 
+
+sentencias  que  pudieran  generarse  con  dicho  camino  (aplicando  las  reglas  de 
+
+reescritura implícitas en los patrones y clases de equivalencia incluidos en éste), 
+
+de manera que el n√∫mero total de sentencias quedara cercano a las 10.000. 
+
+    La reducción del tama√±o del conjunto original se hace para, además de facil- 
+
+itar la ejecución de las pruebas (reduciendo su tiempo de ejecución), evitar las 
+
+interrupciones abruptas de las conexiones con los buscadores de Internet, cuan- 
+
+do éstos detectan un volumen de peticiones muy alto de un mismo cliente (en 
+
+las  pruebas  realizadas  con  Google,  al  realizar  consecutivamente  500  consultas 
+
+concurrentes, la conexión con este buscador se anuló temporalmente al acercarse 
+
+a las 30.000 sentencias vericadas). 
+
+
+----------------------- Page 75-----------------------
+
+CAPÍTULO 5.  APRENDIZAJE DE LA SINTAXIS CON REFUERZO MORFOL√ìGICO74 
+
+
+
+Figura  5.12:  N√∫mero  de  sentencias  novel  que  pueden  generar  las  gramáticas 
+
+del  inglés  y  del  espa√±ol  sin  el  proceso  de  enriquecimiento  y  enriquecidas  con 
+
+conocimiento  morfológico  de  los  clusters  de  palabras  usando  los  valores  0,  0.5 
+
+y 1 para el parámetro EP. Los valores de las gramáticas originales del inglés y 
+
+el espa√±ol, no visibles por la escala de la gráca, corresponden a 1375 y 11296 
+
+respectivamente. 
+
+
+
+    En  las  siguiente  tablas,  se  indican  los  resultados  de  los  experimentos  de 
+
+acuerdo al n√∫mero de sentencias generadas por la gramática, teniendo en cuenta 
+
+las restricciones del parámetro EP, el porcentaje de sentencias seleccionadas para 
+
+cada camino (indicado como SC), y el porcentaje de palabras a tener en cuenta 
+
+para cada clase de equivalencia (indicado como CE). 
+
+
+
+                                        Espa√±ol 
+
+
+
+  Parámetro EP       N√∫mero de sentencias (5 % SC, 100 % CE)           Porcentaje aceptados 
+
+         0                                10954                                 41,1 % 
+
+        0.5                               10863                                 41,1 % 
+
+         1                                10843                                 41,2 % 
+
+
+
+                                         Inglés 
+
+
+
+  Parámetro EP       N√∫mero de sentencias (1 % SC, 10 % CE)           Porcentaje aceptados 
+
+         0                               11902                                  45 % 
+
+        0.5                              11902                                  45 % 
+
+         1                               11902                                  45 % 
+
+
+
+Validación  de  las  sentencias  no  aceptadas 
+
+
+
+    Para  vericar  estadísticamente  las  sentencias  rechazadas  por  el  método  de 
+
+evaluación automático, se utilizó el mecanismo de evaluación humana descrito 
+
+
+----------------------- Page 76-----------------------
+
+CAPÍTULO 5.  APRENDIZAJE DE LA SINTAXIS CON REFUERZO MORFOL√ìGICO75 
+
+
+
+Cuadro 5.3: Muestra de las sentencias rechazadas por el método de evaluación 
+
+automática, y posteriormente aprobadas por evaluadores humanos. 
+
+
+
+en  la  sección  5.6.4  con  las  sentencias  generadas  por  la  gramática  en  espa√±ol, 
+
+contactando  a  cerca  de  200  colaboradores,  hablantes  nativos  de  este  idioma. 
+
+Como  resultado,  se  obtuvo  la  evaluación  de  471  sentencias  (que  cumplen  la 
+
+restricción de haber sido evaluadas al menos 2 veces sin empates), de las cuales 
+
+315 fueron aprobadas y 145 rechazadas. 
+
+    En la tabla 5.3 se presenta una muestra de este conjunto de 415 sentencias, 
+
+previamente rechazadas por la técnica automática, y posteriormente aceptadas 
+
+por jurados humanos. Como se observa en esta tabla, sentencias como la 5, 19 y 
+
+20 fueron rechazadas por no tener evidencia de tri-gramas como 'salitreras más 
+
+ausentes' o 'jurídico Jose Pantaleon', las cuales, son sintácticamente válidas, y 
+
+podrían ser semánticamente correctas en contextos poco comunes pero posibles. 
+
+    Por otro lado, en la tabla 5.4 se muestran las sentencias rechazadas tanto por 
+
+el método de evaluación automático, como por los evaluadores humanos. En este 
+
+caso, se observa que sentencias como la 1, 8, 9, 23, 20, 21, y 25-28 corresponden 
+
+a  construcciones  sintácticas  incorrectas.  Sin  embargo,  al  inspeccionar  las  re- 
+
+glas  generadoras  de  estas  sentencias:  :*Las:__P26:superaban: el:de:altura#:, 
+
+*Los:censos: de:revelan:__P17:en:individuos#  se  hace  evidente  que  parte  de 
+
+los errores sintácticos identicados se originan desde el corpus y su tratamiento. 
+
+
+----------------------- Page 77-----------------------
+
+CAPÍTULO 5.  APRENDIZAJE DE LA SINTAXIS CON REFUERZO MORFOL√ìGICO76 
+
+
+
+Cuadro  5.4:  Muestra  de  las  sentencias  rechazadas  tanto  por  el  mecanismo  de 
+
+evaluación automático como por los evaluadores humanos. 
+
+
+----------------------- Page 78-----------------------
+
+CAPÍTULO 5.  APRENDIZAJE DE LA SINTAXIS CON REFUERZO MORFOL√ìGICO77 
+
+
+
+5.7.       Resumen 
+
+
+
+    En este capítulo se revisó el algoritmo de aprendizaje no supervisado de sin- 
+
+taxis ADIOS (Automatic Distillation of Structure), y se propuso, con fundamen- 
+
+tos teóricos de la linguística, un mecanismo de enriquecimiento de la gramática 
+
+obtenida con éste algoritmo, buscando que su capacidad de generación, y nivel 
+
+de  compresión  mejorara.  Este  mecanismo  de  enriquecimiento  hace  uso  de  los 
+
+conjuntos  de  palabras  identicados  con  la  técnica  de  agrupamiento  jerárquico 
+
+de  palabras  descrito  en  el  capítulo  4,  y  se  basa  en  la  relación,  sugerida  por  la 
+
+literatura, entre la morfología y la sintaxis de los lenguajes naturales, en partic- 
+
+ular, la relación entre los procesos de sujación y las categorías léxicas de una 
+
+gramática. Para la evaluación de los resultados obtenidos, se realizaron compar- 
+
+ativas entre las diferencias de capacidad de generación de las gramáticas, antes 
+
+y  después  de  aplicar  el  mecanismo  de  enriquecimiento  propuesto,  y  se  vericó 
+
+la  validez  sintáctica  de  las  nuevas  sentencias  usando  dos  medidas  complemen- 
+
+tarias: medidas automáticas soportadas por motores de b√∫squeda de Internet, y 
+
+evaluaciones humanas colectivas. Con los resultados obtenidos con la medida au- 
+
+tomática, se encontró que había evidencia en Internet de la validez de menos de 
+
+la mitad de las sentencias, sin embargo, tras realizar la evaluación humana con 
+
+una muestra de las sentencias rechazadas por la medida automática, fue posible 
+
+identicar que el n√∫mero de sentencias válidas sintácticamente, es superior a lo 
+
+que indican las evidencias dadas por los buscadores de Internet. 
+
+
+----------------------- Page 79-----------------------
+
+Capítulo 6 
+
+
+
+Conclusiones y trabajo futuro 
+
+
+
+    De acuerdo con los resultados obtenidos en los experimentos realizados con 
+
+los corpus extraídos de Internet, que incluyeron una revisión analítica, y su uti- 
+
+lización con técnicas de aprendizaje no supervisado de morfología y sintaxis, se 
+
+observa  que  con  un  volumen  sucientemente  grande  de  muestras  de  lenguaje 
+
+natural, y a√∫n con el volumen de ruido que éstas contienen cuando se extraen 
+
+de sitios Web, estadísticamente prevalecen los conjuntos de palabras y construc- 
+
+ciones sintácticas válidas. Esto se observó en los resultados del aprendizaje no 
+
+supervisado de la morfología, donde usando el conjunto de palabras extraído de 
+
+este corpus con imperfecciones, fue posible obtener, para el inglés y el espa√±ol, 
+
+un n√∫mero importante de paradigmas de ajación documentados en la literatu- 
+
+ra de la linguística de cada uno de estos idiomas. De la misma manera, usando 
+
+unas heurísticas muy básicas, fue posible extraer del corpus sentencias que per- 
+
+mitieron la identicación de patrones y categorías gramaticales coherentes con 
+
+la  gramática  (tras  hacer  una  revisión  analítica)  de  estos  dos  idiomas.  Con  lo 
+
+anterior se puede concluir que con el uso de corpus extraídos de Internet, cuan- 
+
+do éstos son signicativamente grandes, sí es posible la obtención de resultados 
+
+razonables con las técnicas de aprendizaje de lenguajes naturales. 
+
+    Sin  embargo,  en  el  desarrollo  de  este  trabajo,  el  efecto  de  los  pocos  ele- 
+
+mentos  con  ruido  obtenidos  del  corpus  se  hizo  muy  evidente  al  incorporar  los 
+
+resultados del aprendizaje no supervisado de la morfología con los resultados del 
+
+aprendizaje no supervisado de la sintaxis, ya que la inclusión de ciertas palabras 
+
+de idiomas diferentes al del corpus (principalmente para el corpus del espa√±ol, 
+
+contaminado  por  algunas  palabras  en  inglés  incluidas  por  defecto  por  los  ad- 
+
+ministradores de contenido de la Web), o de ruido en general, repercutió en la 
+
+generación  de  categorías  léxicas  con  elementos  inválidos,  y  por  lo  tanto,  en  la 
+
+generación de sentencias sintácticamente inválidas. Para reducir este fenómeno 
+
+y mejorar la precisión de los resultados del aprendizaje de la morfología y la sin- 
+
+taxis, se propone como trabajo futuro, la inclusión de una técnica de análisis de 
+
+contexto que permita, de manera complementaria, identicar aquellas palabras 
+
+que tienen un rol estático dentro del corpus (es decir, que existen en un √∫nico 
+
+contexto), para descartar dichas palabras y las sentencias que las contengan. 
+
+
+
+                                             78 
+
+
+----------------------- Page 80-----------------------
+
+CAPÍTULO 6.         CONCLUSIONES Y TRABAJO FUTURO                                           79 
+
+
+
+    Para los resultados obtenidos con la técnica de aprendizaje no supervisado 
+
+de  la  morfología,  la  principal  conclusión  surge  de  su  aplicación  al  idioma  es- 
+
+pa√±ol,  ya  que  el  algoritmo  usado  para  este  trabajo  es,  en  principio,  concebido 
+
+para trabajar con muestras de lenguajes predominantemente aglutinativos como 
+
+el  inglés.  El  principal  inconveniente  de  los  resultados  obtenidos  con  la  técnica 
+
+de  aprendizaje  no  supervisado  de  la  morfología,  aplicado  a  las  palabras  de  un 
+
+corpus en espa√±ol (que es predominantemente exivo), es que en muchos casos, 
+
+las  raíces  identicadas  para  cada  palabra  no  pueden  asociarse  a  las  palabras 
+
+originales de donde fueron derivadas (por ejemplo tras segmentar las palabras: 
+
+[PERIOD]/[ICO], [MEDI]/[ANO], no es explícito que las raíces de estas dos pal- 
+
+abras se derivan de periodo y medio, respectivamente), caso contrario al inglés, 
+
+donde las operaciones morfológicas son relativamente más simples. Sin embargo, 
+
+a  pesar  de  este  inconveniente,  la  utilización  de  esta  técnica  permitió  la  identi- 
+
+cación  de  un  n√∫mero  importante  de  paradigmas  de  sujación  documentados 
+
+en  la  literatura  de  la  linguística  del  espa√±ol,  que  a  su  vez  permitieron  identi- 
+
+car conjuntos de palabras que comparten los mismos paradigmas de sujación 
+
+(con lo que fue posible detectar sujaciones incorrectas y agrupar palabras que 
+
+comparten características léxicas). 
+
+    Con  lo  anterior,  se  puede  concluir  que  aunque  las  técnicas  de  aprendizaje 
+
+no supervisado de morfología, basadas en el principio de Harris [29], no son del 
+
+todo adecuadas para idiomas como el espa√±ol (si el propósito es obtener detalles 
+
+como  las  formas  canónicas  de  las  raíces),  sí  resultan  muy  √∫tiles  si  se  usan  co- 
+
+mo  soporte  a  un  proceso  de  aprendizaje  de  más  alto  nivel  (como  el  sintáctico 
+
+semántico), por toda la información léxica que puede aportar al proceso a cos- 
+
+to  un  computacional  relativamente  bajo  (comparando  el  costo  de  procesar  un 
+
+conjunto de palabras respecto al de procesar sentencias completas). 
+
+    Como trabajo futuro, para mejorar el desempe√±o obtenido en el componente 
+
+morfológico, se propone enmarcar el algoritmo de aprendizaje de la morfología 
+
+en un proceso iterativo que haga uso de la estrategia de identicación de opera- 
+
+ciones  de  sujación  incorrectas propuesta  en el  capítulo  4.  De esta  manera,  se 
+
+pueden  descartar  las  palabras  segmentadas  de  forma  incorrecta,  y  en  las  sigu- 
+
+ientes iteraciones, buscar nuevas hipótesis de segmentación para dichas palabras, 
+
+para así converger hacia una morfología de mayor precisión. 
+
+
+
+    En  cuanto  a  la  estrategia  de  enriquecimiento  de  las  gramáticas  obtenidas 
+
+con el algoritmo de aprendizaje no supervisado de sintaxis ADIOS -basada en el 
+
+conocimiento morfológico adquirido también de forma no supervisada-, se logró 
+
+incrementar la capacidad generadora de dichas gramáticas, para el espa√±ol y el 
+
+inglés, aproximadamente 200 y 500 veces respectivamente. En cuanto a la validez 
+
+de las sentencias generadas por la gramática enriquecida, debido a factores como 
+
+el ruido del corpus, las falsas categorías léxicas identicadas a partir de hipótesis 
+
+de sujación también falsas, o las palabras asociadas de forma equivocada a una 
+
+categoría léxica, menos de la mitad de las sentencias lograron pasar las prueba 
+
+de vericación automática de sentencias en Internet (lo cual no necesariamente 
+
+signica  que  más  de  la  mitad  de  las  sentencias  generadas  sean  incorrectas,  de 
+
+
+----------------------- Page 81-----------------------
+
+CAPÍTULO 6.       CONCLUSIONES Y TRABAJO FUTURO                                       80 
+
+
+
+acuerdo  con  los  resultados  obtenidos  con  la  evaluación  con  jurados  humanos). 
+
+Sin embargo, el aspecto a resaltar de los resultados obtenidos en este apartado, es 
+
+que si las gramáticas enriquecidas fueran ajustadas (en sus clases de equivalencia 
+
+o patrones) para ya no generar las sentencias que no tienen evidencia de validez 
+
+(por ejemplo, por no existir en la Web un n√∫mero determinado de veces), dichas 
+
+gramáticas  a√∫n  tendrían  un  poder  generativo  60  y  230  veces  superior  a  las 
+
+gramáticas originales, para el espa√±ol y el inglés respectivamente. 
+
+    Por esta razón, como trabajo futuro, se propone la integración del mecanis- 
+
+mo de evaluación automática de sentencias descrito en el capítulo 5 al proceso 
+
+de enriquecimiento de las clases de equivalencia de las gramáticas. De esta man- 
+
+era, las gramáticas obtenidas tendrán un buen grado de precisión (la proporción 
+
+de sentencias correctas), a la vez que se mejorará la exhaustividad respecto a la 
+
+gramática no enriquecida, por tener un poder generativo mucho más alto. 
+
+
+
+    Finalmente,  y  retomando  la  motivación  original  de  este  trabajo,  como  tra- 
+
+bajo futuro se propone el uso del mecanismo de generación de sentencias novel, 
+
+para que a una sentencia dada, se le asignen categorías a cada una de las pal- 
+
+abras que la componen. De esta manera, el sistema presentado en este trabajo 
+
+podrá  ser  utilizado  para  el  etiquetamiento  automático  de  los  elementos  de  un 
+
+corpus, tarea requerida para la generación automática de ontologías, y por ende, 
+
+para la implementación de una infraestructura que de manera automática pueda 
+
+procesar los contenidos de Internet para permitir b√∫squedas semánticas. 
+
+
+----------------------- Page 82-----------------------
+
+Bibliografía 
+
+
+
+ [1]  G. Sidorov. A. Gelbukh. Procesamiento automático del espa√±ol con enfoque 
+
+     en recursos léxicos grandes.  IPN, Mexico, 2006. 
+
+
+
+ [2]  D.  J.  Allerton. Essentials  of  grammatical  theory  :  a  consensus  view  of 
+
+     syntax and morphology.  Routledge & Kegan Paul, 1979. 
+
+
+
+ [3]  Shlomo  Argamon,  Navot  Akiva,  Amihood  Amir,  and  Oren  Kapah.          E- 
+
+     cient unsupervised recursive word segmentation using minimum description 
+
+     length.  In  COLING  '04:  Proceedings  of  the  20th  international  conference 
+
+     on Computational Linguistics, page 1058, Morristown, NJ, USA, 2004. As- 
+
+     sociation for Computational Linguistics. 
+
+
+
+ [4]  Mark  C.  Baker.  Lexical  Categories:  Verbs,  Nouns  and  Adjectives.    Cam- 
+
+     bridge University Press, 2003. 
+
+
+
+ [5]  Marco Baroni, Johannes Matiasek, and Harald Trost. Unsupervised discov- 
+
+     ery of morphologically related words based on orthographic and semantic 
+
+     similarity.  In  Proceedings  of  the  ACL-02  workshop  on  Morphological  and 
+
+     phonological  learning ,  pages  4857,  Morristown,  NJ,  USA,  2002.  Associa- 
+
+     tion for Computational Linguistics. 
+
+
+
+ [6]  Laurie Bauer.  English Word-formation.  Cambridge Textbooks in Linguis- 
+
+     tics. Cambridge University Press, 1983. 
+
+
+
+ [7]  Laurie  Bauer.   Morphological  productivity.    Cambridge  University  Press, 
+
+     2001. 
+
+
+
+ [8]  Jorge  Bergua  Cavero.   Notas  sobre  sujos  de  origen  griego  en  espa√Ø¬æ√∑ol. 
+
+     Epos, 18:413419, 2002. 
+
+
+
+ [9]  Russ S. B. & McCarty W. Beynon, W. M.           Human computing: Modelling 
+
+     with meaning.  Literary and Linguistic Computing, 2006. 
+
+
+
+[10] Douglas/ S. Conrad/ R. Reppen Biber.          Corpus  Linguistics:  Investigating 
+
+     Language Structure and Use.  Cambridge University Press, 2000. 
+
+
+
+[11] S. Bordag.  Unsupervised and knowledge-free morpheme segmentation and 
+
+     analysis.  In In Proceedings of the Working Notes for the CLEF Workshop 
+
+     2007, Budapest, Hungary, 2007. 
+
+
+
+                                          81 
+
+
+----------------------- Page 83-----------------------
+
+BIBLIOGRAFÍA                                                                           82 
+
+
+
+[12] Paul Buitelaar, Philipp Cimiano, and Bernardo Magnini. Ontology Learning 
+
+     from Text: Methods, Evaluation and Applications , volume 123 of Frontiers 
+
+     in Articial Intelligence.  IOS Press, 2005. 
+
+
+
+[13] Bruno Camus Bergareche.  sujos apreciativos con derivados deverbales en 
+
+     espa√Ø¬æ√∑ol.  Revista de lolog√Ø¬æ√∑a rom√Ø¬æ√∑nica, ISSN 0212-999X, 14:8598, 
+
+     1997. 
+
+
+
+[14] Klein  S.  Miller  D.  Steinbaum  M.  Grassiany  T.  Carbonell,  J.  and  J.  Frey. 
+
+     Context-based  machine  translation.      In  Proceedings  of  the  Association  for 
+
+     Machine Translation of the Americas. AMTA, 2006. 
+
+
+
+[15] Waldemar  Castells.      El  léxico  castellano  de  origen  griego.  Documentos 
+
+     Linguísticos y Literarios 12, pages 914, 1986. 
+
+
+
+[16] Liang   chih  Yu,   Chung   hsien  Wu,   Andrew     Philpot,  and   Eduard   Hovy. 
+
+     Ontonotes: Sense pool verication using google n-gram and statistical tests. 
+
+     2008. 
+
+
+
+[17] N Chomsky. Knowledge of Language : Its Nature, Origin, and Use. Praeger, 
+
+     1986. 
+
+
+
+[18] Kenneth  W.  Church  and  Robert  L.  Mercer.        Introduction  to  the  special 
+
+     issue on computational linguistics using large corpora.        Comput. Linguist., 
+
+     19(1):124, 1993. 
+
+
+
+[19] Alexander Clark.  Unsupervised Language Acquisition: Theory and Practice. 
+
+     PhD thesis, Dec 2002. 
+
+
+
+[20] Vera Demberg.      A language-independent unsupervised model for morpho- 
+
+     logical  segmentation.    In  Proceedings  of  the  45  th  Annual  Meeting  of  the 
+
+     Association for Computational Linguistics, pages 920927, Praha, Czechia, 
+
+     2007. 
+
+
+
+[21] S  Edelman,  Z  Solan,  D.  Horn,  and  E.  Ruppin.     Bridging  computational, 
+
+     formaland psycholinguistic approaches to language.  In In Proc. of the 26th 
+
+      Conference of the Cognitive Science Society, Chicago, IL., 2004. 
+
+
+
+[22] W.  N.  Francis  and  H.  Kucera.     Brown  corpus  manual.      Providence,  RI: 
+
+     Brown University, 1964. 
+
+
+
+[23] Grigori  Sidorov.  Francisco  Velásquez,  Alexander  Gelbukh.       Agme:  Un  sis- 
+
+     tema de anáisis y generación de la morfología del espa√±ol.  In  Proc. Multi- 
+
+     lingual Information Access and Natural Language Processing, International 
+
+      Workshop (November 12) at IBERAMIA-2002,, pages 16., Sevilla, Spain, 
+
+     2002. 
+
+
+
+[24] Eric Gaussier.    Unsupervised learning of derivational morphology from in- 
+
+     ectional lexicons.   In  in  Proceedings  of  Unsupervised  Learning  in  Natural 
+
+     Language Processing, ACL 1999 Workshop, Maryland USA., 1999. 
+
+
+----------------------- Page 84-----------------------
+
+BIBLIOGRAFÍA                                                                         83 
+
+
+
+[25] Grigori Sidorov y Francisco Velásquez Gelbukh, Alexander.          Análisis mor- 
+
+     fológico automático del espa√±ol a través de generación.  Revista del Centro 
+
+     de Ciencias del Lenguaje, 2003, 28:926, 2003. 
+
+
+
+[26] John  Goldsmith.     Unsupervised  learning  of  the  morphology  of  a  natural 
+
+     language.   Comput. Linguist., 27(2):153198, 2001. 
+
+
+
+[27] John Goldsmith. An algorithm for the unsupervised learning of morphology. 
+
+     Nat. Lang. Eng., 12(4):353371, 2006. 
+
+
+
+[28] Margaret  A.  Hafer  and  Stephen  F.  Weiss.    Word  segmentation  by  letter 
+
+     successor  varieties.  Information    Storage  and  Retrieval,  10:1974371385, 
+
+     1974. 
+
+
+
+[29] Zellig Harris.  From phoneme to morpheme.         Language  31, pages 190222, 
+
+     1955. 
+
+
+
+[30] Zellig  S.  Harris. Structural  Linguistics. University  of  Chicago  Press,  7th 
+
+     (1966) edition edition, 1951. 
+
+
+
+[31] Jennifer Hay and Ingo Plag. What constrains possible sux combinations? 
+
+     on the interaction of grammatical and processing restrictions in derivational 
+
+     morphology.  Natural Language & Linguistic Theory, 22:565596, 2004. 
+
+
+
+[32] I.  Horrocks,  P.  Patel-Schneider,  and  F.  van  Harmelen.    From  SHIQ  and 
+
+     RDF  to  OWL:  The  making  of  a  web  ontology  language.      Journal  of  Web 
+
+     Semantics, 1(1):726, 2003. 
+
+
+
+[33] Yu Hu, Irina Matveeva, John Goldsmith, and Colin Sprague.            Using mor- 
+
+     phology  and  syntax  together  in  unsupervised  learning.    In  Proceedings  of 
+
+     the Workshop on Psychocomputational Models of Human Language Acqui- 
+
+     sition, pages 2027. Association for Computational Linguistics, June 2005. 
+
+
+
+[34] Iorgu IORDAN.  Observaciones sobre la formación de palabras en espa√±ol. 
+
+     Actas del III Congreso de la Asociación Internacional de Hispanistas, 1968. 
+
+
+
+[35] S. Johansson.   The Tagged LOB Corpus.  Norwegian Computing Centre for 
+
+     the Humanities., 1986. 
+
+
+
+[36] Francis  Katamba.     English  Words:  Structure,  History,  Usage.   Routledge, 
+
+     1994. 
+
+
+
+[37] A. & A. Renouf Kehoe.  Webcorp: Applying the web to linguistics and lin- 
+
+     guistics to the web.  In  WWW2002 Conference, Honolulu, Hawaii., (2002). 
+
+
+
+[38] A.  &  M.  Gee  Kehoe.   New  corpora  from  the  web:  making  web  text  more 
+
+     'text-like'. In Towards Multimedia in Corpus Studies, electronic publication, 
+
+      University of Helsinki., (2007). 
+
+
+
+[39] Frank Keller and Mirella Lapata.      Using the web to obtain frequencies for 
+
+     unseen bigrams.    Comput. Linguist., 29(3):459484, 2003. 
+
+
+----------------------- Page 85-----------------------
+
+BIBLIOGRAFÍA                                                                         84 
+
+
+
+[40] Adam Kilgarri and Gregory Grefenstette. Introduction to the special issue 
+
+     on the web as corpus.    Computational Linguistics, 29:333347, 2003. 
+
+
+
+[41] F.  Klaczko,  S.  Aliew. A  fuzzy  model  of  natural  language  acquisition  and 
+
+     syntax recognition by humans. In Integration of Knowledge Intensive Multi- 
+
+     Agent Systems, 2003. International Conference on, pages 287 293. LOPOS 
+
+     Technol. GmbH, Hamburg, Germany;, 2003. 
+
+
+
+[42] Dan Klein.    The unsupervised learning of natural language structure.  PhD 
+
+     thesis, Stanford, CA, USA, 2005.  Adviser-Christopher D. Manning. 
+
+
+
+[43] Emin   Erkan   Korkmaz    and   Gokturk   Ucoluk.    Genetic   programming     for 
+
+     grammar induction.     In Erik D. Goodman, editor,  2001  Genetic  and  Evo- 
+
+     lutionary  Computation  Conference  Late  Breaking  Papers,  pages  245251, 
+
+     San Francisco, California, USA, 9-11 2001. 
+
+
+
+[44] Vered  Kunik,  Zach  Solan,  Shimon  Edelman,  Eytan  Ruppin,  and  David 
+
+     Horn.  Motif extraction and protein classication.  In  CSB '05: Proceedings 
+
+     of the 2005 IEEE Computational Systems Bioinformatics Conference, pages 
+
+     8085, Washington, DC, USA, 2005. IEEE Computer Society. 
+
+
+
+[45] D.  Lewis.  The  reuters-21578  text  categorization  test  collection.  available 
+
+     at http://www.research.att.com/ lewis/reuters21578.html., 1997. 
+
+
+
+[46] Ludeling,  Anke,  Evert,  Stefan,  Baroni,  and  Marco.     Using  web  data  for 
+
+     linguistic purposes.  Language and Computers, 59(1):724, November 2006. 
+
+
+
+[47] John Lyons.  Natural  Language  and  Universal  Grammar.        Cambridge Uni- 
+
+     versity Press, 1991. 
+
+
+
+[48] M.  Koshenderfer  M.  Aycinea  and  D.  Mulford.     An  evolutionary  approach 
+
+     to natural language grammar induction.       Stanford CS224N, 2003. 
+
+
+
+[49] Alexander Maedche and Steen Staab.  Ontology learning for the semantic 
+
+     web.  IEEE Intelligent Systems, 16(2):7279, 2001. 
+
+
+
+[50] Nadja Nesselhauf Marianne Hundt and Carolin Biewer.  Corpus Linguistics 
+
+     and the Web.  Language and Computers 59. Rodopi, Kenilworth, 2007. 
+
+
+
+[51] Tony McEnery and Andrew Wilson.           Corpus  Linguistics.  Edinburgh Uni- 
+
+     versity Press, 1996. 
+
+
+
+[52] Andrei Mikheev. Unsupervised learning of word-category guessing rules. In 
+
+     Proceedings  of  the  34th  annual  meeting  on  Association  for  Computational 
+
+     Linguistics,  pages  327333,  Morristown,  NJ,  USA,  1996.  Association  for 
+
+     Computational Linguistics. 
+
+
+
+[53] Robert  C.  Miller  and  Krishna  Bharat.    Sphinx:  a  framework  for  creating 
+
+     personal, site-specic web crawlers.  In  WWW7: Proceedings of the seventh 
+
+     international  conference  on  World  Wide  Web  7,  pages  119130,  Amster- 
+
+     dam, The Netherlands, The Netherlands, 1998. Elsevier Science Publishers 
+
+     B. V. 
+
+
+----------------------- Page 86-----------------------
+
+BIBLIOGRAFÍA                                                                          85 
+
+
+
+[54] Sylvain Neuvel and Sean A. Fulop.        Unsupervised learning of morphology 
+
+     without morphemes.      In  Proceedings  of  the  ACL-02  workshop  on  Morpho- 
+
+     logical and phonological learning, pages 3140, Morristown, NJ, USA, 2002. 
+
+     Association for Computational Linguistics. 
+
+
+
+[55] R. Parekh and V. Honavar.  Grammar inference, automata induction, and 
+
+     language acquisition.  2000. 
+
+
+
+[56] U.D. Reichel. Improving data driven part-of-speech tagging by morphologic 
+
+     knowledge induction.  In AST Workshop, 2005. 
+
+
+
+[57] Andrew Roberts and Eric Atwell. Unsupervised grammar inference systems 
+
+     for natural language. Technical Report 2002.20, School of Computing, Uni- 
+
+     versity of Leeds, 2002. 
+
+
+
+[58] E. Pitler S. Keshava. A simpler, intuitive approach to morpheme induction. 
+
+     In In Proceedings of 2nd Pascal Challenges Workshop, pages 3135, Venice, 
+
+     Italy, 2006. 
+
+
+
+[59] J. McH. Sinclair.  Large corpora and applied linguistics in language teach- 
+
+     ing.   In  Ed.  Paz  Battaner  et  al.  Barcelona:  Universitat  Pompeu  Fabra, 
+
+     editor,  Conferencias  sobre  la  aplicación  de  los  corpora  linguísticos  en  la 
+
+     ense√±anza de las lenguas: VI Jornadas de Corpus Linguísticos, 2000. 
+
+
+
+[60] T. Smith and I. Witten.      A genetic algorithm for the induction of natural 
+
+     language grammars.  1995. 
+
+
+
+[61] Z. Solan, D. Horn, E. Ruppin, and S. Edelman.          Unsupervised learning of 
+
+     natural languages. Proc Natl Acad Sci U S A, 102(33):1162911634, August 
+
+     2005. 
+
+
+
+[62] Zach Solan.    Unsupervised Learning of Natural Languages.  PhD thesis, Tel 
+
+     Aviv University, May 2006. 
+
+
+
+[63] Harold L. Somers.  Graeme kennedy, an introduction to corpus linguistics. 
+
+     Machine Translation, 15(3):259261, 2000. 
+
+
+
+[64] Andrew Spencer. Morphological Theory: An Introduction to Word Structure 
+
+     in Generative Grammar.  Wiley-Blackwell, 1991. 
+
+
+
+[65] Keith Stuart.  New perspectives on corpus linguistics.  RAEL: revista elec- 
+
+     trónica de linguística aplicada, 4:180191, 2005. 
+
+
+
+[66] J.  Hendler  T.  Berners-Lee  and  O.  Lassila.    The  semantic  web.  scientic 
+
+     american.  284(5):3443, 2001. 
+
+
+
+[67] Egidio  L.  Terra  and  Charles  L.A.  Clarke.    Frequency  estimates  for  sta- 
+
+     tistical  word  similarity  measures.  In  Proceedings  of  the  Human  Language 
+
+      Technology and North American Chapter of Association of Computational 
+
+     Linguistics Conference 2003, pages 244251, 2003. 
+
+
+----------------------- Page 87-----------------------
+
+BIBLIOGRAFÍA                                                                       86 
+
+
+
+[68] Scott  M.  Thede.    Predicting  part-of-speech  information  about  unknown 
+
+     words  using  statistical  methods. In  ACL-36:  Proceedings  of  the  36th  An- 
+
+     nual  Meeting  of  the  Association  for  Computational  Linguistics  and  17th 
+
+     International  Conference  on  Computational  Linguistics, pages 15051507, 
+
+     Morristown, NJ, USA, 1998. Association for Computational Linguistics. 
+
+
+
+[69] Jenny  Thomas  and  Mick  Short.      Using  Corpora  for  Language  Research. 
+
+     Addison Wesley Longman, 1996. 
+
+
+
+[70] Elena Tognini-Bonelli.  Corpus Linguistics at Work, volume 6 of Studies in 
+
+     Corpus Linguistics.  Benjamins, Amsterdam, 2001. 
+
+
+
+[71] Menno van Zaanen.      Abl: alignment-based learning.    In Proceedings  of  the 
+
+     18th conference on Computational linguistics, pages 961967, Morristown, 
+
+     NJ, USA, 2000. Association for Computational Linguistics. 
+
+
+
+[72] Mark Newson Vivian James Cook.         Chomsky's  universal  grammar:  an  in- 
+
+     troduction.  Wiley-Blackwell, 2007. 
+
+
+
+[73] Stephen  Watkinson  and  Suresh  Manandhar.       A  psychologically  plausible 
+
+     and computationally eective approach to learning syntax. In Walter Daele- 
+
+     mans and Rémi Zajac, editors, Proceedings of CoNLL-2001, pages 160167. 
+
+     Toulouse, France, 2001. 
+
+
+
+[74] Tak-Lam Wong, Wai Lam, and Enhong Chen. Automatic domain ontology 
+
+     generation from web sites.   J. Integr. Des. Process Sci., 9(3):2938, 2005. 
+
+
+
+[75] Lina Zhou. Ontology learning: state of the art and open issues. Information 
+
+     Technology and Management archive Volume 8 , Issue 3 (September 2007), 
+
+     8(3):241252, 2007. 
+
