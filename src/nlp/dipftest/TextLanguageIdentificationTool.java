@@ -19,33 +19,59 @@ import java.util.TreeSet;
 
 public class TextLanguageIdentificationTool {
 
+	
+	public static final int NOT_IN_CORPUS_PROFILE_PENALTY=600;
+	
+	
 	public static void main(String[] args) throws LangIdentificationException {
 		
-		System.out.println(getLanguageNGramsRanks("ENGLISH","/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite"));
-		System.out.println(getAvailableLanguages("/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite"));
+		//System.out.println(getLanguageNGramsRanks("ENGLISH","/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite"));
+		//System.out.println(getAvailableLanguages("/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite"));
+		System.out.println(generateDocumentNGramRanks("/Users/hcadavid/temp/open_source_license.txt"));
+		
 		
 		
 		
 	}
-	
-	class NGram implements Comparable<NGram>{
-		String ngram;
-		int freq;
-		
-		public NGram(String ngram, int freq) {
-			super();
-			this.ngram = ngram;
-			this.freq = freq;
-		}
 
-		@Override
-		public int compareTo(NGram o) {
-			return o.freq-this.freq;
+	
+	
+	public String indentifyDocumentLanguage(String docPath, String dbPath) throws LangIdentificationException{
+		
+		List<String> docNgrams=generateDocumentNGramRanks(docPath);
+		
+		List<String> availableLangs=getAvailableLanguages(dbPath);
+		
+		for (String lang:availableLangs){
+			
 		}
+	
+		return "";
+	}
+	
+	public int compareRankingPrifles(List<String> corpusNgrams,List<String> docNgrams){
+		
+		int distance=0;
+		
+		for (int i=0;i<docNgrams.size();i++){
+			
+			String iethDocNgram=docNgrams.get(i);
+			
+			if (corpusNgrams.contains(iethDocNgram)){
+				distance+=Math.abs(i-corpusNgrams.indexOf(iethDocNgram));
+			}
+			else{
+				distance+=NOT_IN_CORPUS_PROFILE_PENALTY;
+			}
+		}
+		
+		return distance;
 	}
 	
 	
-	List<String> generateDocumentNGramRanks(String docPath) throws LangIdentificationException{
+	
+	
+	private static List<String> generateDocumentNGramRanks(String docPath) throws LangIdentificationException{
 		
 		try {
 			BufferedReader br=new BufferedReader(new FileReader(new File(docPath)));
@@ -68,9 +94,18 @@ public class TextLanguageIdentificationTool {
 			
 			List<String> res=new LinkedList<String>();
 			
-			while (it.hasNext()){
-				res.add(it.next().ngram);
+			int ngcount=0;
+			
+			while (it.hasNext() && ngcount<=300){	
+				NGram ng=it.next();
+				System.out.println(ng.freq);
+				res.add(ng.ngram);
+				ngcount++;
 			}
+			
+			if (ngcount<300){
+				throw new LangIdentificationException("Document is not long enough to determite its language. Only "+ngcount+" extracted.");
+			}			
 			
 			return res;
 			
@@ -148,4 +183,20 @@ public class TextLanguageIdentificationTool {
 	}
 	
 	
+}
+
+class NGram implements Comparable<NGram>{
+	String ngram;
+	int freq;
+	
+	public NGram(String ngram, int freq) {
+		super();
+		this.ngram = ngram;
+		this.freq = freq;
+	}
+
+	@Override
+	public int compareTo(NGram o) {
+		return o.freq-this.freq;
+	}
 }
