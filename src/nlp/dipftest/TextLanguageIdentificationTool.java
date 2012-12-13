@@ -75,8 +75,11 @@ public class TextLanguageIdentificationTool {
 			
 			if (corpusNgrams.contains(iethDocNgram)){
 				distance+=Math.abs(i-corpusNgrams.indexOf(iethDocNgram));
+				
 			}
 			else{
+				
+				System.out.println("nic:"+iethDocNgram);
 				distance+=NOT_IN_CORPUS_PROFILE_PENALTY;
 			}
 		}
