@@ -20,7 +20,7 @@ import java.util.List;
 public class TextLanguageIdentificationTool {
 
 	
-	public static final int NOT_IN_CORPUS_PROFILE_PENALTY=10000;
+	public static final int NOT_IN_CORPUS_PROFILE_PENALTY=1000;
 	public static final int NI=3;
 	public static final int NF=4;
 	
@@ -31,7 +31,7 @@ public class TextLanguageIdentificationTool {
 		//System.out.println(getAvailableLanguages("/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite"));
 		//System.out.println(generateDocumentNGramRanks("/Users/hcadavid/temp/open_source_license.txt"));
 		//System.out.println(identifyDocumentLanguage("/Users/hcadavid/temp/open_source_license.txt", "/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite"));
-		System.out.println(identifyDocumentLanguage("/Users/hcadavid/temp/tesis-VersionFinal.txt", "/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite"));
+		System.out.println(identifyDocumentLanguage("/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/samples/imitacion_cristo.txt", "/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite"));
 		
 		
 		
@@ -43,6 +43,8 @@ public class TextLanguageIdentificationTool {
 	public static String identifyDocumentLanguage(String docPath, String dbPath) throws LangIdentificationException{
 		
 		List<String> docNgrams=generateDocumentNGramRanks(docPath,NI,NF);
+		
+		System.out.println(docNgrams);
 		
 		List<String> availableLangs=getAvailableLanguages(dbPath);
 		
@@ -108,7 +110,7 @@ public class TextLanguageIdentificationTool {
 								
 				String key=mkeys.nextElement();
 				ngl.add(new NGram(key, docNgramsFreqMap.get(key)));
-				System.out.println(key+":"+ngl.size());
+				
 			}
 			
 			

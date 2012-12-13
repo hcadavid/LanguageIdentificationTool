@@ -75,14 +75,14 @@ public class NGramExtractor {
 		
 		while ((line=br.readLine())!=null)
 		{
-			StringTokenizer st=new StringTokenizer(line," (),.:?*#");
+			StringTokenizer st=new StringTokenizer(line," \"()[],.:?*#+-=\\|@%<>/;ö&");
 			lcount++;
 			if (lcount%100000==0){
 				System.out.println("Line:"+lcount);
 			}
 			
 			while (st.hasMoreTokens()){
-				String token=st.nextToken();
+				String token=st.nextToken().toLowerCase();
 				
 				if (token.length()>=n && !isANumber(token)){
 																				
