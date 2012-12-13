@@ -20,15 +20,15 @@ import java.util.TreeSet;
 public class TextLanguageIdentificationTool {
 
 	
-	public static final int NOT_IN_CORPUS_PROFILE_PENALTY=600;
+	public static final int NOT_IN_CORPUS_PROFILE_PENALTY=10000;
 	
 	
 	public static void main(String[] args) throws LangIdentificationException {
 		
 		//System.out.println(getLanguageNGramsRanks("ENGLISH","/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite"));
 		//System.out.println(getAvailableLanguages("/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite"));
-		System.out.println(generateDocumentNGramRanks("/Users/hcadavid/temp/open_source_license.txt"));
-		
+		//System.out.println(generateDocumentNGramRanks("/Users/hcadavid/temp/open_source_license.txt"));
+		System.out.println(identifyDocumentLanguage("/Users/hcadavid/temp/open_source_license.txt", "/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite"));
 		
 		
 		
@@ -36,20 +36,30 @@ public class TextLanguageIdentificationTool {
 
 	
 	
-	public String indentifyDocumentLanguage(String docPath, String dbPath) throws LangIdentificationException{
+	public static String identifyDocumentLanguage(String docPath, String dbPath) throws LangIdentificationException{
 		
 		List<String> docNgrams=generateDocumentNGramRanks(docPath);
 		
 		List<String> availableLangs=getAvailableLanguages(dbPath);
 		
+		int maxDistance=Integer.MAX_VALUE;
+		
+		String bestFittedLanguage="UNKNOWN";
+		
 		for (String lang:availableLangs){
-			
+			int dist=ngramProfilesDistance(getLanguageNGramsRanks(lang, dbPath), docNgrams);
+			if (dist<maxDistance){
+				maxDistance=dist;
+				bestFittedLanguage=lang;
+			}
+			System.out.println("Distance to "+lang+" profile:"+dist);
 		}
 	
-		return "";
+		return bestFittedLanguage;
 	}
 	
-	public int compareRankingPrifles(List<String> corpusNgrams,List<String> docNgrams){
+	
+	public static int ngramProfilesDistance(List<String> corpusNgrams,List<String> docNgrams){
 		
 		int distance=0;
 		
@@ -98,7 +108,6 @@ public class TextLanguageIdentificationTool {
 			
 			while (it.hasNext() && ngcount<=300){	
 				NGram ng=it.next();
-				System.out.println(ng.freq);
 				res.add(ng.ngram);
 				ngcount++;
 			}
