@@ -14,6 +14,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+/**
+ * 
+ * @author hcadavid
+ *
+ */
 public class NGramExtractor {
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException {
