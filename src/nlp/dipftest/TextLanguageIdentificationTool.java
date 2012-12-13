@@ -24,17 +24,20 @@ public class TextLanguageIdentificationTool {
 	public static final int NI=3;
 	public static final int NF=4;
 	
+	public static int nGramProfileSize=1000;
+	
 	
 	public static void main(String[] args) throws LangIdentificationException {
 		
-		//System.out.println(getLanguageNGramsRanks("ENGLISH","/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite"));
-		//System.out.println(getAvailableLanguages("/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite"));
-		//System.out.println(generateDocumentNGramRanks("/Users/hcadavid/temp/open_source_license.txt"));
-		//System.out.println(identifyDocumentLanguage("/Users/hcadavid/temp/open_source_license.txt", "/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite"));
-		System.out.println(identifyDocumentLanguage("/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/samples/imitacion_cristo.txt", "/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite"));
-		
-		
-		
+		if (args.length<3){
+			System.out.println("Command line arguments required: <Document_Path> <NGramsDatabasePath> <NGramProfilesSize>");
+		}
+		else{
+			String documentPath=args[0];
+			String dbPath=args[1];
+			nGramProfileSize=Integer.parseInt(args[2]);			
+			System.out.println("Identified Language:"+identifyDocumentLanguage(documentPath, dbPath));			
+		}
 		
 	}
 
@@ -43,8 +46,6 @@ public class TextLanguageIdentificationTool {
 	public static String identifyDocumentLanguage(String docPath, String dbPath) throws LangIdentificationException{
 		
 		List<String> docNgrams=generateDocumentNGramRanks(docPath,NI,NF);
-		
-		System.out.println(docNgrams);
 		
 		List<String> availableLangs=getAvailableLanguages(dbPath);
 		
@@ -75,11 +76,8 @@ public class TextLanguageIdentificationTool {
 			
 			if (corpusNgrams.contains(iethDocNgram)){
 				distance+=Math.abs(i-corpusNgrams.indexOf(iethDocNgram));
-				
 			}
 			else{
-				
-				System.out.println("nic:"+iethDocNgram);
 				distance+=NOT_IN_CORPUS_PROFILE_PENALTY;
 			}
 		}
@@ -123,13 +121,13 @@ public class TextLanguageIdentificationTool {
 			
 			int ngcount=0;
 			
-			while (it.hasNext() && ngcount<=300){	
+			while (it.hasNext() && ngcount<=nGramProfileSize){	
 				NGram ng=it.next();
 				res.add(ng.ngram);
 				ngcount++;
 			}
 			
-			if (ngcount<300){
+			if (ngcount<nGramProfileSize){
 				throw new LangIdentificationException("Document is not long enough to determite its language. Only "+ngcount+" extracted.");
 			}			
 			
@@ -184,9 +182,9 @@ public class TextLanguageIdentificationTool {
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:"+dbPath);
 			
-			PreparedStatement stm=conn.prepareStatement("select ngram from ngrams where language=? order by count desc limit 300");
+			PreparedStatement stm=conn.prepareStatement("select ngram from ngrams where language=? order by count desc limit ?");
 			stm.setString(1, lang);									
-			
+			stm.setInt(2, nGramProfileSize);
 			ResultSet rs=stm.executeQuery();
 			
 			List<String> res=new LinkedList<String>();
