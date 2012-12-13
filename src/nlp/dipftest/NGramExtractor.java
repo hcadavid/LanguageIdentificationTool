@@ -17,6 +17,12 @@ import java.util.StringTokenizer;
 public class NGramExtractor {
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException {
+		main2(new String[]{"/Users/hcadavid/corpuses/corpusespanol.txt","/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite","SPANISH"});
+		main2(new String[]{"/Users/hcadavid/corpuses/corpusingles.txt","/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite","ENGLISH"});		
+	}
+	
+	
+	public static void main2(String[] args) throws IOException, ClassNotFoundException, SQLException {
 		
 		if (args.length<3){
 			System.out.println("Command line Arguments: <corpus_path> <database_path> <language_name>");
@@ -29,47 +35,26 @@ public class NGramExtractor {
 			
 			Hashtable<String,Integer> ngramsFreqMap=new Hashtable<String, Integer>(10000);
 			
-			BufferedReader br=new BufferedReader(new FileReader(new File(inputFilePath)));
-			
-			String line=null;
+			BufferedReader br=new BufferedReader(new FileReader(new File(inputFilePath)));						
 			
 			new ProgressThread(ngramsFreqMap).start();
 			
-			int lcount=0;
+			genFreqMap(ngramsFreqMap, br, 3);
+			genFreqMap(ngramsFreqMap, br, 4);
 			
-			while ((line=br.readLine())!=null)
-			{
-				StringTokenizer st=new StringTokenizer(line," ,.:?*#");
-				lcount++;
-				if (lcount%100000==0){
-					System.out.println("Line:"+lcount);
-				}
-				
-				while (st.hasMoreTokens()){
-					String token=st.nextToken();
-					
-					if (token.length()>=3 && !isANumber(token)){
-						List<String> ngrams=generateNGrams(token, 3);
-						for (String ng:ngrams){
-							if (ngramsFreqMap.containsKey(ng)){
-								ngramsFreqMap.put(ng, ngramsFreqMap.get(ng)+1);
-							}
-							else{
-								ngramsFreqMap.put(ng, 1);	
-							}
-							
-						}
-						
-					}
-					
-				}
-			}
 			
 			Class.forName("org.sqlite.JDBC");
-			Connection conn = DriverManager.getConnection(dbPath);		
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:"+dbPath);		
 			
+			System.out.println("Inserting "+ngramsFreqMap.size()+" records...");
+			int ircount=0;
 			for (String key:ngramsFreqMap.keySet()){
-				addNgram(conn, language, key, ngramsFreqMap.get(key));
+				ircount++;
+				if (ircount%1000==0){
+					System.out.println(ircount+" of "+ngramsFreqMap.size()+".");
+				}
+				int freq=ngramsFreqMap.get(key);
+				if (freq>1000) addNgram(conn, language, key, freq);
 			}
 	
 			conn.close();
@@ -78,9 +63,42 @@ public class NGramExtractor {
 	}
 	
 	
+	public static void genFreqMap(Hashtable<String,Integer> ngramsFreqMap, BufferedReader br, int n) throws IOException{
+
+		String line;
+		int lcount=0;
 		
+		while ((line=br.readLine())!=null)
+		{
+			StringTokenizer st=new StringTokenizer(line," ,.:?*#");
+			lcount++;
+			if (lcount%100000==0){
+				System.out.println("Line:"+lcount);
+			}
+			
+			while (st.hasMoreTokens()){
+				String token=st.nextToken();
+				
+				if (token.length()>=n && !isANumber(token)){
+					List<String> ngrams=generateNGrams(token, n);
+					for (String ng:ngrams){
+						if (ngramsFreqMap.containsKey(ng)){
+							ngramsFreqMap.put(ng, ngramsFreqMap.get(ng)+1);
+						}
+						else{
+							ngramsFreqMap.put(ng, 1);	
+						}
+						
+					}
+					
+				}
+				
+			}
+		}
+		
+	}
 	
-	private static List<String> generateNGrams(String token, int n){
+	public static List<String> generateNGrams(String token, int n){
 		List<String> out=new LinkedList<String>();
 		
 		out.add("_"+token.substring(0,n-1));
@@ -89,7 +107,7 @@ public class NGramExtractor {
 			out.add(token.substring(i,i+n));
 		}
 		
-		out.add(token.substring(token.length()-2,token.length())+"_");
+		out.add(token.substring(token.length()-(n-1),token.length())+"_");
 		
 		return out;
 	}
@@ -101,7 +119,7 @@ public class NGramExtractor {
 	
 	
 	public static void addNgram(Connection conn, String lang,String w, int freq){
-		//tablengramsngramsCREATE TABLE ngrams(language VARCHAR(32), ngram VARCHAR(32), count INTEGER)
+		//tablengramsngrams CREATE TABLE ngrams(language VARCHAR(32), ngram VARCHAR(32), count INTEGER)
 		try {
 			PreparedStatement ps=conn.prepareStatement("insert into ngrams values(?,?,?)");
 			ps.setString(1, lang);
