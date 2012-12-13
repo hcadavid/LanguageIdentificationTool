@@ -14,9 +14,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+
 /**
  * 
- * @author hcadavid
+ * @author HŽctor Fabio Cadavid R.
+ *
+ * W. B. Cavnar and J. M. Trenkle, "N-Gram-Based Text Categorization,
+ * "Proceedings of the 1994 Sym- posium on Document Analysis and Information Retrieval
+ * (Univ.of Nevada, Las Vegas, 1994), p. 161.
  *
  */
 public class NGramExtractor {
@@ -146,13 +151,7 @@ public class NGramExtractor {
 		}
         
 	}
-	
-	/**
-	 
-	 Class.forName("org.sqlite.JDBC");
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:C:\\sqlite\\libreria.sqlite"); 
-	 
-	 */
+
 	
 }
 
@@ -180,7 +179,6 @@ class ProgressThread extends Thread{
 			try {
 				Thread.sleep(10000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

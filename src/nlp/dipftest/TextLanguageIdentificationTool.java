@@ -20,7 +20,11 @@ import java.util.List;
 
 /**
  * 
- * @author hcadavid
+ * @author HŽctor Fabio Cadavid R.
+ *
+ * W. B. Cavnar and J. M. Trenkle, "N-Gram-Based Text Categorization,
+ * "Proceedings of the 1994 Sym- posium on Document Analysis and Information Retrieval
+ * (Univ.of Nevada, Las Vegas, 1994), p. 161.
  *
  */
 public class TextLanguageIdentificationTool {
