@@ -17,30 +17,35 @@ import java.util.StringTokenizer;
 public class NGramExtractor {
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException {
-		main2(new String[]{"/Users/hcadavid/corpuses/corpusespanol.txt","/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite","SPANISH"});
-		main2(new String[]{"/Users/hcadavid/corpuses/corpusingles.txt","/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite","ENGLISH"});		
+		main2(new String[]{"/Users/hcadavid/corpuses/corpusespanol.txt","/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite","SPANISH","3","4"});
+		main2(new String[]{"/Users/hcadavid/corpuses/corpusingles.txt","/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite","ENGLISH","3","4"});		
 	}
 	
 	
 	public static void main2(String[] args) throws IOException, ClassNotFoundException, SQLException {
 		
-		if (args.length<3){
-			System.out.println("Command line Arguments: <corpus_path> <database_path> <language_name>");
+		if (args.length<5){
+			System.out.println("Command line Arguments: <corpus_path> <database_path> <language_name> <ni> <nf>");
 		}
 		else{
 		
 			String inputFilePath=args[0];
 			String dbPath=args[1];
 			String language=args[2];
+			int ni=Integer.parseInt(args[3]);
+			int nf=Integer.parseInt(args[4]);
 			
 			Hashtable<String,Integer> ngramsFreqMap=new Hashtable<String, Integer>(10000);
 			
-			BufferedReader br=new BufferedReader(new FileReader(new File(inputFilePath)));						
 			
-			new ProgressThread(ngramsFreqMap).start();
+			for (int n=ni;n<=nf;n++){
+				BufferedReader br=new BufferedReader(new FileReader(new File(inputFilePath)));										
+				new ProgressThread(ngramsFreqMap).start();				
+				genFreqMap(ngramsFreqMap, br, n);				
+				br.close();
+			}
 			
-			genFreqMap(ngramsFreqMap, br, 3);
-			genFreqMap(ngramsFreqMap, br, 4);
+			
 			
 			
 			Class.forName("org.sqlite.JDBC");
@@ -80,14 +85,16 @@ public class NGramExtractor {
 				String token=st.nextToken();
 				
 				if (token.length()>=n && !isANumber(token)){
+																				
 					List<String> ngrams=generateNGrams(token, n);
 					for (String ng:ngrams){
 						if (ngramsFreqMap.containsKey(ng)){
 							ngramsFreqMap.put(ng, ngramsFreqMap.get(ng)+1);
 						}
 						else{
-							ngramsFreqMap.put(ng, 1);	
+							ngramsFreqMap.put(ng, 1);															
 						}
+						
 						
 					}
 					

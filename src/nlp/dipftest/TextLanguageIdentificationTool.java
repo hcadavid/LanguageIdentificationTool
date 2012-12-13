@@ -10,17 +10,19 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.TreeSet;
 
 public class TextLanguageIdentificationTool {
 
 	
 	public static final int NOT_IN_CORPUS_PROFILE_PENALTY=10000;
+	public static final int NI=3;
+	public static final int NF=4;
 	
 	
 	public static void main(String[] args) throws LangIdentificationException {
@@ -28,7 +30,9 @@ public class TextLanguageIdentificationTool {
 		//System.out.println(getLanguageNGramsRanks("ENGLISH","/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite"));
 		//System.out.println(getAvailableLanguages("/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite"));
 		//System.out.println(generateDocumentNGramRanks("/Users/hcadavid/temp/open_source_license.txt"));
-		System.out.println(identifyDocumentLanguage("/Users/hcadavid/temp/open_source_license.txt", "/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite"));
+		//System.out.println(identifyDocumentLanguage("/Users/hcadavid/temp/open_source_license.txt", "/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite"));
+		System.out.println(identifyDocumentLanguage("/Users/hcadavid/temp/tesis-VersionFinal.txt", "/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite"));
+		
 		
 		
 		
@@ -38,7 +42,7 @@ public class TextLanguageIdentificationTool {
 	
 	public static String identifyDocumentLanguage(String docPath, String dbPath) throws LangIdentificationException{
 		
-		List<String> docNgrams=generateDocumentNGramRanks(docPath);
+		List<String> docNgrams=generateDocumentNGramRanks(docPath,NI,NF);
 		
 		List<String> availableLangs=getAvailableLanguages(dbPath);
 		
@@ -81,26 +85,34 @@ public class TextLanguageIdentificationTool {
 	
 	
 	
-	private static List<String> generateDocumentNGramRanks(String docPath) throws LangIdentificationException{
+	private static List<String> generateDocumentNGramRanks(String docPath, int ni, int nf) throws LangIdentificationException{
 		
 		try {
-			BufferedReader br=new BufferedReader(new FileReader(new File(docPath)));
+			
 			Hashtable<String,Integer> docNgramsFreqMap=new Hashtable<String, Integer>();
 			
-			NGramExtractor.genFreqMap(docNgramsFreqMap, br, 3);
-			NGramExtractor.genFreqMap(docNgramsFreqMap, br, 4);
+			for (int n=ni; n<=nf;n++){
+				BufferedReader br=new BufferedReader(new FileReader(new File(docPath)));
+				NGramExtractor.genFreqMap(docNgramsFreqMap, br, n);
+				br.close();	
+			}
+									
+				
+			ArrayList<NGram> ngl=new ArrayList<NGram>();
 			
-			TreeSet<NGram> ts=new TreeSet<NGram>();
-			
+						
 			Enumeration<String> mkeys=docNgramsFreqMap.keys();
 			
-			
+			int i=0;
 			while (mkeys.hasMoreElements()){
+								
 				String key=mkeys.nextElement();
-				ts.add(new NGram(key, docNgramsFreqMap.get(key)));
+				ngl.add(new NGram(key, docNgramsFreqMap.get(key)));
+				System.out.println(key+":"+ngl.size());
 			}
 			
-			Iterator<NGram> it=ts.iterator();
+			
+			Iterator<NGram> it=ngl.iterator();
 			
 			List<String> res=new LinkedList<String>();
 			
@@ -168,7 +180,7 @@ public class TextLanguageIdentificationTool {
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:"+dbPath);
 			
 			PreparedStatement stm=conn.prepareStatement("select ngram from ngrams where language=? order by count desc limit 300");
-			stm.setString(1, lang);			
+			stm.setString(1, lang);									
 			
 			ResultSet rs=stm.executeQuery();
 			
@@ -204,8 +216,12 @@ class NGram implements Comparable<NGram>{
 		this.freq = freq;
 	}
 
+	
+	
 	@Override
 	public int compareTo(NGram o) {
 		return o.freq-this.freq;
 	}
+	
+	
 }
