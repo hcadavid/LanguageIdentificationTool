@@ -19,10 +19,10 @@ import java.util.List;
 
 
 /**
- * 
+ * Implementation of a text language identifier for text documents, based on Cavnar and Trenkle paper[1].
  * @author HŽctor Fabio Cadavid R.
  *
- * W. B. Cavnar and J. M. Trenkle, "N-Gram-Based Text Categorization,
+ * [1] W. B. Cavnar and J. M. Trenkle, "N-Gram-Based Text Categorization,
  * "Proceedings of the 1994 Sym- posium on Document Analysis and Information Retrieval
  * (Univ.of Nevada, Las Vegas, 1994), p. 161.
  *
@@ -40,7 +40,12 @@ public class TextLanguageIdentificationTool {
 	public static void main(String[] args) throws LangIdentificationException {
 		
 		if (args.length<3){
-			System.out.println("Command line arguments required: <Document_Path> <NGramsDatabasePath> <NGramProfilesSize>");
+			System.out.println("Command line arguments required: <Document_Path> <NGramsDatabasePath> <NGramProfilesSize>,");
+			System.out.println("Where <Document_Path> is the absolute path of the document to be analized," );
+			System.out.println("<NGramsDatabasePath> is the absolute path of the Ngrans database (this package includes a database" +
+					"with ngrams statistics extracted from english and spanish corpuses in the file ngramsBd.sqlite)." +
+					"\n<NGramProfilesSize> is the size of the Ngrams profiles that will be generated during the identification process." +
+					"Cavnar and Trenkle paper suggests a size of 300.");
 		}
 		else{
 			String documentPath=args[0];

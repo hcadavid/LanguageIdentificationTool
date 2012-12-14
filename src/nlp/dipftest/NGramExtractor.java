@@ -16,26 +16,32 @@ import java.util.StringTokenizer;
 
 
 /**
+ * Tool for the population of the Ngram database required by the language identifier for text documents.
+ * This tool receives a corpus of a certain language, extracts NGrams, calculate its frequencies, and
+ * stores them on a sqlite3 database.
  * 
  * @author HŽctor Fabio Cadavid R.
  *
- * W. B. Cavnar and J. M. Trenkle, "N-Gram-Based Text Categorization,
+ * [1] W. B. Cavnar and J. M. Trenkle, "N-Gram-Based Text Categorization,
  * "Proceedings of the 1994 Sym- posium on Document Analysis and Information Retrieval
  * (Univ.of Nevada, Las Vegas, 1994), p. 161.
  *
  */
 public class NGramExtractor {
 
+	
 	public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException {
-		main2(new String[]{"/Users/hcadavid/corpuses/corpusespanol.txt","/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite","SPANISH","3","4"});
-		main2(new String[]{"/Users/hcadavid/corpuses/corpusingles.txt","/Users/hcadavid/temp/test1/ThreeGramLanguageIdentifier/db/ngramsBd.sqlite","ENGLISH","3","4"});		
-	}
-	
-	
-	public static void main2(String[] args) throws IOException, ClassNotFoundException, SQLException {
 		
 		if (args.length<5){
 			System.out.println("Command line Arguments: <corpus_path> <database_path> <language_name> <ni> <nf>");
+			System.out.println("Where <corpus_path> is the absolute path to the corpus in plain text format," +
+					"\n<database_path> is the path where the sqlite database file is located (the database file must be " +
+					"\na sqlite3 data file, with a single table: ngrams(language VARCHAR(32), ngram VARCHAR(32), count INTEGER))." +
+					"\nA ngram database file (ngramsBd.sqlite) with Ngrams extracted from english and spanish corpuses are already " +
+					"\nprovided with this software distribution in the 'db' folder." + 
+					"\n<language_name> is the name of the language in which the document is written." +
+					"\n<ni> and <nf> are the range of Ngrams that will be extracted from the corpus (ni=3,ni=6) whill create" +
+					"\nNGrams of size 3,4,5 and 6.");
 		}
 		else{
 		
