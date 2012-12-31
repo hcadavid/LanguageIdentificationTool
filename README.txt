@@ -9,10 +9,10 @@ identifier for documents (2). Both tools provides information about the required
 
 There are two pre-built databases included in the db/ folder:
 
-ngramsBd-EN_ES_DE_FR.sqlite : 	n-grams extracted from European Parliament Proceedings Parallel Corpus 1996-2011
+ngramsBd-EN_ES_DE_FR.sqlite: 	n-grams extracted from European Parliament Proceedings Parallel Corpus 1996-2011
 								in English, Spanish, Deutsch, and French.
 
-ngramsBd.sqlite				:	n-grams extracted from a corpus generated from wikipedia (Spanish), and the
+ngramsBd.sqlite:	n-grams extracted from a corpus generated from wikipedia (Spanish), and the
 								gold-standard corpus used in morphochallenge (English).
 
 
