@@ -16,6 +16,7 @@ import java.util.StringTokenizer;
 
 
 /**
+ * !!!!!!!!
  * Tool for the population of the Ngram database required by the language identifier for text documents.
  * This tool receives a corpus of a certain language, extracts NGrams, calculate its frequencies, and
  * stores them on a sqlite3 database.
