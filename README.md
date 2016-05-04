@@ -1,5 +1,6 @@
-This is a text documents language identifier, based on Cavnar and Trenkle paper[1].
-Author: HŽctor Fabio Cadavid R.
+##Text language identifier
+###based on Cavnar and Trenkle paper[1].
+Author: HÃ©ctor Fabio Cadavid R.
 
 This software consists on two tools: the NGrams statistics database generator (1), and the language 
 identifier for documents (2). Both tools provides information about the required parameters. 
